@@ -1,0 +1,11 @@
+version: '2'
+services:
+  flow-mapper-postgresql:
+    image: postgres:9.6.5
+    # volumes:
+    #     - ~/volumes/dashy/postgresql/:/var/lib/postgresql/data/
+    environment:
+    - POSTGRES_USER=flow
+    - POSTGRES_PASSWORD=mappingpasswd
+    ports:
+    - 5432:5432

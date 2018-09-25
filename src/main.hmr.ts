@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { config } from 'dotenv';
+// Use .env to configure environment variables (process.env) before we import others things
+config();
 import { AppModule } from './app.module';
 import { LoggerExceptionInterceptor } from './modules/core/logger/logger-exception.interceptor';
 import { LoggerModule } from './modules/core/logger/logger.module';
@@ -11,10 +13,8 @@ import { RolesGuard } from './guards/roles.guard';
 declare const module: any;
 
 async function bootstrap() {
-  // Use .env to configure environment variables (process.env)
-  config();
-
   const app = await NestFactory.create(AppModule);
+
   // Set logger
   app.useLogger(app.get(LoggerService));
 
