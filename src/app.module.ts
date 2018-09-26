@@ -7,6 +7,8 @@ import { AuthModule } from './modules/core/auth/auth.module';
 import { RouterModule } from 'nest-router';
 import { appRoutes } from './app.routes';
 import { RolesGuard } from './guards/roles.guard';
+import { SearchModule } from './modules/core/search/search.module';
+import { AppTechnoModule } from './modules/app-techno/app-techno.module';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import { RolesGuard } from './guards/roles.guard';
     RouterModule.forRoutes(appRoutes),
 
     AuthModule,
+
+    SearchModule,
+
+    AppTechnoModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard],

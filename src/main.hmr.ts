@@ -9,6 +9,7 @@ import { LoggerModule } from './modules/core/logger/logger.module';
 import { ValidatorPipe } from './modules/core/validation/validator.pipe';
 import { LoggerService } from './modules/core/logger/logger.service';
 import { RolesGuard } from './guards/roles.guard';
+import { TransformInterceptor } from './interceptors/transform.interceptor';
 
 declare const module: any;
 
@@ -27,6 +28,7 @@ async function bootstrap() {
     .get(LoggerExceptionInterceptor);
   app.useGlobalInterceptors(
     loggerInterceptor, // Log exceptions
+    new TransformInterceptor(),
   );
 
   // Guards
@@ -51,6 +53,7 @@ async function bootstrap() {
   app
     .get(LoggerService)
     .info(`Application is listening on port ${process.env.API_PORT || 3000}.`);
+  app.get(LoggerService).info(`Swagger-ui is running on /docs.`);
 
   if (module.hot) {
     module.hot.accept();
