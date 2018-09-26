@@ -21,18 +21,21 @@ jobs:
       - image: circleci/node:8.11
     working_directory: ~/repo
     steps:
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
       - checkout
       - run: yarn lint
       - run: yarn format:check
-
   test:
     docker:
       - image: circleci/node:8.11
     working_directory: ~/repo
     steps:
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
       - checkout
       - run: yarn test:cov
-      - run: yarn global add codecov && codecov
+      - run: yarn add codecov && yarn codecov
 
 workflows:
   version: 2
