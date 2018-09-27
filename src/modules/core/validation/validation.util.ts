@@ -27,6 +27,9 @@ export const validate = async <T>(
   const errors = await classValidate(entity, {
     skipMissingProperties: true,
     whitelist: true,
+    validationError: {
+      target: false,
+    },
   });
   if (errors.length > 0) {
     throw new ValidationException(errors);
