@@ -21,7 +21,7 @@ import {
 import { AppTechnoDto } from './app-techno.dto';
 
 @ApiUseTags('Techno')
-@Controller('app-techno')
+@Controller()
 export class AppTechnoController {
   constructor(private readonly appTechnoService: AppTechnoService) {}
 
