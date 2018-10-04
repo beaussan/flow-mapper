@@ -52,6 +52,7 @@ export class AppTechnoController {
     status: 200,
     description: 'The app technology  with the matching id',
     type: AppTechno,
+    isArray: true,
   })
   @ApiResponse({ status: 404, description: 'Not found.' })
   async search(@Query('query') query: string): Promise<AppTechno[]> {
