@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Client, Index } from 'algoliasearch';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FlowAppRepository } from './flow-app.repository';
@@ -51,5 +51,20 @@ export class FlowAppService {
       description: appSaved.description,
     });
     return appSaved;
+  }
+
+  async update(id: number, body: FlowAppDto): Promise<FlowApp> {
+    const appFound = (await this.flowAppRepository.findOneById(id)).orElseThrow(
+      () => new NotFoundException(),
+    );
+    appFound.name = body.name;
+    appFound.description = body.description;
+    await this.flowAppRepository.save(appFound);
+    await this.searchIndex.saveObject({
+      objectId: `${appFound.id}`,
+      name: body.name,
+      description: body.description,
+    });
+    return appFound;
   }
 }

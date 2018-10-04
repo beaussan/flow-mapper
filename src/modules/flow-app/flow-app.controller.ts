@@ -7,6 +7,7 @@ import {
   Param,
   NotFoundException,
   Query,
+  Put,
 } from '@nestjs/common';
 import { FlowApp } from './flow-app.entity';
 import { FlowAppService } from './flow-app.service';
@@ -36,20 +37,6 @@ export class FlowAppController {
   }
 
   // Query
-  /*
-    @Get('search')
-    @ApiResponse({
-      status: 200,
-      description: 'Apps that match with the search query',
-      type: FlowApp,
-      isArray: true,
-    })
-    @ApiResponse({ status: 404, description: 'Not found.' })
-    async search(@Query('query') query: string): Promise<FlowApp[]> {
-      console.log('ALLOOOOOOOO', query);
-      return this.flowAppService.find(query);
-    }
-  */
   @Get('search')
   @ApiResponse({
     status: 200,
@@ -83,5 +70,19 @@ export class FlowAppController {
   })
   saveNewFlowApp(@Body() app: FlowAppDto): Promise<FlowApp> {
     return this.flowAppService.saveNewApp(app);
+  }
+
+  @Put(':id')
+  @ApiResponse({
+    status: 204,
+    description: 'The app updated',
+    type: FlowApp,
+  })
+  @ApiResponse({ status: 404, description: 'Not found.' })
+  updateApp(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() app: FlowAppDto,
+  ): Promise<FlowApp> {
+    return this.flowAppService.update(id, app);
   }
 }
