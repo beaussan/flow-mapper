@@ -7,6 +7,7 @@ import { SEARCH_INDEX_NAME_FLOW_APPS } from './flow-app.constants';
 import { FlowApp } from './flow-app.entity';
 import { FlowAppDto } from './flow-app.dto';
 import Optional from 'typescript-optional';
+import { AppTechno } from '../app-techno/app-techno.entity';
 
 @Injectable()
 export class FlowAppService {
@@ -40,15 +41,18 @@ export class FlowAppService {
   }
 
   async saveNewApp(app: FlowAppDto): Promise<FlowApp> {
+    console.log('NEW APP', app);
     let appSaved = new FlowApp();
     appSaved.name = app.name;
     appSaved.description = app.description;
+    appSaved.appTechnos = app.technos.map(techno => techno);
 
     appSaved = await this.flowAppRepository.save(appSaved);
     await this.searchIndex.addObject({
       objectID: appSaved.id,
       name: appSaved.name,
       description: appSaved.description,
+      technos: appSaved.appTechnos,
     });
     return appSaved;
   }

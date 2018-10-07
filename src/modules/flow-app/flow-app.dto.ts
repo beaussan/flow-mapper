@@ -1,6 +1,7 @@
-import { IsOptional, IsString, Min, MinLength } from 'class-validator';
+import { IsArray, IsOptional, IsString, Min, MinLength } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { AppTechnoDto } from '../app-techno/app-techno.dto';
 
 export class FlowAppDto {
   @ApiModelProperty({ required: true })
@@ -13,4 +14,8 @@ export class FlowAppDto {
   @MinLength(1)
   @IsOptional()
   description: string;
+
+  @ApiModelProperty({ required: true })
+  @IsArray()
+  technos: AppTechnoDto[];
 }
