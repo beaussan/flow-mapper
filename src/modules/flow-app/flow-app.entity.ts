@@ -14,9 +14,7 @@ export class FlowApp extends DbAuditModel {
   description: string;
 
   @ApiModelProperty({ required: true })
-  @ManyToMany(type => AppTechno, techno => techno.apps, {
-    cascade: true,
-  })
+  @ManyToMany(type => AppTechno, techno => techno.apps)
   @JoinTable()
   appTechnos: AppTechno[];
 }

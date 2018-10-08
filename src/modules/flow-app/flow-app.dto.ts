@@ -17,5 +17,5 @@ export class FlowAppDto {
 
   @ApiModelProperty({ required: true })
   @IsArray()
-  technos: AppTechnoDto[];
+  technos: string[];
 }
