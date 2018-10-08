@@ -7,6 +7,8 @@ import { SEARCH_INDEX_NAME_FLOW_APPS } from './flow-app.constants';
 import { FlowApp } from './flow-app.entity';
 import { FlowAppDto } from './flow-app.dto';
 import Optional from 'typescript-optional';
+import { AppTechno } from '../app-techno/app-techno.entity';
+import { AppTechnoService } from '../app-techno/app-techno.service';
 
 @Injectable()
 export class FlowAppService {
@@ -16,12 +18,13 @@ export class FlowAppService {
     @InjectRepository(FlowAppRepository)
     private readonly flowAppRepository: FlowAppRepository,
     @Inject(SEARCH_CLIENT_PROVIDER) private readonly searchClient: Client,
+    private readonly appTechnoSerice: AppTechnoService,
   ) {
     this.searchIndex = this.searchClient.initIndex(SEARCH_INDEX_NAME_FLOW_APPS);
   }
 
   async getAll(): Promise<FlowApp[]> {
-    return this.flowAppRepository.find();
+    return this.flowAppRepository.find({ relations: ['appTechnos'] });
   }
 
   async getOneById(id: number): Promise<Optional<FlowApp>> {
@@ -44,11 +47,17 @@ export class FlowAppService {
     appSaved.name = app.name;
     appSaved.description = app.description;
 
+    const technoPromises = app.technos.map(name =>
+      this.appTechnoSerice.saveNewTechno(name),
+    );
+    appSaved.appTechnos = await Promise.all(technoPromises);
+
     appSaved = await this.flowAppRepository.save(appSaved);
     await this.searchIndex.addObject({
       objectID: appSaved.id,
       name: appSaved.name,
       description: appSaved.description,
+      technos: appSaved.appTechnos.map(techno => techno.name),
     });
     return appSaved;
   }
@@ -59,11 +68,16 @@ export class FlowAppService {
     );
     appFound.name = body.name;
     appFound.description = body.description;
+    const technoPromises = body.technos.map(name =>
+      this.appTechnoSerice.saveNewTechno(name),
+    );
+    appFound.appTechnos = await Promise.all(technoPromises);
     await this.flowAppRepository.save(appFound);
     await this.searchIndex.saveObject({
-      objectId: `${appFound.id}`,
+      objectID: `${appFound.id}`,
       name: body.name,
       description: body.description,
+      technos: appFound.appTechnos.map(techno => techno.name),
     });
     return appFound;
   }

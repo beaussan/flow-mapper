@@ -13,6 +13,7 @@ export class FlowApp extends DbAuditModel {
   @Column({ length: 1000 })
   description: string;
 
+  @ApiModelProperty({ required: true })
   @ManyToMany(type => AppTechno, techno => techno.apps)
   @JoinTable()
   appTechnos: AppTechno[];
