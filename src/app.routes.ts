@@ -10,7 +10,7 @@ export const appRoutes: Routes = [
     module: AuthModule,
   },
   {
-    path: '/app-appTechnos',
+    path: '/app-technos',
     module: AppTechnoModule,
   },
   {
