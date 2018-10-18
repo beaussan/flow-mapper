@@ -10,6 +10,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { SearchModule } from './modules/core/search/search.module';
 import { AppTechnoModule } from './modules/app-techno/app-techno.module';
 import { FlowAppModule } from './modules/flow-app/flow-app.module';
+import { FlowTechnoModule } from './modules/flow-techno/flow-techno.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { FlowAppModule } from './modules/flow-app/flow-app.module';
     AppTechnoModule,
 
     FlowAppModule,
+
+    FlowTechnoModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard],
