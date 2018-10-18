@@ -3,7 +3,6 @@ import { FlowTechnoController } from './flow-techno.controller';
 import { FlowTechnoService } from './flow-techno.service';
 import Optional from 'typescript-optional';
 import { NotFoundException } from '@nestjs/common';
-import { FlowTechnoController } from '../flow-techno/flow-techno.controller';
 
 class MockService {
   getAll = jest.fn();
