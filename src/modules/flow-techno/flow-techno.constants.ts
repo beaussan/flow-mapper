@@ -1,1 +1,1 @@
-export const SEARCH_INDEX_NAME = 'flow-techno';
+export const SEARCH_INDEX_NAME = 'SEARCH_INDEX_NAME_FLOW_TECHNOS';

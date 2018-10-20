@@ -1,1 +1,1 @@
-export const SEARCH_INDEX_NAME = 'app-techno';
+export const SEARCH_INDEX_NAME = 'SEARCH_INDEX_NAME_APP_TECHNOS';
