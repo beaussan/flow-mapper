@@ -4,13 +4,14 @@ import * as FacebookTokenStrategy from 'passport-facebook-token';
 // import { FACEBOOK_CONFIG_TOKEN, USER_MODEL_TOKEN } from '../../../server.constants';
 import { FacebookConfig } from '../interfaces/facebook-config.interface';
 import { AuthService } from '../auth.service';
+import { FACEBOOK_CONFIG_TOKEN } from '../auth.constants';
 
 // const FacebookTokenStrategy = require('passport-facebook-token');
 
 @Injectable()
 export class FacebookStrategy {
   constructor(
-    // @Inject(FACEBOOK_CONFIG_TOKEN) private readonly fbConfig: FacebookConfig,
+    @Inject(FACEBOOK_CONFIG_TOKEN) private readonly fbConfig: FacebookConfig,
     private readonly authService: AuthService,
   ) {
     this.init();
@@ -21,8 +22,8 @@ export class FacebookStrategy {
       'facebook',
       new FacebookTokenStrategy(
         {
-          clientID: 'TOTO', // this.fbConfig.client_id,
-          clientSecret: 'TOTO', // this.fbConfig.client_secret
+          clientID: this.fbConfig.client_id || '',
+          clientSecret: this.fbConfig.client_secret || '',
         },
         async (
           accessToken: string,

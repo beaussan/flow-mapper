@@ -8,40 +8,24 @@ import { FacebookStrategy } from './passport/facebook.strategy';
 import { GoogleStrategy } from './passport/google-plus.strategy';
 import { bodyValidatorMiddleware } from './middlewares/auth-body-validator.middleware';
 import { authenticate } from 'passport';
-import { UserModule } from '../../user/user.module';
+import { authProviders } from './auth.providers';
 import { CryptoModule } from '../crypto/crypto.module';
-import { googleConfig } from './config/google-config';
-import {
-  FACEBOOK_CONFIG_TOKEN,
-  GOOGLE_CONFIG_TOKEN,
-  TWITTER_CONFIG_TOKEN,
-} from './auth.constants';
-import { twitterConfig } from './config/twitter-config';
-import { facebookConfig } from './config/facebook-config';
+import { UserModule } from '../../user/user.module';
 
 @Module({
   imports: [UserModule, CryptoModule],
   providers: [
+    ...authProviders,
     AuthService,
     LocalStrategy,
     JwtStrategy,
-    FacebookStrategy,
-    TwitterStrategy,
-    GoogleStrategy,
-    {
-      provide: FACEBOOK_CONFIG_TOKEN,
-      useValue: facebookConfig,
-    },
-    {
-      provide: TWITTER_CONFIG_TOKEN,
-      useValue: twitterConfig,
-    },
-    {
-      provide: GOOGLE_CONFIG_TOKEN,
-      useValue: googleConfig,
-    },
-  ],
-  controllers: [AuthController],
+    process.env.FB_AUTH_ENABLED === 'true' ? FacebookStrategy : undefined,
+    process.env.TWITTER_AUTH_ENABLED === 'true' ? TwitterStrategy : undefined,
+    process.env.GOOGLE_AUTH_ENABLED === 'true' ? GoogleStrategy : undefined,
+  ].filter(val => val !== undefined),
+  controllers: [
+    process.env.IS_AUTH_ENABLED === 'true' ? AuthController : undefined,
+  ].filter(val => val !== undefined),
 })
 export class AuthModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
@@ -59,16 +43,22 @@ export class AuthModule implements NestModule {
       )
       .forRoutes('api/auth/local/signin');
 
-    consumer
-      .apply(authenticate('facebook', { session: false }))
-      .forRoutes('api/auth/facebook/token');
+    if (process.env.FB_AUTH_ENABLED === 'true') {
+      consumer
+        .apply(authenticate('facebook', { session: false }))
+        .forRoutes('api/auth/facebook/token');
+    }
 
-    consumer
-      .apply(authenticate('twitter', { session: false }))
-      .forRoutes('api/auth/twitter/token');
+    if (process.env.TWITTER_AUTH_ENABLED === 'true') {
+      consumer
+        .apply(authenticate('twitter', { session: false }))
+        .forRoutes('api/auth/twitter/token');
+    }
 
-    consumer
-      .apply(authenticate('google', { session: false }))
-      .forRoutes('api/auth/google/token');
+    if (process.env.GOOGLE_AUTH_ENABLED === 'true') {
+      consumer
+        .apply(authenticate('google', { session: false }))
+        .forRoutes('api/auth/google/token');
+    }
   }
 }

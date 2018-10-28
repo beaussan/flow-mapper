@@ -5,12 +5,13 @@ import * as GoogleTokenStrategy from 'passport-google-plus-token';
 // import { GOOGLE_CONFIG_TOKEN, USER_MODEL_TOKEN } from '../../../server.constants';
 import { GoogleConfig } from '../interfaces/google-config.interface';
 import { AuthService } from '../auth.service';
+import { GOOGLE_CONFIG_TOKEN } from '../auth.constants';
 // import { IUser } from '../../user/interfaces/user.interface';
 
 @Injectable()
 export class GoogleStrategy {
   constructor(
-    // @Inject(GOOGLE_CONFIG_TOKEN) private readonly googleConfig: GoogleConfig,
+    @Inject(GOOGLE_CONFIG_TOKEN) private readonly googleConfig: GoogleConfig,
     private readonly authService: AuthService,
   ) {
     this.init();
@@ -21,8 +22,8 @@ export class GoogleStrategy {
       'google',
       new GoogleTokenStrategy(
         {
-          clientID: 'TOTO', // this.googleConfig.client_id,
-          clientSecret: 'TOTO', // this.googleConfig.client_secret
+          clientID: this.googleConfig.client_id || '',
+          clientSecret: this.googleConfig.client_secret || '',
         },
         async (
           accessToken: string,

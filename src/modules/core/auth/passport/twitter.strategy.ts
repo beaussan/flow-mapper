@@ -6,11 +6,12 @@ import { use } from 'passport';
 import { TwitterConfig } from '../interfaces/twitter-config.interface';
 import * as TwitterTokenStrategy from 'passport-twitter-token';
 import { AuthService } from '../auth.service';
+import { TWITTER_CONFIG_TOKEN } from '../auth.constants';
 
 @Injectable()
 export class TwitterStrategy {
   constructor(
-    // @Inject(TWITTER_CONFIG_TOKEN) private readonly twitterConfig: TwitterConfig,
+    @Inject(TWITTER_CONFIG_TOKEN) private readonly twitterConfig: TwitterConfig,
     private readonly authService: AuthService,
   ) {
     this.init();
@@ -21,8 +22,8 @@ export class TwitterStrategy {
       'twitter',
       new TwitterTokenStrategy(
         {
-          consumerKey: 'TOTO', // this.twitterConfig.consumer_key,
-          consumerSecret: 'TOTO', // this.twitterConfig.consumer_secret
+          consumerKey: this.twitterConfig.consumer_key,
+          consumerSecret: this.twitterConfig.consumer_secret,
         },
         async (
           accessToken: string,
