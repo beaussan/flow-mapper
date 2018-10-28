@@ -19,7 +19,7 @@ export class LocalStrategy {
         },
         async (email: string, password: string, done: (a, b) => void) => {
           try {
-            if (await this.authService.findOneWithEmail(email)) {
+            if ((await this.authService.findOneWithEmail(email)).isPresent) {
               return done(
                 new UnauthorizedException('MESSAGES.UNAUTHORIZED_EMAIL_IN_USE'),
                 false,
@@ -47,7 +47,7 @@ export class LocalStrategy {
           try {
             const user = await this.authService.findOneWithEmail(email);
 
-            if (!user) {
+            if (!user.isPresent) {
               return done(
                 new UnauthorizedException(
                   'MESSAGES.UNAUTHORIZED_INVALID_EMAIL',
@@ -56,7 +56,7 @@ export class LocalStrategy {
               );
             }
 
-            if (this.authService.doPasswordMatch(user, password)) {
+            if (this.authService.doPasswordMatch(user.get(), password)) {
               return done(
                 new UnauthorizedException(
                   'MESSAGES.UNAUTHORIZED_INVALID_PASSWORD',
@@ -65,7 +65,7 @@ export class LocalStrategy {
               );
             }
 
-            done(null, user);
+            done(null, user.get());
           } catch (error) {
             done(error, false);
           }

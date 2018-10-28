@@ -7,6 +7,7 @@ import { RolesGuard } from '../../../guards/roles.guard';
 import { CurrentUser } from '../../../decorators/currentUser.decorator';
 import { Token } from './interfaces/token.interface';
 import { LoggerService } from '../logger/logger.service';
+import { User } from '../../user/user.entity';
 
 @Controller()
 export class AuthController {
@@ -17,14 +18,14 @@ export class AuthController {
 
   @Post('local/signup')
   async requestJsonWebTokenAfterLocalSignUp(
-    @CurrentUser() user: any,
+    @CurrentUser() user: User,
   ): Promise<Token> {
     return await this.authService.createToken(user);
   }
 
   @Post('local/signin')
   async requestJsonWebTokenAfterLocalSignIn(
-    @CurrentUser() user: any,
+    @CurrentUser() user: User,
   ): Promise<Token> {
     return await this.authService.createToken(user);
   }
@@ -41,7 +42,7 @@ export class AuthController {
 
   @Post('facebook/token')
   async requestJsonWebTokenAfterFacebookSignIn(
-    @CurrentUser() user: any,
+    @CurrentUser() user: User,
   ): Promise<Token> {
     return await this.authService.createToken(user);
   }
@@ -61,7 +62,7 @@ export class AuthController {
 
   @Post('twitter/token')
   async requestJsonWebTokenAfterTwitterSignIn(
-    @CurrentUser() user: any,
+    @CurrentUser() user: User,
   ): Promise<Token> {
     return await this.authService.createToken(user);
   }
@@ -78,7 +79,7 @@ export class AuthController {
 
   @Post('google/token')
   async requestJsonWebTokenAfterGoogleSignIn(
-    @CurrentUser() user: any,
+    @CurrentUser() user: User,
   ): Promise<Token> {
     return await this.authService.createToken(user);
   }

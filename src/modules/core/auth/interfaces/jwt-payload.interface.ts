@@ -1,5 +1,5 @@
 export interface JwtPayload {
-  readonly sub: string;
+  readonly sub: number;
   readonly iat: number;
   readonly exp: number;
 }

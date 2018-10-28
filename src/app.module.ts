@@ -11,6 +11,7 @@ import { SearchModule } from './modules/core/search/search.module';
 import { AppTechnoModule } from './modules/app-techno/app-techno.module';
 import { FlowAppModule } from './modules/flow-app/flow-app.module';
 import { FlowTechnoModule } from './modules/flow-techno/flow-techno.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -36,6 +37,8 @@ import { FlowTechnoModule } from './modules/flow-techno/flow-techno.module';
     FlowAppModule,
 
     FlowTechnoModule,
+
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard],
