@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  MethodNotAllowedException,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
@@ -32,11 +39,17 @@ export class AuthController {
 
   @Get('facebook/uri')
   async requestFacebookRedirectUrl(): Promise<{ redirect_uri: string }> {
+    if (process.env.FB_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
+    }
     return await this.authService.requestFacebookRedirectUri();
   }
 
   @Post('facebook/signin')
   async facebookSignIn(@Req() req: Request): Promise<Token> {
+    if (process.env.FB_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
+    }
     return await this.authService.facebookSignIn(req.body.code);
   }
 
@@ -44,16 +57,25 @@ export class AuthController {
   async requestJsonWebTokenAfterFacebookSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
+    if (process.env.FB_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
+    }
     return await this.authService.createToken(user);
   }
 
   @Get('twitter/uri')
   async requestTwitterRedirectUri(): Promise<any> {
+    if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
+    }
     return await this.authService.requestTwitterRedirectUri();
   }
 
   @Post('twitter/signin')
   async twitterSignIn(@Req() req: Request): Promise<any> {
+    if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
+    }
     return await this.authService.twitterSignIn(
       req.body.oauth_token,
       req.body.oauth_verifier,
@@ -64,16 +86,25 @@ export class AuthController {
   async requestJsonWebTokenAfterTwitterSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
+    if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
+    }
     return await this.authService.createToken(user);
   }
 
   @Get('google/uri')
   async requestGoogleRedirectUri(): Promise<any> {
+    if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
+    }
     return await this.authService.requestGoogleRedirectUri();
   }
 
   @Post('google/signin')
   async googleSignIn(@Req() req: Request): Promise<any> {
+    if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
+    }
     return await this.authService.googleSignIn(req.body.code);
   }
 
@@ -81,6 +112,9 @@ export class AuthController {
   async requestJsonWebTokenAfterGoogleSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
+    if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
+    }
     return await this.authService.createToken(user);
   }
 
