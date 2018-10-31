@@ -11,11 +11,18 @@ export enum AuthType {
 
 @Entity()
 export class User extends DbAuditModel {
-  @Column({ type: 'enum' })
+  @Column({
+    type: 'enum',
+    enum: [
+      AuthType.LOCAL,
+      AuthType.GOOGLE,
+      AuthType.FACEBOOK,
+      AuthType.TWITTER,
+    ],
+  })
   authType: AuthType;
 
-  @Column({ array: true })
-  roles: string[];
+  roles: string[] = [];
 
   @Column({ nullable: true })
   localEmail: string;
