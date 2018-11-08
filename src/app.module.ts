@@ -24,6 +24,7 @@ import { UserModule } from './modules/user/user.module';
       cli: {
         migrationsDir: __dirname + '/../src/migration',
       },
+      logging: 'all',
       // logging: 'all',
     }),
     RouterModule.forRoutes(appRoutes),

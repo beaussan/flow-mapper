@@ -34,31 +34,31 @@ export class AuthModule implements NestModule {
         bodyValidatorMiddleware,
         authenticate('local-signup', { session: false }),
       )
-      .forRoutes('api/auth/local/signup');
+      .forRoutes('auth/local/register');
 
     consumer
       .apply(
         bodyValidatorMiddleware,
         authenticate('local-signin', { session: false }),
       )
-      .forRoutes('api/auth/local/signin');
+      .forRoutes('auth/local/login');
 
     if (process.env.FB_AUTH_ENABLED === 'true') {
       consumer
         .apply(authenticate('facebook', { session: false }))
-        .forRoutes('api/auth/facebook/token');
+        .forRoutes('auth/facebook/token');
     }
 
     if (process.env.TWITTER_AUTH_ENABLED === 'true') {
       consumer
         .apply(authenticate('twitter', { session: false }))
-        .forRoutes('api/auth/twitter/token');
+        .forRoutes('auth/twitter/token');
     }
 
     if (process.env.GOOGLE_AUTH_ENABLED === 'true') {
       consumer
         .apply(authenticate('google', { session: false }))
-        .forRoutes('api/auth/google/token');
+        .forRoutes('auth/google/token');
     }
   }
 }

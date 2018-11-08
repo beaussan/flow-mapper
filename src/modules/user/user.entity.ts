@@ -1,6 +1,8 @@
 import { DbAuditModel } from '../../utils/dbmodel.model';
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { Role } from './role.entity';
+import { Exclude } from 'class-transformer';
 
 export enum AuthType {
   LOCAL,
@@ -22,15 +24,15 @@ export class User extends DbAuditModel {
   })
   authType: AuthType;
 
-  roles: string[] = [];
-
   @Column({ nullable: true })
   localEmail: string;
 
   @Column({ nullable: true })
+  @Exclude()
   localPassword: string;
 
   @Column({ nullable: true })
+  @Exclude()
   googleId: string;
 
   @Column({ nullable: true })
@@ -40,12 +42,14 @@ export class User extends DbAuditModel {
   googleDisplayName: string;
 
   @Column({ nullable: true })
+  @Exclude()
   facebookId: string;
 
   @Column({ nullable: true })
   facebookEmail: string;
 
   @Column({ nullable: true })
+  @Exclude()
   twitterId: string;
 
   @Column({ nullable: true })
@@ -53,4 +57,11 @@ export class User extends DbAuditModel {
 
   @Column({ nullable: true })
   twitterDisplayName: string;
+
+  @ManyToMany(type => Role, role => role.user, { nullable: true })
+  @JoinTable()
+  roles: Role[];
+
+  @Column({ default: false })
+  isSuperUser: boolean;
 }

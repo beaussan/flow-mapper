@@ -56,7 +56,7 @@ export class LocalStrategy {
               );
             }
 
-            if (this.authService.doPasswordMatch(user.get(), password)) {
+            if (!this.authService.doPasswordMatch(user.get(), password)) {
               return done(
                 new UnauthorizedException(
                   'MESSAGES.UNAUTHORIZED_INVALID_PASSWORD',

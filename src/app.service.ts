@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { AppConfigDto } from './app.config.dto';
 
 @Injectable()
 export class AppService {
-  root(): string {
-    return 'Hello World!';
+  getConfig(): AppConfigDto {
+    return {
+      isAuthEnabled: process.env.IS_AUTH_ENABLED === 'true',
+      isFacebookAuthEnabled: process.env.FB_AUTH_ENABLED === 'true',
+      isGoogleAuthEnabled: process.env.GOOGLE_AUTH_ENABLED === 'true',
+      isTwitterAuthEnabled: process.env.TWITTER_AUTH_ENABLED === 'true',
+    };
   }
 }

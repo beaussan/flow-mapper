@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Token } from './interfaces/token.interface';
 import { UserService } from '../../user/user.service';
 import { CryptoService } from '../crypto/crypto.service';
@@ -14,14 +14,16 @@ import { FacebookConfig } from './interfaces/facebook-config.interface';
 import { TwitterConfig } from './interfaces/twitter-config.interface';
 import { GoogleConfig } from './interfaces/google-config.interface';
 import { get, post, Response } from 'request';
+import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
   private url: string;
 
   constructor(
     private readonly userService: UserService,
     private readonly crypto: CryptoService,
+    private readonly logger: LoggerService,
     @Inject(FACEBOOK_CONFIG_TOKEN) private readonly fbConfig: FacebookConfig,
     @Inject(TWITTER_CONFIG_TOKEN) private readonly twitterConfig: TwitterConfig,
     @Inject(GOOGLE_CONFIG_TOKEN) private readonly googleConfig: GoogleConfig,
@@ -29,6 +31,14 @@ export class AuthService {
     this.url = `${process.env.API_PROTOCOL}://${process.env.API_HOST}:${
       process.env.API_PORT
     }`;
+  }
+
+  async onModuleInit(): Promise<void> {
+    if ((await this.userService.getNumberUserRegistredWithLocalAuth()) === 0) {
+      const user = await this.registerUser('admin@localhost.fr', 'ADMIN');
+      await this.userService.setUserAsAdmin(user);
+      this.logger.info('Creating default admin user');
+    }
   }
 
   createToken(user: User): Token {
@@ -295,7 +305,7 @@ export class AuthService {
     user.authType = AuthType.FACEBOOK;
     user.facebookEmail = email;
     user.facebookId = id;
-    return this.userService.saveOne(user);
+    return this.userService.registerOne(user);
   }
 
   findOneWithGoogleId(id: string): Promise<Optional<User>> {
@@ -308,7 +318,7 @@ export class AuthService {
     user.googleEmail = email;
     user.googleId = id;
     user.googleDisplayName = displayName;
-    return this.userService.saveOne(user);
+    return this.userService.registerOne(user);
   }
 
   findOneWithTwitterId(id: string): Promise<Optional<User>> {
@@ -321,7 +331,7 @@ export class AuthService {
     user.twitterId = id;
     user.twitterUsername = username;
     user.twitterDisplayName = displayName;
-    return this.userService.saveOne(user);
+    return this.userService.registerOne(user);
   }
 
   async registerUser(email: string, password: string): Promise<User> {
@@ -329,7 +339,7 @@ export class AuthService {
     user.authType = AuthType.LOCAL;
     user.localPassword = await this.crypto.hash(password);
     user.localEmail = email;
-    return this.userService.saveOne(user);
+    return this.userService.registerOne(user);
   }
 
   doPasswordMatch(user: User, password: string): Promise<boolean> {

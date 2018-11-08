@@ -43,6 +43,7 @@ async function bootstrap() {
     .setTitle('Boilerplate nest')
     .setDescription('The boilerplate API description')
     .setVersion('0.0.1')
+    .addBearerAuth('Bearer', 'header')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);

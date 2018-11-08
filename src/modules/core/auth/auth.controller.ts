@@ -15,7 +15,16 @@ import { CurrentUser } from '../../../decorators/currentUser.decorator';
 import { Token } from './interfaces/token.interface';
 import { LoggerService } from '../logger/logger.service';
 import { User } from '../../user/user.entity';
+import {
+  ApiResponse,
+  ApiUseTags,
+  ApiImplicitBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { LocalAuthInterface } from './interfaces/local-auth.interface';
+import { ROLES } from '../../user/role.constants';
 
+@ApiUseTags('Auth')
 @Controller()
 export class AuthController {
   constructor(
@@ -23,14 +32,19 @@ export class AuthController {
     private readonly loggerService: LoggerService,
   ) {}
 
-  @Post('local/signup')
+  @Post('local/login')
+  @Roles(ROLES.ROLE_USER)
+  @ApiResponse({ status: 200, description: 'Local sign up successful' })
+  @ApiImplicitBody({ type: LocalAuthInterface, required: true, name: 'login' })
   async requestJsonWebTokenAfterLocalSignUp(
     @CurrentUser() user: User,
   ): Promise<Token> {
     return await this.authService.createToken(user);
   }
 
-  @Post('local/signin')
+  @Post('local/register')
+  @ApiResponse({ status: 200, description: 'Local sign in successful' })
+  @ApiImplicitBody({ type: LocalAuthInterface, required: true, name: 'login' })
   async requestJsonWebTokenAfterLocalSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
@@ -38,6 +52,7 @@ export class AuthController {
   }
 
   @Get('facebook/uri')
+  @ApiResponse({ status: 200, description: 'the facebook redirect uri' })
   async requestFacebookRedirectUrl(): Promise<{ redirect_uri: string }> {
     if (process.env.FB_AUTH_ENABLED !== 'true') {
       throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
@@ -54,6 +69,7 @@ export class AuthController {
   }
 
   @Post('facebook/token')
+  @ApiResponse({ status: 200, description: 'the jwt auth token' })
   async requestJsonWebTokenAfterFacebookSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
@@ -64,6 +80,7 @@ export class AuthController {
   }
 
   @Get('twitter/uri')
+  @ApiResponse({ status: 200, description: 'the twitter redirect uri' })
   async requestTwitterRedirectUri(): Promise<any> {
     if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
       throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
@@ -83,6 +100,7 @@ export class AuthController {
   }
 
   @Post('twitter/token')
+  @ApiResponse({ status: 200, description: 'the jwt auth token' })
   async requestJsonWebTokenAfterTwitterSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
@@ -93,6 +111,7 @@ export class AuthController {
   }
 
   @Get('google/uri')
+  @ApiResponse({ status: 200, description: 'the google redirect uri' })
   async requestGoogleRedirectUri(): Promise<any> {
     if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
       throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
@@ -109,6 +128,7 @@ export class AuthController {
   }
 
   @Post('google/token')
+  @ApiResponse({ status: 200, description: 'the jwt auth token' })
   async requestJsonWebTokenAfterGoogleSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
@@ -118,10 +138,14 @@ export class AuthController {
     return await this.authService.createToken(user);
   }
 
+  // TODO : GLOBAL GUARD THAT DO JWT AND ANONYMOUS PASSPORT
   @Get('authorized')
-  @Roles('user')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  public async authorized() {
+  @Roles(ROLES.ROLE_USER)
+  @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ status: 200, description: '' })
+  @ApiBearerAuth()
+  public authorized(@CurrentUser() user: User): User {
     this.loggerService.log('Authorized route...');
+    return user;
   }
 }
