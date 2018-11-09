@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"src/**/*{.ts,.scss,.html}\"",
-    "format:check": "prettier --list-different \"src/**/*.{.ts,.scss,.html}\"",
+    "format:check": "prettier --list-different \"src/**/*{.ts,.scss,.html}\"",
     "start:server": "ts-node -r tsconfig-paths/register src/main.ts",
     "server:watch": "nodemon",
     "preserver:start:prod": "rimraf dist && tsc -p ./src/server/tsconfig.server.json",

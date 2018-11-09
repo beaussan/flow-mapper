@@ -1,5 +1,5 @@
 {
-  "extends": "../fury_theme/Angular7/skel/tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "module": "commonjs",
