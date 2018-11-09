@@ -1,31 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatIconModule, MatMenuModule, MatToolbarModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatMenuModule,
+  MatToolbarModule,
+} from '@angular/material';
 
-import { FuseSearchBarModule, FuseShortcutsModule } from '../../../../@fuse/components/index';
+import {
+  FuseSearchBarModule,
+  FuseShortcutsModule,
+} from '../../../../@fuse/components/index';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.component';
 
 @NgModule({
-    declarations: [
-        ToolbarComponent
-    ],
-    imports     : [
-        RouterModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatToolbarModule,
+  declarations: [ToolbarComponent],
+  imports: [
+    RouterModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatToolbarModule,
 
-        FuseSharedModule,
-        FuseSearchBarModule,
-        FuseShortcutsModule
-    ],
-    exports     : [
-        ToolbarComponent
-    ]
+    FuseSharedModule,
+    FuseSearchBarModule,
+    FuseShortcutsModule,
+  ],
+  exports: [ToolbarComponent],
 })
-export class ToolbarModule
-{
-}
+export class ToolbarModule {}

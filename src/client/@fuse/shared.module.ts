@@ -8,27 +8,25 @@ import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
 
 @NgModule({
-    imports  : [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
 
-        FlexLayoutModule,
+    FlexLayoutModule,
 
-        FuseDirectivesModule,
-        FusePipesModule
-    ],
-    exports  : [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
+    FuseDirectivesModule,
+    FusePipesModule,
+  ],
+  exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
 
-        FlexLayoutModule,
+    FlexLayoutModule,
 
-        FuseDirectivesModule,
-        FusePipesModule
-    ]
+    FuseDirectivesModule,
+    FusePipesModule,
+  ],
 })
-export class FuseSharedModule
-{
-}
+export class FuseSharedModule {}

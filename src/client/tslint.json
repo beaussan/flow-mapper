@@ -6,7 +6,8 @@
             "attribute",
             [
                 "fuse",
-                "fl"
+                "fl",
+                ""
             ],
             "camelCase"
         ],
@@ -15,7 +16,8 @@
             "element",
             [
                 "fuse",
-                "fl"
+                "fl",
+                ""
             ],
             [
                 "kebab-case",
