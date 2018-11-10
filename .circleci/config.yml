@@ -104,6 +104,36 @@ jobs:
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn server:e2e
+  back-build:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn server:build
+      - run:
+          name: Copy deployment artifacts to workspace
+          command: |
+            cp server-dist/ /tmp/back -r
+      - store_artifacts:
+          path: /tmp/front
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - front
+  back-deploy:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/deploy
+    steps:
+      # why rebuild something we already tested, rebuilding invalidates any previous confidence?!
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: TODO
+          command: echo "TODO"
 
 workflows:
   version: 2
@@ -127,8 +157,22 @@ workflows:
             - build
             - lint
             - front-test-unit
+      - back-build:
+          requires:
+            - build
+            - lint
+            - back-test-e2e
+            - back-test-unit
       - front-deploy:
           requires:
+            - back-build
+            - front-build
+          filters:
+            branches:
+              only: master
+      - back-deploy:
+          requires:
+            - back-build
             - front-build
           filters:
             branches:

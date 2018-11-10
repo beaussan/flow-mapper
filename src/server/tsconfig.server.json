@@ -12,11 +12,11 @@
     "sourceMap": true,
     "allowJs": true,
     "lib": ["es2017", "dom"],
-    "outDir": "./dist",
+    "outDir": "../../server-dist",
     "baseUrl": "./src/server"
   },
   "typeRoots": ["../node_modules/@types"],
-  "include": ["../src/**/*.ts"],
+  "include": ["../server/**/*.ts"],
   "exclude": [
     "node_modules",
     "test.ts",
