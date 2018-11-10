@@ -19,7 +19,7 @@ class FakeFlowTechnoRepository {
 class FakeSearchRepo {
   public current: FakeSearchIndex;
 
-  public initIndex(str: string) {
+  public initIndex(str: string): FakeSearchIndex {
     this.current = new FakeSearchIndex();
     return this.current;
   }

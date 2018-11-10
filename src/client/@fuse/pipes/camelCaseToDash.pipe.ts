@@ -5,9 +5,9 @@ export class CamelCaseToDashPipe implements PipeTransform {
   /**
    * Transform
    *
-   * @param {string} value
-   * @param {any[]} args
-   * @returns {string}
+   * @param value input
+   * @param args args, ignored here
+   * @returns the camel case dashed string
    */
   transform(value: string, args: any[] = []): string {
     return value

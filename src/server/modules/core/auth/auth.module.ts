@@ -28,7 +28,7 @@ import { UserModule } from '../../user/user.module';
   ].filter(val => val !== undefined),
 })
 export class AuthModule implements NestModule {
-  public configure(consumer: MiddlewareConsumer) {
+  public configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(
         bodyValidatorMiddleware,

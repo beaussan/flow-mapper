@@ -11,7 +11,7 @@ import { LoggerService } from './modules/core/logger/logger.service';
 import { RolesGuard } from './guards/roles.guard';
 import { TransformInterceptor } from './interceptors/transform.interceptor';
 
-async function bootstrap() {
+async function bootstrap(): any {
   const app = await NestFactory.create(AppModule);
 
   // Set logger

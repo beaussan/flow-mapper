@@ -56,7 +56,9 @@ export const validateSync = <T>(validation: ClassType<T>, value: object): T => {
     skipMissingProperties: true,
     whitelist: true,
   });
-  if (errors.length > 0) throw new ValidationException(errors);
+  if (errors.length > 0) {
+    throw new ValidationException(errors);
+  }
 
   return entity;
 };

@@ -35,10 +35,6 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
 
   /**
    * Constructor
-   *
-   * @param {ChangeDetectorRef} _changeDetectorRef
-   * @param {FuseNavigationService} _fuseNavigationService
-   * @param {Router} _router
    */
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
@@ -134,7 +130,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
   /**
    * Toggle collapse
    *
-   * @param ev
+   * @param ev event
    */
   toggleOpen(ev): void {
     ev.preventDefault();
@@ -182,9 +178,9 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
    * Check if the given parent has the
    * given item in one of its children
    *
-   * @param parent
-   * @param item
-   * @returns {boolean}
+   * @param parent the parent element
+   * @param item te item in the collapse
+   * @returns if the item is children of
    */
   isChildrenOf(parent, item): boolean {
     if (!parent.children) {
@@ -206,26 +202,23 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
    * Check if the given url can be found
    * in one of the given parent's children
    *
-   * @param parent
-   * @param url
-   * @returns {boolean}
+   * @param parent the parent element
+   * @param url the url to find
+   * @returns if the url is in children
    */
   isUrlInChildren(parent, url): boolean {
     if (!parent.children) {
       return false;
     }
 
-    for (let i = 0; i < parent.children.length; i++) {
-      if (parent.children[i].children) {
-        if (this.isUrlInChildren(parent.children[i], url)) {
+    for (const child of parent.children) {
+      if (child.children) {
+        if (this.isUrlInChildren(child, url)) {
           return true;
         }
       }
 
-      if (
-        parent.children[i].url === url ||
-        url.includes(parent.children[i].url)
-      ) {
+      if (child.url === url || url.includes(child.url)) {
         return true;
       }
     }

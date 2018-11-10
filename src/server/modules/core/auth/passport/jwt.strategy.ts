@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(payload: JwtPayload, done: (a, b) => void) {
+  public async validate(payload: JwtPayload, done: (a, b) => void): any {
     if (process.env.IS_AUTH_ENABLED !== 'true') {
       done(null, true);
       return;

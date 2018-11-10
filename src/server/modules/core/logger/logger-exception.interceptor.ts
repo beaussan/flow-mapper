@@ -22,12 +22,13 @@ export class LoggerExceptionInterceptor implements NestInterceptor {
       catchError(exception => {
         if (exception instanceof HttpException) {
           // If 500, log as error
-          if (500 <= exception.getStatus())
+          if (500 <= exception.getStatus()) {
             this.loggerService.error(
               'HttpException ' + exception.getStatus(),
               request.path,
               exception.getResponse(),
             );
+          }
           // Else log as debug (we don't want 4xx errors in production)
           else {
             this.loggerService.debug(

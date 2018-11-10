@@ -10,9 +10,11 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseMatchMediaService } from '@fuse/services/match-media.service';
 
+/*tslint:disable:directive-selector */
 @Directive({
   selector: '.inner-scroll',
 })
+/*tslint:enable:directive-selector  */
 export class FuseInnerScrollDirective implements OnInit, OnDestroy {
   // Private
   private _parent: any;

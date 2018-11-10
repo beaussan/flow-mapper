@@ -29,15 +29,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /**
    * Constructor
-   *
-   * @param {DOCUMENT} document
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {FuseNavigationService} _fuseNavigationService
-   * @param {FuseSidebarService} _fuseSidebarService
-   * @param {FuseSplashScreenService} _fuseSplashScreenService
-   * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-   * @param {Platform} _platform
-   * @param {TranslateService} _translateService
    */
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -79,7 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * ----------------------------------------------------------------------------------------------------
      */
 
-    /**
+    /*
      * If you are using a language other than the default one, i.e. Turkish in this case,
      * you may encounter an issue where some of the components are not actually being
      * translated when your app first initialized.
@@ -87,18 +78,19 @@ export class AppComponent implements OnInit, OnDestroy {
      * This is related to ngxTranslate module and below there is a temporary fix while we
      * are moving the multi language implementation over to the Angular's core language
      * service.
-     **/
+     *
+     */
 
     // Set the default language to 'en' and then back to 'tr'.
     // '.use' cannot be used here as ngxTranslate won't switch to a language that's already
     // been selected and there is no way to force it, so we overcome the issue by switching
     // the default language back and forth.
-    /**
+    /*
          setTimeout(() => {
-            this._translateService.setDefaultLang('en');
-            this._translateService.setDefaultLang('tr');
-         });
-         */
+           this._translateService.setDefaultLang('en');
+           this._translateService.setDefaultLang('tr');
+        });
+     */
 
     /**
      * ----------------------------------------------------------------------------------------------------
@@ -137,6 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         // Color theme - Use normal for loop for IE11 compatibility
+        /* tslint:disable */
         for (let i = 0; i < this.document.body.classList.length; i++) {
           const className = this.document.body.classList[i];
 
@@ -144,6 +137,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.document.body.classList.remove(className);
           }
         }
+        /* tslint:enable */
 
         this.document.body.classList.add(this.fuseConfig.colorTheme);
       });
@@ -165,7 +159,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * Toggle sidebar open
    *
-   * @param key
+   * @param key the key of the sidebar
    */
   toggleSidebarOpen(key): void {
     this._fuseSidebarService.getSidebar(key).toggleOpen();

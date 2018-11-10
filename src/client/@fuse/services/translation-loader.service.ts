@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 export interface Locale {
   lang: string;
-  data: Object;
+  data: object;
 }
 
 @Injectable({

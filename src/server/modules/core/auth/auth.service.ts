@@ -42,7 +42,7 @@ export class AuthService implements OnModuleInit {
   }
 
   createToken(user: User): Token {
-    const expiresIn: string = '48h';
+    const expiresIn = '48h';
     const token: string = sign(
       {
         sub: user.id,
@@ -57,15 +57,15 @@ export class AuthService implements OnModuleInit {
     };
   }
 
-  requestFacebookRedirectUri() {
+  requestFacebookRedirectUri(): { redirect_uri: string } {
     const queryParams: string[] = [
       `client_id=${this.fbConfig.client_id}`,
       `redirect_uri=${this.fbConfig.oauth_redirect_uri}`,
       `state=${this.fbConfig.state}`,
     ];
-    const redirect_uri: string = `${
-      this.fbConfig.login_dialog_uri
-    }?${queryParams.join('&')}`;
+    const redirect_uri = `${this.fbConfig.login_dialog_uri}?${queryParams.join(
+      '&',
+    )}`;
 
     return {
       redirect_uri,
@@ -79,9 +79,7 @@ export class AuthService implements OnModuleInit {
       `client_secret=${this.fbConfig.client_secret}`,
       `code=${code}`,
     ];
-    const uri: string = `${this.fbConfig.access_token_uri}?${queryParams.join(
-      '&',
-    )}`;
+    const uri = `${this.fbConfig.access_token_uri}?${queryParams.join('&')}`;
 
     return new Promise(
       (resolve: (data: any) => void, reject: (data: any) => void) => {
@@ -123,7 +121,7 @@ export class AuthService implements OnModuleInit {
     );
   }
 
-  requestTwitterRedirectUri() {
+  requestTwitterRedirectUri(): Promise<{ redirect_uri: string }> {
     return new Promise(
       (resolve: (data: any) => void, reject: (data: any) => void) => {
         post(
@@ -145,7 +143,7 @@ export class AuthService implements OnModuleInit {
             }
 
             const { oauth_token } = this.parseTwitterResponse(body);
-            const redirect_uri: string = `${
+            const redirect_uri = `${
               this.twitterConfig.login_dialog_uri
             }?oauth_token=${oauth_token}`;
 
@@ -158,7 +156,7 @@ export class AuthService implements OnModuleInit {
     );
   }
 
-  twitterSignIn(oauth_token_request: any, oauth_verifier: any) {
+  twitterSignIn(oauth_token_request: any, oauth_verifier: any): Promise<any> {
     return new Promise(
       (resolve: (data: any) => void, reject: (data: any) => void) => {
         post(
@@ -223,7 +221,7 @@ export class AuthService implements OnModuleInit {
       `response_type=${this.googleConfig.response_type}`,
       `scope=${this.googleConfig.scopes.join(' ')}`,
     ];
-    const redirect_uri: string = `${
+    const redirect_uri = `${
       this.googleConfig.login_dialog_uri
     }?${queryParams.join('&')}`;
 
@@ -300,7 +298,7 @@ export class AuthService implements OnModuleInit {
     return this.userService.findOneWithWithFacebookId(id);
   }
 
-  registerFacebookUser(email: string, id: string) {
+  registerFacebookUser(email: string, id: string): Promise<User> {
     const user = new User();
     user.authType = AuthType.FACEBOOK;
     user.facebookEmail = email;
@@ -312,7 +310,11 @@ export class AuthService implements OnModuleInit {
     return this.userService.findOneWithWithGoogleId(id);
   }
 
-  registerGoogle(email: string, id: string, displayName: string) {
+  registerGoogle(
+    email: string,
+    id: string,
+    displayName: string,
+  ): Promise<User> {
     const user = new User();
     user.authType = AuthType.GOOGLE;
     user.googleEmail = email;
@@ -325,7 +327,11 @@ export class AuthService implements OnModuleInit {
     return this.userService.findOneWithWithTwitterId(id);
   }
 
-  registerTwitter(id: string, username: string, displayName: string) {
+  registerTwitter(
+    id: string,
+    username: string,
+    displayName: string,
+  ): Promise<User> {
     const user = new User();
     user.authType = AuthType.TWITTER;
     user.twitterId = id;
