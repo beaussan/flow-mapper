@@ -103,7 +103,7 @@ jobs:
       - checkout
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn server:test:e2e
+      - run: yarn server:e2e
 
 workflows:
   version: 2
