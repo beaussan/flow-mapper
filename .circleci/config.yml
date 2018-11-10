@@ -45,23 +45,23 @@ jobs:
       - run: yarn add codecov && yarn codecov
   front-build:
     docker:
-      - image: circleci/node:8.11
-      working_directory: ~/repo
-      steps:
-      - checkout
-      - restore_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn client:build:prod
-      - run:
-          name: Copy deployment artifacts to workspace
-          command: |
-            cp dist/ /tmp/front -r
-      - store_artifacts:
-          path: /tmp/front
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-          - front
+    - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+    - checkout
+    - restore_cache:
+        key: v1-dependencies-{{ checksum "package.json" }}
+    - run: yarn client:build:prod
+    - run:
+        name: Copy deployment artifacts to workspace
+        command: |
+          cp dist/ /tmp/front -r
+    - store_artifacts:
+        path: /tmp/front
+    - persist_to_workspace:
+        root: /tmp
+        paths:
+        - front
   front-deploy:
     docker:
     - image: circleci/node:8.11
@@ -69,6 +69,12 @@ jobs:
     # why rebuild something we already tested, rebuilding invalidates any previous confidence?!
     - attach_workspace:
         at: /tmp
+    - run:
+        name: Install netlify-cli
+        command: yarn global add netlify-cli
+    - run:
+        name: Deploy app
+        command: netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE
 
 
   ##########################################################################
@@ -98,13 +104,6 @@ jobs:
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn server:test:e2e
-      - run:
-          name: Install netlify-cli
-          command: yarn global add netlify-cli
-      - run:
-          name: Deploy app
-          command: netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE
-
 
 workflows:
   version: 2
