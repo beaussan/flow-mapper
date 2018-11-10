@@ -72,7 +72,7 @@ jobs:
           at: /tmp
       - run:
           name: Deploy app
-          command: yarn add netlify-cli && netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE -p
+          command: yarn add netlify-cli && yarn netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE -p
 
   ##########################################################################
   #  BACK SPECIFIC
