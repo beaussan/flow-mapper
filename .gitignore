@@ -8,6 +8,7 @@
 jsconfig.json
 
 .netlify/
+server-dist/
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
