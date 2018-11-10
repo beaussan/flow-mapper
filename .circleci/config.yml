@@ -1,21 +1,24 @@
 version: 2
 jobs:
+  ##########################################################################
+  #  SHARED STEPS
+  ##########################################################################
   build:
     docker:
-    - image: circleci/node:8.11
+      - image: circleci/node:8.11
     working_directory: ~/repo
     steps:
-    - checkout
-    - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "package.json" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
-    - run: yarn install
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
   lint:
     docker:
       - image: circleci/node:8.11
@@ -26,6 +29,10 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn lint
       - run: yarn format:check
+
+  ##########################################################################
+  #  BACK SPECIFIC
+  ##########################################################################
   test-back-unit:
     docker:
       - image: circleci/node:8.11
@@ -55,13 +62,13 @@ workflows:
   version: 2
   build-test-and-lint:
     jobs:
-    - build
-    - test-back:
-        requires:
-        - build
-    - test-back-e2e:
-        requires:
-        - build
-    - lint:
-        requires:
-        - build
+      - build
+      - test-back-unit:
+          requires:
+            - build
+      - test-back-e2e:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
