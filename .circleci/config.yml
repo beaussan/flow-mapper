@@ -31,9 +31,9 @@ jobs:
       - run: yarn format:check
 
   ##########################################################################
-  #  BACK SPECIFIC
+  #  FRONT SPECIFIC
   ##########################################################################
-  test-back-unit:
+  front-test-unit:
     docker:
       - image: circleci/node:8.11
     working_directory: ~/repo
@@ -41,9 +41,50 @@ jobs:
       - checkout
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn server:test:cov
+      - run: yarn client:test:ci
       - run: yarn add codecov && yarn codecov
-  test-back-e2e:
+  front-build:
+    docker:
+      - image: circleci/node:8.11
+      working_directory: ~/repo
+      steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn client:build:prod
+      - run:
+          name: Copy deployment artifacts to workspace
+          command: |
+            cp dist/ /tmp/front -r
+      - store_artifacts:
+          path: /tmp/front
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+          - front
+  front-deploy:
+    docker:
+    - image: circleci/node:8.11
+    working_directory: ~/deploy
+    # why rebuild something we already tested, rebuilding invalidates any previous confidence?!
+    - attach_workspace:
+        at: /tmp
+
+
+  ##########################################################################
+  #  BACK SPECIFIC
+  ##########################################################################
+  back-test-unit:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn server:test:ci
+      - run: yarn add codecov && yarn codecov
+  back-test-e2e:
     docker:
       - image: circleci/node:8.11
       - image: circleci/postgres:9.6.5
@@ -57,18 +98,39 @@ jobs:
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn server:test:e2e
+      - run:
+          name: Install netlify-cli
+          command: yarn global add netlify-cli
+      - run:
+          name: Deploy app
+          command: netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE
+
 
 workflows:
   version: 2
   build-test-and-lint:
     jobs:
       - build
-      - test-back-unit:
+      - back-test-unit:
           requires:
             - build
-      - test-back-e2e:
+      - back-test-e2e:
           requires:
             - build
       - lint:
           requires:
             - build
+      - front-test-unit:
+          requires:
+            - build
+      - front-build:
+          requires:
+            - build
+            - lint
+            - front-test-unit
+      - front-deploy:
+          requires:
+            - front-build
+          filters:
+            branches:
+              only: master
