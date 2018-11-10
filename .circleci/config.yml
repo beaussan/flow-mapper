@@ -71,11 +71,8 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run:
-          name: Install netlify-cli
-          command: yarn global add netlify-cli
-      - run:
           name: Deploy app
-          command: netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE
+          command: yarn add netlify-cli && netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE -p
 
   ##########################################################################
   #  BACK SPECIFIC
