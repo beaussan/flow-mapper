@@ -7,9 +7,13 @@ services:
     ports:
       - 8090:80
     depends_on:
-      - flow-nestjs-server
+      - proxy-traefik
     networks:
       - intra
+      - web
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: Host:app.flow.docker.localhost
 
   flow-nestjs-server:
     build:
@@ -29,8 +33,13 @@ services:
       - 3030:3030
     depends_on:
       - flow-postgresql
+      - proxy-traefik
     networks:
       - intra
+      - web
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: Host:api.flow.docker.localhost
 
   flow-postgresql:
     image: postgres:9.6.5
@@ -43,5 +52,29 @@ services:
       - 5432:5432
     networks:
       - intra
+    labels:
+      traefik.enable: false
 
-networks: intra:
+  proxy-traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+    networks:
+      - web
+      - intra
+    labels:
+      traefik.enable: true
+      traefik.backend: traefik
+      traefik.frontend.rule: Host:traefik.docker.localhost
+      traefik.port: 8080
+
+networks:
+  intra:
+  web:
+    external: true
