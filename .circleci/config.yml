@@ -118,11 +118,11 @@ jobs:
           command: |
             cp server-dist/ /tmp/back -r
       - store_artifacts:
-          path: /tmp/front
+          path: /tmp/back
       - persist_to_workspace:
           root: /tmp
           paths:
-            - front
+            - back
   back-deploy:
     docker:
       - image: circleci/node:8.11
