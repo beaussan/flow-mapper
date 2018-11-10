@@ -1,12 +1,11 @@
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src/server',
-  testRegex: '.spec.ts$',
+  rootDir: 'server_e2e',
+  testEnvironment: 'node',
+  testRegex: '.e2e-spec.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  coverageDirectory: '../../coverage',
-  testEnvironment: 'node',
   globals: {
     'ts-jest': {
       tsConfig: 'src/server/tsconfig.server.json',

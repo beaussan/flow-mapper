@@ -26,7 +26,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn lint
       - run: yarn format:check
-  test-back:
+  test-back-unit:
     docker:
       - image: circleci/node:8.11
     working_directory: ~/repo
@@ -36,6 +36,20 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn server:test:cov
       - run: yarn add codecov && yarn codecov
+  test-back-e2e:
+    docker:
+      - image: circleci/node:8.11
+      - image: circleci/postgres:9.6.5
+        environment:
+          POSTGRES_DB: psqluer
+          POSTGRES_USER: psqluer
+          POSTGRES_PASSWORD: psqlpassword
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn server:test:e2e
 
 workflows:
   version: 2
@@ -43,6 +57,9 @@ workflows:
     jobs:
     - build
     - test-back:
+        requires:
+        - build
+    - test-back-e2e:
         requires:
         - build
     - lint:
