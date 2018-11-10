@@ -1,0 +1,47 @@
+version: '3'
+services:
+  flow-angular-app:
+    build:
+      context: ../.
+      dockerfile: Dockerfile-front
+    ports:
+      - 8090:80
+    depends_on:
+      - flow-nestjs-server
+    networks:
+      - intra
+
+  flow-nestjs-server:
+    build:
+      context: ../.
+      dockerfile: Dockerfile-server
+    environment:
+      - IS_AUTH_ENABLED=false
+      - API_PORT=3030
+      - API_HOST=localhost
+      - APP_URL=
+      - LOG_LEVEL=info
+      - DATABASE_URL=postgres://flow:mappingpasswd@flow-postgresql:5432/flow
+      - JWT_SECRET=bananana
+      - SEARCH_APP_ID=496059cce2d38473054c41a97b1fb4f7
+      - SEARCH_APP_ADMIN_KEY=07891af69c2c4ac9db4f4b85b5d887d0
+    ports:
+      - 3030:3030
+    depends_on:
+      - flow-postgresql
+    networks:
+      - intra
+
+  flow-postgresql:
+    image: postgres:9.6.5
+    # volumes:
+    #     - ~/volumes/flow/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=flow
+      - POSTGRES_PASSWORD=mappingpasswd
+    ports:
+      - 5432:5432
+    networks:
+      - intra
+
+networks: intra:
