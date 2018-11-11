@@ -27,7 +27,7 @@ services:
       - LOG_LEVEL=info
       - DATABASE_URL=postgres://flow:mappingpasswd@flow-postgresql:5432/flow
       - JWT_SECRET=bananana
-      - SEARCH_APP_ID=496059cce2d38473054c41a97b1fb4f7
+      - SEARCH_APP_ID=JVZSIZ0C3W
       - SEARCH_APP_ADMIN_KEY=07891af69c2c4ac9db4f4b85b5d887d0
     ports:
       - 3030:3030
