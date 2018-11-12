@@ -1,0 +1,56 @@
+debug = false
+
+logLevel = "ERROR"
+
+[retry]
+
+# Enable Docker Provider.
+[docker]
+
+# Default base domain used for the frontend rules.
+# Can be overridden by setting the "traefik.domain" label on a services.
+domain = "docker.localhost"
+
+# Enable watch docker changes.
+watch = true
+
+# Expose services by default in Traefik.
+exposedByDefault = false
+
+# Metrics definition
+[metrics]
+
+  # To enable Traefik to export internal metrics to Prometheus
+  [metrics.prometheus]
+
+    # Name of the related entry point
+    entryPoint = "traefik"
+
+    # Buckets for latency metrics
+    buckets = [0.1,0.3,1.2,5.0]
+
+[api]
+  # Enable Dashboard
+  dashboard = true
+
+### ENABLE THIS TO ENABLE HTTPS LET'S ENCRYPT
+#defaultEntryPoints = ["https","http"]
+#
+#[entryPoints]
+#  [entryPoints.http]
+#  address = ":80"
+#    [entryPoints.http.redirect]
+#    entryPoint = "https"
+#  [entryPoints.https]
+#  address = ":443"
+#  [entryPoints.https.tls]
+
+
+#[acme]
+#email = "nic.beaussart@gmail.com"
+#storage = "acme.json"
+#entryPoint = "https"
+#onHostRule = true
+
+#[acme.httpChallenge]
+#entryPoint = "http"
