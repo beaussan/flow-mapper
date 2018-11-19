@@ -84,7 +84,7 @@ jobs:
       - checkout
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn client:doc:prod
+      - run: yarn client:doc:build
       - run:
           name: Copy deployment artifacts to workspace
           command: |
@@ -103,7 +103,7 @@ jobs:
       - checkout
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn server:doc:prod
+      - run: yarn server:doc:build
       - run:
           name: Copy deployment artifacts to workspace
           command: |
