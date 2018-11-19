@@ -15,5 +15,6 @@ import { AppTechnoModule } from '../app-techno/app-techno.module';
   ],
   providers: [FlowAppService],
   controllers: [FlowAppController],
+  exports: [FlowAppService],
 })
 export class FlowAppModule {}
