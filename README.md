@@ -26,7 +26,19 @@
 
 ## Description
 
-TBD
+This application is created to map the apps and the way they communicate.
+
+This project have the server and the client in the same repository.
+
+The server is located in the `src/server` folder and is made with the following technologies :
+
+- nestjs
+- typeorm
+- pasportjs
+- algolia
+- swagger
+
+The client is located in the `src/client` folder and is made with Angular.
 
 ## Installation
 
@@ -34,32 +46,39 @@ TBD
 $ yarn install
 ```
 
-## Running the app
+## Running the client
+
+In order to run the client, do the following :
+
+```bash
+$ yarn client:start
+```
+
+## Running the server
+
+To run the server, you have to start the database first :
+
+```bash
+$ docker-compose -f docker/postresql.yml up -d
+```
+
+Then, start the server :
 
 ```bash
 # development
-$ yarn start
+$ yarn server:start
 
 # watch mode
-$ yarn start:dev
-
-# incremental rebuild (webpack)
-$ yarn webpack
-$ yarn start:hmr
-
-# production mode
-$ yarn start:prod
+$ yarn server:watch
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn test
+$ yarn client:test
+$ yarn server:test
 
 # e2e tests
-$ yarn test:e2e
-
-# test coverage
-$ yarn test:cov
+$ yarn server:e2e
 ```

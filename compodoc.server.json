@@ -1,0 +1,6 @@
+{
+  "port": 9911,
+  "name": "Flow mapper server",
+  "output": "doc-server",
+  "tsconfig": "./src/server/tsconfig.server.json"
+}

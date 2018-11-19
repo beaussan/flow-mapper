@@ -73,7 +73,67 @@ jobs:
       - run:
           name: Deploy app
           command: yarn add netlify-cli && yarn netlify deploy -d /tmp/front -a $NETLIFY_TOKEN -s $NETLIFY_SITE -p
-
+  ##########################################################################
+  #  DOCS
+  ##########################################################################
+  front-doc-build:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn client:doc:build
+      - run:
+          name: Copy deployment artifacts to workspace
+          command: |
+            cp doc-front/ /tmp/front-doc -r
+      - store_artifacts:
+          path: /tmp/front-doc
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - front-doc
+  server-doc-build:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn server:doc:build
+      - run:
+          name: Copy deployment artifacts to workspace
+          command: |
+            cp doc-server/ /tmp/server-doc -r
+      - store_artifacts:
+          path: /tmp/server-doc
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - server-doc
+  front-doc-deploy:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/deploy-doc-client
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Deploy app
+          command: yarn add netlify-cli && yarn netlify deploy -d /tmp/front-doc -a $NETLIFY_TOKEN -s $NETLIFY_SITE_DOC_FRONT -p
+  server-doc-deploy:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/deploy-doc-server
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Deploy app
+          command: yarn add netlify-cli && yarn netlify deploy -d /tmp/server-doc -a $NETLIFY_TOKEN -s $NETLIFY_SITE_DOC_SERVER -p
   ##########################################################################
   #  BACK SPECIFIC
   ##########################################################################
@@ -167,10 +227,21 @@ workflows:
           filters:
             branches:
               only: master
-      - back-deploy:
+      - front-doc-build:
+          requires:
+            - front-build
+      - server-doc-build:
           requires:
             - back-build
-            - front-build
+      - front-doc-deploy:
+          requires:
+            - front-doc-build
+          filters:
+            branches:
+              only: master
+      - server-doc-deploy:
+          requires:
+            - server-doc-build
           filters:
             branches:
               only: master
