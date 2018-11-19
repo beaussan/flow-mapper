@@ -39,13 +39,14 @@ async function bootstrap(): Promise<any> {
   );
 
   // Swagger
-  const options = new DocumentBuilder()
+  let options = new DocumentBuilder()
     .setTitle('Boilerplate nest')
     .setDescription('The boilerplate API description')
-    .setVersion('0.0.1')
-    .addBearerAuth('Bearer', 'header')
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
+    .setVersion('0.0.1');
+  if (process.env.IS_AUTH_ENABLED === 'true') {
+    options = options.addBearerAuth();
+  }
+  const document = SwaggerModule.createDocument(app, options.build());
   SwaggerModule.setup('/docs', app, document);
 
   const server = await app.listen(parseInt(process.env.API_PORT || '3000', 10));

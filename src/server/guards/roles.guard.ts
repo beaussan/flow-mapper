@@ -12,17 +12,21 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     if (process.env.IS_AUTH_ENABLED !== 'true') {
+      console.log('AUTH NOT ENABLED');
       return true;
     }
 
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
     if (!roles) {
+      console.log('ROLES NOT FOUND');
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
+
+    console.log('USER : ', user);
     const hasRole = () =>
       user.roles.some((role: Role) => roles.includes(role.key)) ||
       user.isSuperUser;

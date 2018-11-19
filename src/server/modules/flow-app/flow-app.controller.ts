@@ -19,13 +19,17 @@ import {
 } from '@nestjs/swagger';
 import { FlowAppDto } from './flow-app.dto';
 import { AppTechno } from '../app-techno/app-techno.entity';
+import { Roles } from '../../decorators/roles.decorator';
+import { ROLES } from '../user/role.constants';
 
 @ApiUseTags('Apps')
 @Controller()
+@ApiBearerAuth()
 export class FlowAppController {
   constructor(private readonly flowAppService: FlowAppService) {}
 
   @Get()
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({
     status: 200,
     description: 'The list of all the apps.',

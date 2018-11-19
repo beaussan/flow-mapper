@@ -22,6 +22,7 @@ import { FlowTechnoDto } from './flow-techno.dto';
 
 @ApiUseTags('Techno Flow')
 @Controller()
+@ApiBearerAuth()
 export class FlowTechnoController {
   constructor(private readonly flowTechnoService: FlowTechnoService) {}
 
