@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { FlowService } from './flow.service';
 import { SEARCH_CLIENT_PROVIDER } from '../core/search/search.constants';
 import { FlowAppService } from '../flow-app/flow-app.service';
 import { FlowTechnoService } from '../flow-techno/flow-techno.service';
+import { FlowRepository } from './flow.repository';
 
 class FakeSearchRepo {
   public current: FakeSearchIndex;
@@ -22,6 +24,13 @@ class FakeSearchIndex {
 
 class FakeFlowAppService {}
 class FakeFlowTechnoService {}
+class FakeFlowRepository {
+  findOneWithNameIgnoringCase = jest.fn();
+  save = jest.fn();
+  findOneById = jest.fn();
+  find = jest.fn();
+  remove = jest.fn();
+}
 
 describe('FlowService', () => {
   let service: FlowService;
@@ -29,6 +38,10 @@ describe('FlowService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         FlowService,
+        {
+          provide: getRepositoryToken(FlowRepository),
+          useClass: FakeFlowRepository,
+        },
         {
           provide: SEARCH_CLIENT_PROVIDER,
           useClass: FakeSearchRepo,
