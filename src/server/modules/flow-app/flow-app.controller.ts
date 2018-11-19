@@ -42,6 +42,7 @@ export class FlowAppController {
 
   // Query
   @Get('search')
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({
     status: 200,
     description: 'The app technology  with the matching id',
@@ -54,6 +55,7 @@ export class FlowAppController {
   }
 
   @Get(':id')
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({
     status: 200,
     description: 'The app concerned.',
@@ -67,6 +69,7 @@ export class FlowAppController {
   }
 
   @Post()
+  @Roles(ROLES.ROLE_EDIT_APPS)
   @ApiResponse({
     status: 201,
     description: 'The app created',
@@ -77,6 +80,7 @@ export class FlowAppController {
   }
 
   @Put(':id')
+  @Roles(ROLES.ROLE_EDIT_APPS)
   @ApiResponse({
     status: 204,
     description: 'The app updated',

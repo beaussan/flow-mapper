@@ -19,6 +19,8 @@ import {
   ApiUseTags,
 } from '@nestjs/swagger';
 import { FlowTechnoDto } from './flow-techno.dto';
+import { Roles } from '../../decorators/roles.decorator';
+import { ROLES } from '../user/role.constants';
 
 @ApiUseTags('Techno Flow')
 @Controller()
@@ -33,6 +35,7 @@ export class FlowTechnoController {
     type: FlowTechno,
     isArray: true,
   })
+  @Roles(ROLES.ROLE_USER)
   getAll(): Promise<FlowTechno[]> {
     return this.flowTechnoService.getAll();
   }
@@ -43,6 +46,7 @@ export class FlowTechnoController {
     description: 'The flow technology has been created.',
     type: FlowTechno,
   })
+  @Roles(ROLES.ROLE_EDIT_FLOW)
   saveNew(@Body() tech: FlowTechnoDto): Promise<FlowTechno> {
     return this.flowTechnoService.saveNewTechno(tech.name);
   }
@@ -55,6 +59,7 @@ export class FlowTechnoController {
     type: FlowTechno,
     isArray: true,
   })
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({ status: 404, description: 'Not found.' })
   async search(@Query('query') query: string): Promise<FlowTechno[]> {
     return this.flowTechnoService.find(query);
@@ -66,6 +71,7 @@ export class FlowTechnoController {
     description: 'The flow technology  with the matching id',
     type: FlowTechno,
   })
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({ status: 404, description: 'Not found.' })
   async findOne(
     @Param('id', new ParseIntPipe()) id: number,
@@ -81,6 +87,7 @@ export class FlowTechnoController {
     description: 'The updated flow technology with the matching id',
     type: FlowTechno,
   })
+  @Roles(ROLES.ROLE_EDIT_FLOW)
   @ApiResponse({ status: 404, description: 'Not found.' })
   // @ApiImplicitParam({ type: Number, name: 'id', required: true })
   async updateOne(
@@ -95,6 +102,7 @@ export class FlowTechnoController {
     status: 200,
     description: 'The updated flow technology with the matching id',
   })
+  @Roles(ROLES.ROLE_EDIT_FLOW)
   @ApiResponse({ status: 404, description: 'Not found.' })
   async deleteOne(@Param('id', new ParseIntPipe()) id: number): Promise<void> {
     await this.flowTechnoService.deleteById(id);
