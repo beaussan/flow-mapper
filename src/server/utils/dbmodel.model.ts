@@ -7,6 +7,9 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
+/**
+ * This model helps to have audits metrics to db models
+ */
 export abstract class DbAuditModel {
   @ApiModelProperty()
   @PrimaryGeneratedColumn()
