@@ -7,10 +7,19 @@ import { FlowTechnoModule } from '../flow-techno/flow-techno.module';
 import { FlowAppService } from '../flow-app/flow-app.service';
 import { FlowTechnoService } from '../flow-techno/flow-techno.service';
 import { SearchModule } from '../core/search/search.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Flow } from './flow.entity';
+import { FlowRepository } from './flow.repository';
 
 @Module({
   controllers: [FlowController],
   providers: [FlowService],
-  imports: [FlowAppModule, FlowTechnoModule, FlowAppModule, SearchModule],
+  imports: [
+    FlowAppModule,
+    FlowTechnoModule,
+    FlowAppModule,
+    SearchModule,
+    TypeOrmModule.forFeature([Flow, FlowRepository]),
+  ],
 })
 export class FlowModule {}
