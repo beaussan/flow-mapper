@@ -1,7 +1,8 @@
 import { DbAuditModel } from '../../utils/dbmodel.model';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { AppTechno } from '../app-techno/app-techno.entity';
+import { Flow } from '../flow/flow.entity';
 
 @Entity()
 export class FlowApp extends DbAuditModel {
@@ -17,4 +18,10 @@ export class FlowApp extends DbAuditModel {
   @ManyToMany(type => AppTechno, techno => techno.apps)
   @JoinTable()
   appTechnos: AppTechno[];
+
+  @OneToMany(type => Flow, flow => flow.sourceApp)
+  flowsSource: Flow[];
+
+  @OneToMany(type => Flow, flow => flow.destApp)
+  flowsDestination: Flow[];
 }

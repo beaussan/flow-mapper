@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { FlowTechnoDto } from './flow-techno.dto';
 
-@ApiUseTags('Techno')
+@ApiUseTags('Techno Flow')
 @Controller()
 export class FlowTechnoController {
   constructor(private readonly flowTechnoService: FlowTechnoService) {}

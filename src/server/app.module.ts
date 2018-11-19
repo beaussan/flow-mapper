@@ -12,6 +12,8 @@ import { AppTechnoModule } from './modules/app-techno/app-techno.module';
 import { FlowAppModule } from './modules/flow-app/flow-app.module';
 import { FlowTechnoModule } from './modules/flow-techno/flow-techno.module';
 import { UserModule } from './modules/user/user.module';
+import { FlowModule } from './modules/flow/flow.module';
+import { FlowService } from './modules/flow/flow.service';
 
 @Module({
   imports: [
@@ -39,9 +41,11 @@ import { UserModule } from './modules/user/user.module';
 
     FlowTechnoModule,
 
+    FlowModule,
+
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RolesGuard],
+  providers: [AppService, RolesGuard, FlowService],
 })
 export class AppModule {}

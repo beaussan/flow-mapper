@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { AppTechnoDto } from './app-techno.dto';
 
-@ApiUseTags('Techno')
+@ApiUseTags('Techno Apps')
 @Controller()
 export class AppTechnoController {
   constructor(private readonly appTechnoService: AppTechnoService) {}
