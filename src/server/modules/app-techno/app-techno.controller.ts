@@ -19,9 +19,12 @@ import {
   ApiUseTags,
 } from '@nestjs/swagger';
 import { AppTechnoDto } from './app-techno.dto';
+import { Roles } from '../../decorators/roles.decorator';
+import { ROLES } from '../user/role.constants';
 
 @ApiUseTags('Techno Apps')
 @Controller()
+@ApiBearerAuth()
 export class AppTechnoController {
   constructor(private readonly appTechnoService: AppTechnoService) {}
 
@@ -32,6 +35,7 @@ export class AppTechnoController {
     type: AppTechno,
     isArray: true,
   })
+  @Roles(ROLES.ROLE_USER)
   getAll(): Promise<AppTechno[]> {
     return this.appTechnoService.getAll();
   }
@@ -42,6 +46,7 @@ export class AppTechnoController {
     description: 'The app technology has been created.',
     type: AppTechno,
   })
+  @Roles(ROLES.ROLE_EDIT_FLOW)
   saveNew(@Body() tech: AppTechnoDto): Promise<AppTechno> {
     return this.appTechnoService.saveNewTechno(tech.name);
   }
@@ -54,6 +59,7 @@ export class AppTechnoController {
     type: AppTechno,
     isArray: true,
   })
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({ status: 404, description: 'Not found.' })
   async search(@Query('query') query: string): Promise<AppTechno[]> {
     return this.appTechnoService.find(query);
@@ -65,6 +71,7 @@ export class AppTechnoController {
     description: 'The app technology  with the matching id',
     type: AppTechno,
   })
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({ status: 404, description: 'Not found.' })
   async findOne(
     @Param('id', new ParseIntPipe()) id: number,
@@ -80,6 +87,7 @@ export class AppTechnoController {
     description: 'The updated app technology with the matching id',
     type: AppTechno,
   })
+  @Roles(ROLES.ROLE_EDIT_FLOW)
   @ApiResponse({ status: 404, description: 'Not found.' })
   // @ApiImplicitParam({ type: Number, name: 'id', required: true })
   async updateOne(
@@ -94,6 +102,7 @@ export class AppTechnoController {
     status: 200,
     description: 'The updated app technology with the matching id',
   })
+  @Roles(ROLES.ROLE_EDIT_FLOW)
   @ApiResponse({ status: 404, description: 'Not found.' })
   async deleteOne(@Param('id', new ParseIntPipe()) id: number): Promise<void> {
     await this.appTechnoService.deleteById(id);

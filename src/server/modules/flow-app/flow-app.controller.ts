@@ -19,13 +19,17 @@ import {
 } from '@nestjs/swagger';
 import { FlowAppDto } from './flow-app.dto';
 import { AppTechno } from '../app-techno/app-techno.entity';
+import { Roles } from '../../decorators/roles.decorator';
+import { ROLES } from '../user/role.constants';
 
 @ApiUseTags('Apps')
 @Controller()
+@ApiBearerAuth()
 export class FlowAppController {
   constructor(private readonly flowAppService: FlowAppService) {}
 
   @Get()
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({
     status: 200,
     description: 'The list of all the apps.',
@@ -38,6 +42,7 @@ export class FlowAppController {
 
   // Query
   @Get('search')
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({
     status: 200,
     description: 'The app technology  with the matching id',
@@ -50,6 +55,7 @@ export class FlowAppController {
   }
 
   @Get(':id')
+  @Roles(ROLES.ROLE_USER)
   @ApiResponse({
     status: 200,
     description: 'The app concerned.',
@@ -63,6 +69,7 @@ export class FlowAppController {
   }
 
   @Post()
+  @Roles(ROLES.ROLE_EDIT_APPS)
   @ApiResponse({
     status: 201,
     description: 'The app created',
@@ -73,6 +80,7 @@ export class FlowAppController {
   }
 
   @Put(':id')
+  @Roles(ROLES.ROLE_EDIT_APPS)
   @ApiResponse({
     status: 204,
     description: 'The app updated',

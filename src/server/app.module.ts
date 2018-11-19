@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,6 +19,11 @@ import { FlowTechnoModule } from './modules/flow-techno/flow-techno.module';
 import { UserModule } from './modules/user/user.module';
 import { FlowModule } from './modules/flow/flow.module';
 import { FlowService } from './modules/flow/flow.service';
+import { Strategy as AnonymousStrategy } from 'passport-anonymous';
+import * as passport from 'passport';
+import { FlowAppController } from './modules/flow-app/flow-app.controller';
+import { AppTechnoController } from './modules/app-techno/app-techno.controller';
+import { FlowTechnoController } from './modules/flow-techno/flow-techno.controller';
 
 @Module({
   imports: [
@@ -48,4 +58,16 @@ import { FlowService } from './modules/flow/flow.service';
   controllers: [AppController],
   providers: [AppService, RolesGuard, FlowService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  constructor() {}
+  configure(consumer: MiddlewareConsumer): void {
+    passport.use(new AnonymousStrategy());
+
+    consumer
+      .apply(passport.authenticate(['jwt', 'anonymous'], { session: false }))
+      .forRoutes(AppTechnoController, FlowAppController, FlowTechnoController, {
+        path: 'auth/authorized',
+        method: RequestMethod.GET,
+      });
+  }
+}

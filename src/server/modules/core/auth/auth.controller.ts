@@ -24,6 +24,7 @@ import {
 import { LocalAuthInterface } from './interfaces/local-auth.interface';
 import { ROLES } from '../../user/role.constants';
 
+// @UseGuards(RolesGuard)
 @ApiUseTags('Auth')
 @Controller()
 export class AuthController {
@@ -141,10 +142,10 @@ export class AuthController {
   // TODO : GLOBAL GUARD THAT DO JWT AND ANONYMOUS PASSPORT
   @Get('authorized')
   @Roles(ROLES.ROLE_USER)
-  @UseGuards(AuthGuard('jwt'))
   @ApiResponse({ status: 200, description: '' })
   @ApiBearerAuth()
   public authorized(@CurrentUser() user: User): User {
+    this.loggerService.log('Request: ', user);
     this.loggerService.log('Authorized route...');
     return user;
   }
