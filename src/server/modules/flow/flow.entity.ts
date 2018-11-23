@@ -22,6 +22,7 @@ export class Flow extends DbAuditModel {
   @ManyToOne(type => FlowApp, app => app.flowsDestination)
   destApp: FlowApp;
 
+  @ApiModelProperty({ required: true })
   @OneToMany(type => FlowTechnoOrder, flowTechno => flowTechno.flow)
   flowTechnos: FlowTechnoOrder[];
 }
