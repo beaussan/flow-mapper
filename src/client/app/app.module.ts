@@ -21,6 +21,11 @@ import { fuseConfig } from './fuse-config';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 
 const appRoutes: Routes = [
   {
@@ -52,6 +57,13 @@ const appRoutes: Routes = [
     FuseSharedModule,
     FuseSidebarModule,
     FuseThemeOptionsModule,
+
+    // NGXS modules
+    NgxsModule.forRoot([]),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsStoragePluginModule.forRoot({ key: [] }),
+    NgxsRouterPluginModule.forRoot(),
 
     // App modules
     LayoutModule,
