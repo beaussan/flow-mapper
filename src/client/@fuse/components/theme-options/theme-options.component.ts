@@ -32,31 +32,31 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
   barClosed: boolean;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
    * @param {DOCUMENT} document
-   * @param {FormBuilder} _formBuilder
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {FuseNavigationService} _fuseNavigationService
-   * @param {FuseSidebarService} _fuseSidebarService
-   * @param {Renderer2} _renderer
+   * @param {FormBuilder} formBuilder
+   * @param {FuseConfigService} fuseConfigService
+   * @param {FuseNavigationService} fuseNavigationService
+   * @param {FuseSidebarService} fuseSidebarService
+   * @param {Renderer2} renderer
    */
   constructor(
     @Inject(DOCUMENT) private document: any,
-    private _formBuilder: FormBuilder,
-    private _fuseConfigService: FuseConfigService,
-    private _fuseNavigationService: FuseNavigationService,
-    private _fuseSidebarService: FuseSidebarService,
-    private _renderer: Renderer2,
+    private formBuilder: FormBuilder,
+    private fuseConfigService: FuseConfigService,
+    private fuseNavigationService: FuseNavigationService,
+    private fuseSidebarService: FuseSidebarService,
+    private renderer: Renderer2,
   ) {
     // Set the defaults
     this.barClosed = true;
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -69,13 +69,13 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Build the config form
     // noinspection TypeScriptValidateTypes
-    this.form = this._formBuilder.group({
+    this.form = this.formBuilder.group({
       colorTheme: new FormControl(),
       customScrollbars: new FormControl(),
-      layout: this._formBuilder.group({
+      layout: this.formBuilder.group({
         style: new FormControl(),
         width: new FormControl(),
-        navbar: this._formBuilder.group({
+        navbar: this.formBuilder.group({
           primaryBackground: new FormControl(),
           secondaryBackground: new FormControl(),
           folded: new FormControl(),
@@ -83,19 +83,19 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
           position: new FormControl(),
           variant: new FormControl(),
         }),
-        toolbar: this._formBuilder.group({
+        toolbar: this.formBuilder.group({
           background: new FormControl(),
           customBackgroundColor: new FormControl(),
           hidden: new FormControl(),
           position: new FormControl(),
         }),
-        footer: this._formBuilder.group({
+        footer: this.formBuilder.group({
           background: new FormControl(),
           customBackgroundColor: new FormControl(),
           hidden: new FormControl(),
           position: new FormControl(),
         }),
-        sidepanel: this._formBuilder.group({
+        sidepanel: this.formBuilder.group({
           hidden: new FormControl(),
           position: new FormControl(),
         }),
@@ -103,8 +103,8 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
     });
 
     // Subscribe to the config changes
-    this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(config => {
         // Update the stored config
         this.fuseConfig = config;
@@ -117,19 +117,19 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
     // Subscribe to the specific form value changes (layout.style)
     this.form
       .get('layout.style')
-      .valueChanges.pipe(takeUntil(this._unsubscribeAll))
+      .valueChanges.pipe(takeUntil(this.unsubscribeAll))
       .subscribe(value => {
         // Reset the form values based on the
         // selected layout style
-        this._resetFormValues(value);
+        this.resetFormValues(value);
       });
 
     // Subscribe to the form value changes
     this.form.valueChanges
-      .pipe(takeUntil(this._unsubscribeAll))
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(config => {
         // Update the config
-        this._fuseConfigService.config = config;
+        this.fuseConfigService.config = config;
       });
 
     // Add customize nav item that opens the bar programmatically
@@ -151,7 +151,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
       ],
     };
 
-    this._fuseNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+    this.fuseNavigationService.addNavigationItem(customFunctionNavItem, 'end');
   }
 
   /**
@@ -159,11 +159,11 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
 
     // Remove the custom function menu
-    this._fuseNavigationService.removeNavigationItem('custom-function');
+    this.fuseNavigationService.removeNavigationItem('custom-function');
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
    * @param value
    * @private
    */
-  private _resetFormValues(value): void {
+  private resetFormValues(value): void {
     switch (value) {
       // Vertical Layout #1
       case 'vertical-layout-1': {
@@ -331,6 +331,6 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
    * @param key
    */
   toggleSidebarOpen(key): void {
-    this._fuseSidebarService.getSidebar(key).toggleOpen();
+    this.fuseSidebarService.getSidebar(key).toggleOpen();
   }
 }

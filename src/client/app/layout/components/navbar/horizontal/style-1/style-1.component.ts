@@ -17,22 +17,22 @@ export class NavbarHorizontalStyle1Component implements OnInit, OnDestroy {
   navigation: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {FuseNavigationService} _fuseNavigationService
-   * @param {FuseSidebarService} _fuseSidebarService
+   * @param {FuseConfigService} fuseConfigService
+   * @param {FuseNavigationService} fuseNavigationService
+   * @param {FuseSidebarService} fuseSidebarService
    */
   constructor(
-    private _fuseConfigService: FuseConfigService,
-    private _fuseNavigationService: FuseNavigationService,
-    private _fuseSidebarService: FuseSidebarService,
+    private fuseConfigService: FuseConfigService,
+    private fuseNavigationService: FuseNavigationService,
+    private fuseSidebarService: FuseSidebarService,
   ) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -44,18 +44,18 @@ export class NavbarHorizontalStyle1Component implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Get current navigation
-    this._fuseNavigationService.onNavigationChanged
+    this.fuseNavigationService.onNavigationChanged
       .pipe(
         filter(value => value !== null),
-        takeUntil(this._unsubscribeAll),
+        takeUntil(this.unsubscribeAll),
       )
       .subscribe(() => {
-        this.navigation = this._fuseNavigationService.getCurrentNavigation();
+        this.navigation = this.fuseNavigationService.getCurrentNavigation();
       });
 
     // Subscribe to the config changes
-    this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(config => {
         this.fuseConfig = config;
       });
@@ -66,7 +66,7 @@ export class NavbarHorizontalStyle1Component implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 }

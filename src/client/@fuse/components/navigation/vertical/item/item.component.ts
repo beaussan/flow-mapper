@@ -25,7 +25,7 @@ export class FuseNavVerticalItemComponent implements OnInit, OnDestroy {
   item: FuseNavigationItem;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
@@ -33,15 +33,15 @@ export class FuseNavVerticalItemComponent implements OnInit, OnDestroy {
 
   /**
    *
-   * @param {ChangeDetectorRef} _changeDetectorRef
-   * @param {FuseNavigationService} _fuseNavigationService
+   * @param {ChangeDetectorRef} changeDetectorRef
+   * @param {FuseNavigationService} fuseNavigationService
    */
   constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _fuseNavigationService: FuseNavigationService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private fuseNavigationService: FuseNavigationService,
   ) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -54,14 +54,14 @@ export class FuseNavVerticalItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Subscribe to navigation item
     merge(
-      this._fuseNavigationService.onNavigationItemAdded,
-      this._fuseNavigationService.onNavigationItemUpdated,
-      this._fuseNavigationService.onNavigationItemRemoved,
+      this.fuseNavigationService.onNavigationItemAdded,
+      this.fuseNavigationService.onNavigationItemUpdated,
+      this.fuseNavigationService.onNavigationItemRemoved,
     )
-      .pipe(takeUntil(this._unsubscribeAll))
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(() => {
         // Mark for check
-        this._changeDetectorRef.markForCheck();
+        this.changeDetectorRef.markForCheck();
       });
   }
 
@@ -70,7 +70,7 @@ export class FuseNavVerticalItemComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 }

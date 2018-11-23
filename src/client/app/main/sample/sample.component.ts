@@ -14,11 +14,11 @@ export class SampleComponent {
   /**
    * Constructor
    *
-   * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
+   * @param {FuseTranslationLoaderService} fuseTranslationLoaderService
    */
   constructor(
-    private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+    private fuseTranslationLoaderService: FuseTranslationLoaderService,
   ) {
-    this._fuseTranslationLoaderService.loadTranslations(english, turkish);
+    this.fuseTranslationLoaderService.loadTranslations(english, turkish);
   }
 }

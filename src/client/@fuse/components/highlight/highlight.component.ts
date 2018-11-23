@@ -31,20 +31,17 @@ export class FuseHighlightComponent implements OnInit, OnDestroy {
   path: string;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {ElementRef} _elementRef
-   * @param {HttpClient} _httpClient
+   * @param {ElementRef} elementRef
+   * @param {HttpClient} httpClient
    */
-  constructor(
-    private _elementRef: ElementRef,
-    private _httpClient: HttpClient,
-  ) {
+  constructor(private elementRef: ElementRef, private httpClient: HttpClient) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -63,9 +60,9 @@ export class FuseHighlightComponent implements OnInit, OnDestroy {
     // If the path is defined...
     if (this.path) {
       // Get the source
-      this._httpClient
+      this.httpClient
         .get(this.path, { responseType: 'text' })
-        .pipe(takeUntil(this._unsubscribeAll))
+        .pipe(takeUntil(this.unsubscribeAll))
         .subscribe(response => {
           // Highlight it
           this.highlight(response);
@@ -84,8 +81,8 @@ export class FuseHighlightComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -137,7 +134,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy {
     const highlightedCode = Prism.highlight(source, Prism.languages[this.lang]);
 
     // Replace the innerHTML of the component with the highlighted code
-    this._elementRef.nativeElement.innerHTML =
+    this.elementRef.nativeElement.innerHTML =
       '<pre><code class="highlight language-' +
       this.lang +
       '">' +

@@ -26,10 +26,10 @@ export class FuseWidgetComponent implements AfterContentInit {
   /**
    * Constructor
    *
-   * @param {ElementRef} _elementRef
-   * @param {Renderer2} _renderer
+   * @param {ElementRef} elementRef
+   * @param {Renderer2} renderer
    */
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -42,7 +42,7 @@ export class FuseWidgetComponent implements AfterContentInit {
     // Listen for the flip button click
     setTimeout(() => {
       this.toggleButtons.forEach(flipButton => {
-        this._renderer.listen(
+        this.renderer.listen(
           flipButton.elementRef.nativeElement,
           'click',
           event => {

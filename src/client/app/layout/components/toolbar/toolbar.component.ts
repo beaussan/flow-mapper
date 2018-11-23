@@ -25,19 +25,19 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   userStatusOptions: any[];
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {FuseSidebarService} _fuseSidebarService
-   * @param {TranslateService} _translateService
+   * @param {FuseConfigService} fuseConfigService
+   * @param {FuseSidebarService} fuseSidebarService
+   * @param {TranslateService} translateService
    */
   constructor(
-    private _fuseConfigService: FuseConfigService,
-    private _fuseSidebarService: FuseSidebarService,
-    private _translateService: TranslateService,
+    private fuseConfigService: FuseConfigService,
+    private fuseSidebarService: FuseSidebarService,
+    private translateService: TranslateService,
   ) {
     // Set the defaults
     this.userStatusOptions = [
@@ -84,7 +84,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.navigation = navigation;
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -96,8 +96,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to the config changes
-    this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(settings => {
         this.horizontalNavbar = settings.layout.navbar.position === 'top';
         this.rightNavbar = settings.layout.navbar.position === 'right';
@@ -106,7 +106,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     // Set the selected language from default languages
     this.selectedLanguage = _.find(this.languages, {
-      id: this._translateService.currentLang,
+      id: this.translateService.currentLang,
     });
   }
 
@@ -115,8 +115,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
    * @param key
    */
   toggleSidebarOpen(key): void {
-    this._fuseSidebarService.getSidebar(key).toggleOpen();
+    this.fuseSidebarService.getSidebar(key).toggleOpen();
   }
 
   /**
@@ -152,6 +152,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.selectedLanguage = lang;
 
     // Use the selected language for translations
-    this._translateService.use(lang.id);
+    this.translateService.use(lang.id);
   }
 }

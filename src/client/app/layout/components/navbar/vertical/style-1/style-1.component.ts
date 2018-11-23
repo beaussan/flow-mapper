@@ -25,25 +25,25 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
   navigation: any;
 
   // Private
-  private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
-  private _unsubscribeAll: Subject<any>;
+  private fusePerfectScrollbar: FusePerfectScrollbarDirective;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {FuseNavigationService} _fuseNavigationService
-   * @param {FuseSidebarService} _fuseSidebarService
-   * @param {Router} _router
+   * @param {FuseConfigService} fuseConfigService
+   * @param {FuseNavigationService} fuseNavigationService
+   * @param {FuseSidebarService} fuseSidebarService
+   * @param {Router} router
    */
   constructor(
-    private _fuseConfigService: FuseConfigService,
-    private _fuseNavigationService: FuseNavigationService,
-    private _fuseSidebarService: FuseSidebarService,
-    private _router: Router,
+    private fuseConfigService: FuseConfigService,
+    private fuseNavigationService: FuseNavigationService,
+    private fuseSidebarService: FuseSidebarService,
+    private router: Router,
   ) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -57,20 +57,20 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
       return;
     }
 
-    this._fusePerfectScrollbar = theDirective;
+    this.fusePerfectScrollbar = theDirective;
 
     // Update the scrollbar on collapsable item toggle
-    this._fuseNavigationService.onItemCollapseToggled
+    this.fuseNavigationService.onItemCollapseToggled
       .pipe(
         delay(500),
-        takeUntil(this._unsubscribeAll),
+        takeUntil(this.unsubscribeAll),
       )
       .subscribe(() => {
-        this._fusePerfectScrollbar.update();
+        this.fusePerfectScrollbar.update();
       });
 
     // Scroll to the active item position
-    this._router.events
+    this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         take(1),
@@ -87,7 +87,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
               scrollDistance =
                 activeItemOffsetTop - activeItemOffsetParentTop - 48 * 3 - 168;
 
-            this._fusePerfectScrollbar.scrollToTop(scrollDistance);
+            this.fusePerfectScrollbar.scrollToTop(scrollDistance);
           }
         });
       });
@@ -101,32 +101,32 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
-    this._router.events
+    this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
-        takeUntil(this._unsubscribeAll),
+        takeUntil(this.unsubscribeAll),
       )
       .subscribe(() => {
-        if (this._fuseSidebarService.getSidebar('navbar')) {
-          this._fuseSidebarService.getSidebar('navbar').close();
+        if (this.fuseSidebarService.getSidebar('navbar')) {
+          this.fuseSidebarService.getSidebar('navbar').close();
         }
       });
 
     // Subscribe to the config changes
-    this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(config => {
         this.fuseConfig = config;
       });
 
     // Get current navigation
-    this._fuseNavigationService.onNavigationChanged
+    this.fuseNavigationService.onNavigationChanged
       .pipe(
         filter(value => value !== null),
-        takeUntil(this._unsubscribeAll),
+        takeUntil(this.unsubscribeAll),
       )
       .subscribe(() => {
-        this.navigation = this._fuseNavigationService.getCurrentNavigation();
+        this.navigation = this.fuseNavigationService.getCurrentNavigation();
       });
   }
 
@@ -135,8 +135,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -147,13 +147,13 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
    * Toggle sidebar opened status
    */
   toggleSidebarOpened(): void {
-    this._fuseSidebarService.getSidebar('navbar').toggleOpen();
+    this.fuseSidebarService.getSidebar('navbar').toggleOpen();
   }
 
   /**
    * Toggle sidebar folded status
    */
   toggleSidebarFolded(): void {
-    this._fuseSidebarService.getSidebar('navbar').toggleFold();
+    this.fuseSidebarService.getSidebar('navbar').toggleFold();
   }
 }

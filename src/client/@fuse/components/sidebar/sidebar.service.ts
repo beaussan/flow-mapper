@@ -7,7 +7,7 @@ import { FuseSidebarComponent } from './sidebar.component';
 })
 export class FuseSidebarService {
   // Private
-  private _registry: { [key: string]: FuseSidebarComponent } = {};
+  private registry: { [key: string]: FuseSidebarComponent } = {};
 
   /**
    * Constructor
@@ -22,7 +22,7 @@ export class FuseSidebarService {
    */
   register(key, sidebar): void {
     // Check if the key already being used
-    if (this._registry[key]) {
+    if (this.registry[key]) {
       console.error(
         `The sidebar with the key '${key}' already exists. Either unregister it first or use a unique key.`,
       );
@@ -31,7 +31,7 @@ export class FuseSidebarService {
     }
 
     // Add to the registry
-    this._registry[key] = sidebar;
+    this.registry[key] = sidebar;
   }
 
   /**
@@ -41,14 +41,14 @@ export class FuseSidebarService {
    */
   unregister(key): void {
     // Check if the sidebar exists
-    if (!this._registry[key]) {
+    if (!this.registry[key]) {
       console.warn(
         `The sidebar with the key '${key}' doesn't exist in the registry.`,
       );
     }
 
     // Unregister the sidebar
-    delete this._registry[key];
+    delete this.registry[key];
   }
 
   /**
@@ -59,7 +59,7 @@ export class FuseSidebarService {
    */
   getSidebar(key): FuseSidebarComponent {
     // Check if the sidebar exists
-    if (!this._registry[key]) {
+    if (!this.registry[key]) {
       console.warn(
         `The sidebar with the key '${key}' doesn't exist in the registry.`,
       );
@@ -68,6 +68,6 @@ export class FuseSidebarService {
     }
 
     // Return the sidebar
-    return this._registry[key];
+    return this.registry[key];
   }
 }

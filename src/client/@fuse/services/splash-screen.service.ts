@@ -20,17 +20,17 @@ export class FuseSplashScreenService {
   /**
    * Constructor
    *
-   * @param {AnimationBuilder} _animationBuilder
-   * @param _document
-   * @param {Router} _router
+   * @param {AnimationBuilder} animationBuilder
+   * @param document
+   * @param {Router} router
    */
   constructor(
-    private _animationBuilder: AnimationBuilder,
-    @Inject(DOCUMENT) private _document: any,
-    private _router: Router,
+    private animationBuilder: AnimationBuilder,
+    @Inject(DOCUMENT) private document: any,
+    private router: Router,
   ) {
     // Initialize
-    this._init();
+    this.init();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -42,16 +42,16 @@ export class FuseSplashScreenService {
    *
    * @private
    */
-  private _init(): void {
+  private init(): void {
     // Get the splash screen element
-    this.splashScreenEl = this._document.body.querySelector(
+    this.splashScreenEl = this.document.body.querySelector(
       '#fuse-splash-screen',
     );
 
     // If the splash screen element exists...
     if (this.splashScreenEl) {
       // Hide it on the first NavigationEnd event
-      this._router.events
+      this.router.events
         .pipe(
           filter(event => event instanceof NavigationEnd),
           take(1),
@@ -72,7 +72,7 @@ export class FuseSplashScreenService {
    * Show the splash screen
    */
   show(): void {
-    this.player = this._animationBuilder
+    this.player = this.animationBuilder
       .build([
         style({
           opacity: '0',
@@ -91,7 +91,7 @@ export class FuseSplashScreenService {
    * Hide the splash screen
    */
   hide(): void {
-    this.player = this._animationBuilder
+    this.player = this.animationBuilder
       .build([
         style({ opacity: '1' }),
         animate(

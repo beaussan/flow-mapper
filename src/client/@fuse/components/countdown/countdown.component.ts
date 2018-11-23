@@ -23,7 +23,7 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
   countdown: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
@@ -38,7 +38,7 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
     };
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
 
     // Calculate the remaining time for the first time so there will be no
     // delay on the countdown
-    this.countdown = this._secondsToRemaining(diff);
+    this.countdown = this.secondsToRemaining(diff);
 
     // Create a subscribable interval
     const countDown = interval(1000).pipe(
@@ -65,12 +65,12 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
         return (diff = diff - 1);
       }),
       map(value => {
-        return this._secondsToRemaining(value);
+        return this.secondsToRemaining(value);
       }),
     );
 
     // Subscribe to the countdown interval
-    countDown.pipe(takeUntil(this._unsubscribeAll)).subscribe(value => {
+    countDown.pipe(takeUntil(this.unsubscribeAll)).subscribe(value => {
       this.countdown = value;
     });
   }
@@ -80,8 +80,8 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
    * @param seconds
    * @private
    */
-  private _secondsToRemaining(seconds): any {
+  private secondsToRemaining(seconds): any {
     const timeLeft = moment.duration(seconds, 'seconds');
 
     return {
