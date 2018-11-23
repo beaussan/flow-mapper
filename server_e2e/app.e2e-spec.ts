@@ -33,6 +33,7 @@ describe('AppController (e2e)', () => {
         isAuthEnabled: process.env.IS_AUTH_ENABLED === 'true',
         isFacebookAuthEnabled: process.env.FB_AUTH_ENABLED === 'true',
         isGoogleAuthEnabled: process.env.GOOGLE_AUTH_ENABLED === 'true',
+        isLocalRegisterEnable: process.env.LOCAL_REGISTER_ENABLED === 'true',
         isTwitterAuthEnabled: process.env.TWITTER_AUTH_ENABLED === 'true',
       });
   });

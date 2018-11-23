@@ -29,13 +29,14 @@ import { UserModule } from '../../user/user.module';
 })
 export class AuthModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {
-    consumer
-      .apply(
-        bodyValidatorMiddleware,
-        authenticate('local-signup', { session: false }),
-      )
-      .forRoutes('auth/local/register');
-
+    if (process.env.LOCAL_REGISTER_ENABLED === 'true') {
+      consumer
+        .apply(
+          bodyValidatorMiddleware,
+          authenticate('local-signup', { session: false }),
+        )
+        .forRoutes('auth/local/register');
+    }
     consumer
       .apply(
         bodyValidatorMiddleware,

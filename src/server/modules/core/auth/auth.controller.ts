@@ -49,6 +49,9 @@ export class AuthController {
   async requestJsonWebTokenAfterLocalSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
+    if (process.env.LOCAL_REGISTER_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('LOCAL REGISTER NOT ENABLED');
+    }
     return await this.authService.createToken(user);
   }
 
