@@ -35,7 +35,6 @@ export class FlowService {
     );
   }
 
-  // TODO : Rework this part + change DTO :)
   async saveNewFlow(flowDto: FlowDtoInput): Promise<Flow> {
     const flow = new Flow();
 
