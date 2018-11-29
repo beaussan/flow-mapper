@@ -1,4 +1,4 @@
-export interface AppConfigDto {
+export interface ApiConfig {
   isAuthEnabled: boolean;
   isLocalRegisterEnabled: boolean;
   isGoogleAuthEnabled: boolean;
