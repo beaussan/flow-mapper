@@ -14,6 +14,7 @@ import {
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.component';
+import { IsAuthEnabledModule } from '../../../common/is-auth-enabled/is-auth-enabled.module';
 
 @NgModule({
   declarations: [ToolbarComponent],
@@ -23,6 +24,8 @@ import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.componen
     MatIconModule,
     MatMenuModule,
     MatToolbarModule,
+
+    IsAuthEnabledModule,
 
     FuseSharedModule,
     FuseSearchBarModule,

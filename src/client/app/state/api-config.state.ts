@@ -10,44 +10,44 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { FuseConfigService } from '../../@fuse/services/config.service';
 
 export class ApiConfigStateModel {
-  public apiConfig: ApiConfig;
+  public config: ApiConfig;
 }
 
 @State<ApiConfigStateModel>({
   name: 'apiConfig',
   defaults: {
-    apiConfig: undefined,
+    config: undefined,
   },
 })
 export class ApiConfigState {
   @Selector()
   static isReady(state: ApiConfigStateModel): boolean {
-    return state.apiConfig !== undefined;
+    return state.config !== undefined;
   }
 
   @Selector()
   static isAuthEnabled(state: ApiConfigStateModel): boolean {
-    return state.apiConfig.isAuthEnabled;
+    return state.config.isAuthEnabled;
   }
 
   @Selector()
   static isLocalRegisterEnabled(state: ApiConfigStateModel): boolean {
-    return state.apiConfig.isLocalRegisterEnabled;
+    return state.config.isLocalRegisterEnabled;
   }
 
   @Selector()
   static isGoogleAuthEnabled(state: ApiConfigStateModel): boolean {
-    return state.apiConfig.isGoogleAuthEnabled;
+    return state.config.isGoogleAuthEnabled;
   }
 
   @Selector()
   static isTwitterAuthEnabled(state: ApiConfigStateModel): boolean {
-    return state.apiConfig.isTwitterAuthEnabled;
+    return state.config.isTwitterAuthEnabled;
   }
 
   @Selector()
   static isFacebookAuthEnabled(state: ApiConfigStateModel): boolean {
-    return state.apiConfig.isFacebookAuthEnabled;
+    return state.config.isFacebookAuthEnabled;
   }
 
   constructor(
@@ -71,7 +71,7 @@ export class ApiConfigState {
     ctx: StateContext<ApiConfigStateModel>,
     { config }: ApiConfigSuccess,
   ) {
-    ctx.patchState({ apiConfig: config });
+    ctx.patchState({ config });
 
     if (config.isAuthEnabled) {
       this.fuseConfigService.config = {

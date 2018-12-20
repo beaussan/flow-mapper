@@ -27,7 +27,6 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { ApiConfigState } from './state/api-config.state';
-import { IsAuthEnabledDirective } from './directives/is-auth-enabled.directive';
 
 const appRoutes: Routes = [
   {
@@ -37,7 +36,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, IsAuthEnabledDirective],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
