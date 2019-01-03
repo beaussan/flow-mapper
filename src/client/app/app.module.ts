@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -27,8 +27,16 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { ApiConfigState } from './state/api-config.state';
+import { TokenInterceptor } from './http/token.interceptor';
+import { PrefixerInterceptor } from './http/prefixer.interceptor';
+import { AuthService } from './services/auth.service';
+import { AuthState } from './state/auth.state';
 
 const appRoutes: Routes = [
+  {
+    path: 'auth',
+    loadChildren: './main/auth/auth.module#AuthModule',
+  },
   {
     path: '**',
     redirectTo: 'sample',
@@ -60,7 +68,7 @@ const appRoutes: Routes = [
     FuseThemeOptionsModule,
 
     // NGXS modules
-    NgxsModule.forRoot([ApiConfigState]),
+    NgxsModule.forRoot([ApiConfigState, AuthState]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsStoragePluginModule.forRoot({ key: [] }),
@@ -69,6 +77,18 @@ const appRoutes: Routes = [
     // App modules
     LayoutModule,
     SampleModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: PrefixerInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

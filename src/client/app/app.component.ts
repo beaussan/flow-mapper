@@ -13,7 +13,9 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
-import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
+import { locale as navigationFrench } from 'app/navigation/i18n/fr';
+import { locale as globalEnglish } from 'app/common/i18n/en';
+import { locale as globalFrench } from 'app/common/i18n/fr';
 import { Store } from '@ngxs/store';
 import { ApiConfigRequest } from './state/api-config.actions';
 
@@ -56,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.fuseNavigationService.setCurrentNavigation('main');
 
     // Add languages
-    this.translateService.addLangs(['en', 'tr']);
+    this.translateService.addLangs(['en', 'fr']);
 
     // Set the default language
     this.translateService.setDefaultLang('en');
@@ -64,7 +66,13 @@ export class AppComponent implements OnInit, OnDestroy {
     // Set the navigation translations
     this.fuseTranslationLoaderService.loadTranslations(
       navigationEnglish,
-      navigationTurkish,
+      navigationFrench,
+    );
+
+    // Set the globals translations
+    this.fuseTranslationLoaderService.loadTranslations(
+      globalEnglish,
+      globalFrench,
     );
 
     // Use a language

@@ -74,21 +74,25 @@ export class AuthService implements OnModuleInit {
 
   facebookSignIn(code: any): Promise<Token> {
     const queryParams: string[] = [
-      `client_id=${this.fbConfig.client_id}`,
-      `redirect_uri=${this.fbConfig.oauth_redirect_uri}`,
-      `client_secret=${this.fbConfig.client_secret}`,
-      `code=${code}`,
+      `client_id={${this.fbConfig.client_id}}`,
+      `redirect_uri={${this.fbConfig.oauth_redirect_uri}}`,
+      `client_secret={${this.fbConfig.client_secret}}`,
+      `code={${code}}`,
     ];
     const uri = `${this.fbConfig.access_token_uri}?${queryParams.join('&')}`;
+
+    console.log('Calling ', uri);
 
     return new Promise(
       (resolve: (data: any) => void, reject: (data: any) => void) => {
         get(uri, (error: Error, response: Response, body: any) => {
           if (error) {
+            this.logger.error('Error get : ', error);
             return reject(error);
           }
 
           if (body.error) {
+            this.logger.error('Error body : ', body);
             return reject(body.error);
           }
 

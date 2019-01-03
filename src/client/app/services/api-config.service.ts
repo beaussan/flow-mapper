@@ -11,6 +11,6 @@ export class ApiConfigService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getConfig(): Observable<ApiConfig> {
-    return this.httpClient.get<ApiConfig>(environment.apiUrl + '/config');
+    return this.httpClient.get<ApiConfig>('/config');
   }
 }
