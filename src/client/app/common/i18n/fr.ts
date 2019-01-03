@@ -9,7 +9,7 @@ export const locale = {
         },
         EMAIL: {
           LABEL: 'Email',
-          ERROR_REQUIRED: "L'email est requis",
+          ERROR_REQUIRED: `L'email est requis`,
           ERROR_NOT_VALID: 'Entrez une email valide',
         },
       },
