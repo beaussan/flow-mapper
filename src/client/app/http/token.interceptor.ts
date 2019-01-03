@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngxs/store';
@@ -13,8 +13,13 @@ import { AuthState } from '../state/auth.state';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(private readonly store: Store) {}
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const isAuthEnabled = this.store.selectSnapshot(ApiConfigState.isAuthEnabled);
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<any>> {
+    const isAuthEnabled = this.store.selectSnapshot(
+      ApiConfigState.isAuthEnabled,
+    );
     if (!isAuthEnabled) {
       return next.handle(request);
     }
@@ -22,8 +27,8 @@ export class TokenInterceptor implements HttpInterceptor {
 
     const newRequest = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return next.handle(newRequest);
   }

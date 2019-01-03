@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private store: Store,
-    private action$: Actions
+    private action$: Actions,
   ) {
     // Configure the layout
     this._fuseConfigService.config = {
@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit {
         },
       },
     };
-    
   }
 
   // -----------------------------------------------------------------------------------------------------

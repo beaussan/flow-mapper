@@ -13,8 +13,10 @@ export interface User {
   twitterUsername?: string;
   twitterDisplayName?: string;
   isSuperUser: boolean;
-  roles: [{
-    id: number;
-    key: number;
-  }];
+  roles: [
+    {
+      id: number;
+      key: number;
+    }
+  ];
 }

@@ -15,10 +15,10 @@ export class AuthService {
   }
 
   loginUser(email: string, password: string): Observable<Token> {
-    return this.httpClient.post<Token>(
-      '/auth/local/login',
-      { email, password },
-    );
+    return this.httpClient.post<Token>('/auth/local/login', {
+      email,
+      password,
+    });
   }
 
   getMe(): Observable<User> {

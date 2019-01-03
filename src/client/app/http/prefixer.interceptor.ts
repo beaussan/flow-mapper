@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngxs/store';
@@ -14,7 +14,10 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class PrefixerInterceptor implements HttpInterceptor {
   constructor(private readonly store: Store) {}
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<any>> {
     if (request.url && request.url.startsWith('http')) {
       return next.handle(request);
     }
@@ -23,6 +26,5 @@ export class PrefixerInterceptor implements HttpInterceptor {
     }
     const newRequest = request.clone({ url: environment.apiUrl + request.url });
     return next.handle(newRequest);
-
   }
 }

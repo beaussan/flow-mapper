@@ -5,7 +5,13 @@ import {
   ApiBearerAuth,
   ApiImplicitQuery,
 } from '@nestjs/swagger';
-import { Controller, Get, MethodNotAllowedException, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  MethodNotAllowedException,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { CurrentUser } from '../../../decorators/currentUser.decorator';
 import { User } from '../../user/user.entity';
@@ -17,7 +23,6 @@ import { LoggerService } from '../logger/logger.service';
 @ApiUseTags('Auth/twitter')
 @Controller()
 export class TwitterController {
-
   constructor(
     private readonly authService: AuthService,
     private readonly loggerService: LoggerService,

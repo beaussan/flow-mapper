@@ -21,7 +21,6 @@ export class AuthLoginFailure {
 }
 
 export class SaveToken {
-
   static readonly type = `${tag} save user token`;
 
   constructor(public token: string) {}

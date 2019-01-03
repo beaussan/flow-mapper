@@ -4,9 +4,6 @@ import { RegisterModule } from './register/register.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    LoginModule,
-    RegisterModule,
-  ]
+  imports: [LoginModule, RegisterModule],
 })
-export class AuthModule { }
+export class AuthModule {}

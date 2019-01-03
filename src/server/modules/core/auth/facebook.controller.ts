@@ -1,4 +1,10 @@
-import { Body, Controller, Get, MethodNotAllowedException, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  MethodNotAllowedException,
+  Post,
+} from '@nestjs/common';
 import { FacebookLogin } from './interfaces/facebook-config.interface';
 import { Token } from './interfaces/token.interface';
 import { CurrentUser } from '../../../decorators/currentUser.decorator';
@@ -17,7 +23,6 @@ import {
 @ApiUseTags('Auth/facebook')
 @Controller()
 export class FacebookController {
-
   constructor(
     private readonly authService: AuthService,
     private readonly loggerService: LoggerService,

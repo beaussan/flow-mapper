@@ -5,14 +5,14 @@ export const locale = {
       FORMS: {
         PASSWORD: {
           LABEL: 'Mot de passe',
-          ERROR_REQUIRED: 'Le mot de passe est requis'
+          ERROR_REQUIRED: 'Le mot de passe est requis',
         },
         EMAIL: {
           LABEL: 'Email',
-          ERROR_REQUIRED: 'L\'email est requis',
+          ERROR_REQUIRED: "L'email est requis",
           ERROR_NOT_VALID: 'Entrez une email valide',
-        }
-      }
+        },
+      },
     },
   },
 };

@@ -21,7 +21,6 @@ export interface AuthStateModel {
   },
 })
 export class AuthState {
-
   @Selector()
   static token(state: AuthStateModel): string {
     return state.authToken;
