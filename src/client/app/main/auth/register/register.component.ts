@@ -12,6 +12,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
+import { Store } from '@ngxs/store';
+import { AuthRegisterRequest } from '../../../state/auth.actions';
 
 @Component({
   selector: 'register',
@@ -29,6 +31,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
+    private store: Store,
   ) {
     // Configure the layout
     this._fuseConfigService.config = {
@@ -84,6 +87,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+  }
+
+  submitForm() {
+    this.store.dispatch(
+      new AuthRegisterRequest(
+        this.registerForm.get('name').value,
+        this.registerForm.get('email').value,
+        this.registerForm.get('password').value,
+      ),
+    );
   }
 }
 

@@ -31,6 +31,7 @@ import { TokenInterceptor } from './http/token.interceptor';
 import { PrefixerInterceptor } from './http/prefixer.interceptor';
 import { AuthService } from './services/auth.service';
 import { AuthState } from './state/auth.state';
+import { ToastrModule } from 'ngx-toastr';
 
 const appRoutes: Routes = [
   {
@@ -71,8 +72,13 @@ const appRoutes: Routes = [
     NgxsModule.forRoot([ApiConfigState, AuthState]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsStoragePluginModule.forRoot({ key: [] }),
+    NgxsStoragePluginModule.forRoot({ key: ['auth.authToken'] }),
     NgxsRouterPluginModule.forRoot(),
+
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+      closeButton: true,
+    }),
 
     // App modules
     LayoutModule,

@@ -18,6 +18,7 @@ import { locale as globalEnglish } from 'app/common/i18n/en';
 import { locale as globalFrench } from 'app/common/i18n/fr';
 import { Store } from '@ngxs/store';
 import { ApiConfigRequest } from './state/api-config.actions';
+import { ToasterService } from './services/toaster.service';
 
 @Component({
   selector: 'app',
@@ -44,7 +45,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private platform: Platform,
     private store: Store,
+    private toaster: ToasterService,
   ) {
+    // Start the toaster service
+    this.toaster.setupToasters();
+
     // Get the config from the server
     this.store.dispatch(new ApiConfigRequest());
 

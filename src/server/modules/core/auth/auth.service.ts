@@ -35,7 +35,11 @@ export class AuthService implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     if ((await this.userService.getNumberUserRegistredWithLocalAuth()) === 0) {
-      const user = await this.registerUser('admin@localhost.fr', 'ADMIN');
+      const user = await this.registerUser(
+        'admin@localhost.fr',
+        'ADMIN',
+        'Mr admin',
+      );
       await this.userService.setUserAsAdmin(user);
       this.logger.info('Creating default admin user');
     }
@@ -344,11 +348,16 @@ export class AuthService implements OnModuleInit {
     return this.userService.registerOne(user);
   }
 
-  async registerUser(email: string, password: string): Promise<User> {
+  async registerUser(
+    email: string,
+    password: string,
+    name: string,
+  ): Promise<User> {
     const user = new User();
     user.authType = AuthType.LOCAL;
     user.localPassword = await this.crypto.hash(password);
     user.localEmail = email;
+    user.name = name;
     return this.userService.registerOne(user);
   }
 

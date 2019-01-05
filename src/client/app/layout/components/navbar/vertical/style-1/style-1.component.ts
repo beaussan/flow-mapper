@@ -6,13 +6,15 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { delay, filter, take, takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { Select } from '@ngxs/store';
+import { AuthState } from '../../../../../state/auth.state';
 
 @Component({
   selector: 'navbar-vertical-style-1',
@@ -23,6 +25,15 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
   fuseConfig: any;
   navigation: any;
+
+  @Select(AuthState.userName)
+  userName$: Observable<string>;
+
+  @Select(AuthState.userEmail)
+  userEmail$: Observable<string>;
+
+  @Select(AuthState.userPicture)
+  userPicture$: Observable<string>;
 
   // Private
   private fusePerfectScrollbar: FusePerfectScrollbarDirective;

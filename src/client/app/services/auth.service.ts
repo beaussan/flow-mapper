@@ -10,13 +10,21 @@ import { Token, User } from '../types/auth';
 export class AuthService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  getToken(): Observable<Token> {
-    return this.httpClient.get<Token>('/auth/local/login');
-  }
-
   loginUser(email: string, password: string): Observable<Token> {
     return this.httpClient.post<Token>('/auth/local/login', {
       email,
+      password,
+    });
+  }
+
+  registerUser(
+    email: string,
+    password: string,
+    name: string,
+  ): Observable<Token> {
+    return this.httpClient.post<Token>('/auth/local/register', {
+      email,
+      name,
       password,
     });
   }

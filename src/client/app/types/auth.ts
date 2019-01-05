@@ -4,8 +4,9 @@ export interface Token {
 }
 
 export interface User {
-  id: string;
+  id: number;
   authType: number;
+  name: string;
   localEmail?: string;
   googleEmail?: string;
   googleDisplayName?: string;

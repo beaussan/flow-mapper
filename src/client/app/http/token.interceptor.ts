@@ -21,10 +21,12 @@ export class TokenInterceptor implements HttpInterceptor {
       ApiConfigState.isAuthEnabled,
     );
     if (!isAuthEnabled) {
+      // console.log('[token] AUTH NOT ENABLED');
       return next.handle(request);
     }
     const token = this.store.selectSnapshot(AuthState.token);
 
+    // console.log('[token] settings token : ', { token });
     const newRequest = request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -8,6 +8,10 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
+import { Select, Store } from '@ngxs/store';
+import { Logout } from '../../../state/auth.actions';
+import { User } from '../../../types/auth';
+import { AuthState } from '../../../state/auth.state';
 
 @Component({
   selector: 'toolbar',
@@ -24,6 +28,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   selectedLanguage: any;
   userStatusOptions: any[];
 
+  @Select(AuthState.userName)
+  user$: Observable<string>;
+
+  @Select(AuthState.userPicture)
+  userPicture$: Observable<string>;
+
   // Private
   private unsubscribeAll: Subject<any>;
 
@@ -38,6 +48,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private fuseConfigService: FuseConfigService,
     private fuseSidebarService: FuseSidebarService,
     private translateService: TranslateService,
+    private store: Store,
   ) {
     // Set the defaults
     this.userStatusOptions = [
@@ -153,5 +164,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     // Use the selected language for translations
     this.translateService.use(lang.id);
+  }
+
+  logoutUser(): void {
+    this.store.dispatch(new Logout());
   }
 }

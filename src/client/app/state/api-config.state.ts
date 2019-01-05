@@ -8,6 +8,7 @@ import { ApiConfigService } from '../services/api-config.service';
 import { ApiConfig } from '../types/api-config';
 import { catchError, flatMap } from 'rxjs/operators';
 import { FuseConfigService } from '../../@fuse/services/config.service';
+import { TryLoginWithToken } from './auth.actions';
 
 export class ApiConfigStateModel {
   public config: ApiConfig;
@@ -81,6 +82,7 @@ export class ApiConfigState {
           },
         },
       };
+      ctx.dispatch(new TryLoginWithToken());
     } else {
       this.fuseConfigService.config = {
         layout: {

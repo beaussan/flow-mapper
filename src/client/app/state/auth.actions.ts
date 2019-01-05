@@ -25,3 +25,25 @@ export class SaveToken {
 
   constructor(public token: string) {}
 }
+
+export class TryLoginWithToken {
+  static readonly type = `${tag} try logging with current token`;
+
+  constructor() {}
+}
+
+export class Logout {
+  static readonly type = `${tag} logout user`;
+
+  constructor() {}
+}
+
+export class AuthRegisterRequest {
+  static readonly type = `${tag} request auth register`;
+
+  constructor(
+    public name: string,
+    public email: string,
+    public password: string,
+  ) {}
+}
