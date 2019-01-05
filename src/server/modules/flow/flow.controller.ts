@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { FlowService } from './flow.service';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { Flow } from './flow.entity';
-import { FlowDto } from './flow.dto';
+import { FlowDtoInput, FLowDtoOutput } from './flow.dto';
 
+@ApiUseTags('Flow')
 @Controller('flow')
 export class FlowController {
   constructor(private readonly flowService: FlowService) {}
@@ -15,8 +16,8 @@ export class FlowController {
     type: Flow,
     isArray: true,
   })
-  getAll(): Promise<Flow[]> {
-    return this.flowService.getAll();
+  getAll(): Promise<FLowDtoOutput[]> {
+    return this.flowService.getAllWithDto();
   }
 
   @Post()
@@ -25,7 +26,7 @@ export class FlowController {
     description: 'Creation of a flow',
     type: Flow,
   })
-  saveNew(@Body() flow: FlowDto): Promise<Flow> {
+  saveNew(@Body() flow: FlowDtoInput): Promise<Flow> {
     return this.flowService.saveNewFlow(flow);
   }
 }

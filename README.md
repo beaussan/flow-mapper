@@ -85,10 +85,10 @@ $ yarn server:e2e
 
 ## Todos
 
-- [ ] auth   
-  - [ ] facebook  
-  - [ ] google  
-  - [ ] twitter  
+- [ ] auth
+  - [ ] facebook
+  - [ ] google
+  - [ ] twitter
   - [x] local
 - [ ] flow
 - [ ] apps

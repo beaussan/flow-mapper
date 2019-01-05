@@ -10,6 +10,7 @@ import { SearchModule } from '../core/search/search.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flow } from './flow.entity';
 import { FlowRepository } from './flow.repository';
+import { FlowTechnoOrder } from './flow-techno-order.entity';
 
 @Module({
   controllers: [FlowController],
@@ -19,7 +20,7 @@ import { FlowRepository } from './flow.repository';
     FlowTechnoModule,
     FlowAppModule,
     SearchModule,
-    TypeOrmModule.forFeature([Flow, FlowRepository]),
+    TypeOrmModule.forFeature([Flow, FlowRepository, FlowTechnoOrder]),
   ],
 })
 export class FlowModule {}
