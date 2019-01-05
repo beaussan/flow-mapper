@@ -16,19 +16,19 @@ export class VerticalLayout1Component implements OnInit, OnDestroy {
   navigation: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {FuseConfigService} _fuseConfigService
+   * @param {FuseConfigService} fuseConfigService
    */
-  constructor(private _fuseConfigService: FuseConfigService) {
+  constructor(private fuseConfigService: FuseConfigService) {
     // Set the defaults
     this.navigation = navigation;
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -40,8 +40,8 @@ export class VerticalLayout1Component implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Subscribe to config changes
-    this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(config => {
         this.fuseConfig = config;
       });
@@ -52,7 +52,7 @@ export class VerticalLayout1Component implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 }

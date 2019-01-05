@@ -25,23 +25,23 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
 
   // Private
   private _enabled: boolean | '';
-  private _debouncedUpdate: any;
-  private _options: any;
-  private _unsubscribeAll: Subject<any>;
+  private debouncedUpdate: any;
+  private options: any;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
    * @param {ElementRef} elementRef
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {Platform} _platform
-   * @param {Router} _router
+   * @param {FuseConfigService} fuseConfigService
+   * @param {Platform} platform
+   * @param {Router} router
    */
   constructor(
     public elementRef: ElementRef,
-    private _fuseConfigService: FuseConfigService,
-    private _platform: Platform,
-    private _router: Router,
+    private fuseConfigService: FuseConfigService,
+    private platform: Platform,
+    private router: Router,
   ) {
     // Set the defaults
     this.isInitialized = false;
@@ -49,11 +49,11 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
 
     // Set the private defaults
     this._enabled = false;
-    this._debouncedUpdate = _.debounce(this.update, 150);
-    this._options = {
+    this.debouncedUpdate = _.debounce(this.update, 150);
+    this.options = {
       updateOnRouteChange: false,
     };
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -68,12 +68,12 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
   @Input()
   set fusePerfectScrollbarOptions(value) {
     // Merge the options
-    this._options = _.merge({}, this._options, value);
+    this.options = _.merge({}, this.options, value);
   }
 
   get fusePerfectScrollbarOptions(): any {
     // Return the options
-    return this._options;
+    return this.options;
   }
 
   /**
@@ -100,7 +100,7 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
     // If enabled...
     if (this.enabled) {
       // Init the directive
-      this._init();
+      this.init();
     } else {
       // Otherwise destroy it
       this._destroy();
@@ -121,17 +121,17 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
    */
   ngAfterViewInit(): void {
     // Check if scrollbars enabled or not from the main config
-    this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(settings => {
         this.enabled = settings.customScrollbars;
       });
 
     // Scroll to the top on every route change
     if (this.fusePerfectScrollbarOptions.updateOnRouteChange) {
-      this._router.events
+      this.router.events
         .pipe(
-          takeUntil(this._unsubscribeAll),
+          takeUntil(this.unsubscribeAll),
           filter(event => event instanceof NavigationEnd),
         )
         .subscribe(() => {
@@ -150,8 +150,8 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
     this._destroy();
 
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -163,14 +163,14 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
    *
    * @private
    */
-  _init(): void {
+  init(): void {
     // Return, if already initialized
     if (this.isInitialized) {
       return;
     }
 
     // Check if is mobile
-    if (this._platform.ANDROID || this._platform.IOS) {
+    if (this.platform.ANDROID || this.platform.IOS) {
       this.isMobile = true;
     }
 
@@ -228,7 +228,7 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy {
    */
   @HostListener('window:resize')
   _updateOnResize(): void {
-    this._debouncedUpdate();
+    this.debouncedUpdate();
   }
 
   // -----------------------------------------------------------------------------------------------------

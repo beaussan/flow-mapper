@@ -13,14 +13,14 @@ export class FuseMatchMediaService {
   /**
    * Constructor
    *
-   * @param {ObservableMedia} _observableMedia
+   * @param {ObservableMedia} observableMedia
    */
-  constructor(private _observableMedia: ObservableMedia) {
+  constructor(private observableMedia: ObservableMedia) {
     // Set the defaults
     this.activeMediaQuery = '';
 
     // Initialize
-    this._init();
+    this.init();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -32,8 +32,8 @@ export class FuseMatchMediaService {
    *
    * @private
    */
-  private _init(): void {
-    this._observableMedia
+  private init(): void {
+    this.observableMedia
       .asObservable()
       .pipe(
         debounceTime(500),

@@ -39,13 +39,13 @@
     fxLayout="column"
     [ngClass]="fuseConfig.layout.navbar.secondaryBackground"
   >
-    <div class="h3 username">Charlie Adams</div>
-    <div class="h5 email hint-text mt-8">adams.charlie@mail.com</div>
+    <div class="h3 username">{{ userName$ | async }}</div>
+    <div class="h5 email hint-text mt-8">{{ userEmail$ | async }}</div>
     <div
       class="avatar-container"
       [ngClass]="fuseConfig.layout.navbar.primaryBackground"
     >
-      <img class="avatar" src="assets/images/avatars/Velazquez.jpg" />
+      <img class="avatar" [src]="userPicture$ | async" />
     </div>
   </div>
 

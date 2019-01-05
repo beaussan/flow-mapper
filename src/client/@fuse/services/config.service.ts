@@ -13,26 +13,26 @@ export const FUSE_CONFIG = new InjectionToken('fuseCustomConfig');
 })
 export class FuseConfigService {
   // Private
-  private _configSubject: BehaviorSubject<any>;
+  private configSubject: BehaviorSubject<any>;
   private readonly _defaultConfig: any;
 
   /**
    * Constructor
    *
-   * @param {Platform} _platform
-   * @param {Router} _router
+   * @param {Platform} platform
+   * @param {Router} router
    * @param _config
    */
   constructor(
-    private _platform: Platform,
-    private _router: Router,
+    private platform: Platform,
+    private router: Router,
     @Inject(FUSE_CONFIG) private _config,
   ) {
     // Set the default config from the user provided config (from forRoot)
     this._defaultConfig = _config;
 
     // Initialize the service
-    this._init();
+    this.init();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -44,17 +44,17 @@ export class FuseConfigService {
    */
   set config(value) {
     // Get the value from the behavior subject
-    let config = this._configSubject.getValue();
+    let config = this.configSubject.getValue();
 
     // Merge the new config
     config = _.merge({}, config, value);
 
     // Notify the observers
-    this._configSubject.next(config);
+    this.configSubject.next(config);
   }
 
   get config(): any | Observable<any> {
-    return this._configSubject.asObservable();
+    return this.configSubject.asObservable();
   }
 
   /**
@@ -75,36 +75,36 @@ export class FuseConfigService {
    *
    * @private
    */
-  private _init(): void {
+  private init(): void {
     /**
      * Disable custom scrollbars if browser is mobile
      */
-    if (this._platform.ANDROID || this._platform.IOS) {
+    if (this.platform.ANDROID || this.platform.IOS) {
       this._defaultConfig.customScrollbars = false;
     }
 
     // Set the config from the default config
-    this._configSubject = new BehaviorSubject(_.cloneDeep(this._defaultConfig));
+    this.configSubject = new BehaviorSubject(_.cloneDeep(this._defaultConfig));
 
     // Reload the default layout config on every RoutesRecognized event
     // if the current layout config is different from the default one
-    this._router.events
+    this.router.events
       .pipe(filter(event => event instanceof RoutesRecognized))
       .subscribe(() => {
         if (
           !_.isEqual(
-            this._configSubject.getValue().layout,
+            this.configSubject.getValue().layout,
             this._defaultConfig.layout,
           )
         ) {
           // Clone the current config
-          const config = _.cloneDeep(this._configSubject.getValue());
+          const config = _.cloneDeep(this.configSubject.getValue());
 
           // Reset the layout from the default config
           config.layout = _.cloneDeep(this._defaultConfig.layout);
 
           // Set the config
-          this._configSubject.next(config);
+          this.configSubject.next(config);
         }
       });
   }
@@ -121,7 +121,7 @@ export class FuseConfigService {
    */
   setConfig(value, opts = { emitEvent: true }): void {
     // Get the value from the behavior subject
-    let config = this._configSubject.getValue();
+    let config = this.configSubject.getValue();
 
     // Merge the new config
     config = _.merge({}, config, value);
@@ -129,7 +129,7 @@ export class FuseConfigService {
     // If emitEvent option is true...
     if (opts.emitEvent === true) {
       // Notify the observers
-      this._configSubject.next(config);
+      this.configSubject.next(config);
     }
   }
 
@@ -139,7 +139,7 @@ export class FuseConfigService {
    * @returns {Observable<any>}
    */
   getConfig(): Observable<any> {
-    return this._configSubject.asObservable();
+    return this.configSubject.asObservable();
   }
 
   /**
@@ -147,6 +147,6 @@ export class FuseConfigService {
    */
   resetToDefaults(): void {
     // Set the config from the default config
-    this._configSubject.next(_.cloneDeep(this._defaultConfig));
+    this.configSubject.next(_.cloneDeep(this._defaultConfig));
   }
 }
