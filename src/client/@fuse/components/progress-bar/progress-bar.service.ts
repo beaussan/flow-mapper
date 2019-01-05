@@ -26,7 +26,7 @@ export class FuseProgressBarService {
    */
   constructor(private _router: Router) {
     // Initialize the service
-    this._init();
+    this.init();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ export class FuseProgressBarService {
    *
    * @private
    */
-  private _init(): void {
+  private init(): void {
     // Initialize the behavior subjects
     this._bufferValue = new BehaviorSubject(0);
     this._mode = new BehaviorSubject('indeterminate');

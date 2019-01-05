@@ -37,23 +37,23 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
   shortcutsEl: ElementRef;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {Renderer2} _renderer
-   * @param {CookieService} _cookieService
-   * @param {FuseMatchMediaService} _fuseMatchMediaService
-   * @param {FuseNavigationService} _fuseNavigationService
-   * @param {ObservableMedia} _observableMedia
+   * @param {Renderer2} renderer
+   * @param {CookieService} cookieService
+   * @param {FuseMatchMediaService} fuseMatchMediaService
+   * @param {FuseNavigationService} fuseNavigationService
+   * @param {ObservableMedia} observableMedia
    */
   constructor(
-    private _cookieService: CookieService,
-    private _fuseMatchMediaService: FuseMatchMediaService,
-    private _fuseNavigationService: FuseNavigationService,
-    private _observableMedia: ObservableMedia,
-    private _renderer: Renderer2,
+    private cookieService: CookieService,
+    private fuseMatchMediaService: FuseMatchMediaService,
+    private fuseNavigationService: FuseNavigationService,
+    private observableMedia: ObservableMedia,
+    private renderer: Renderer2,
   ) {
     // Set the defaults
     this.shortcutItems = [];
@@ -61,7 +61,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
     this.mobileShortcutsPanelActive = false;
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -73,13 +73,13 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Get the navigation items and flatten them
-    this.filteredNavigationItems = this.navigationItems = this._fuseNavigationService.getFlatNavigation(
+    this.filteredNavigationItems = this.navigationItems = this.fuseNavigationService.getFlatNavigation(
       this.navigation,
     );
 
-    if (this._cookieService.check('FUSE2.shortcuts')) {
+    if (this.cookieService.check('FUSE2.shortcuts')) {
       this.shortcutItems = JSON.parse(
-        this._cookieService.get('FUSE2.shortcuts'),
+        this.cookieService.get('FUSE2.shortcuts'),
       );
     } else {
       // User's shortcut items
@@ -112,10 +112,10 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
     }
 
     // Subscribe to media changes
-    this._fuseMatchMediaService.onMediaChange
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseMatchMediaService.onMediaChange
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(() => {
-        if (this._observableMedia.isActive('gt-sm')) {
+        if (this.observableMedia.isActive('gt-sm')) {
           this.hideMobileShortcutsPanel();
         }
       });
@@ -126,8 +126,8 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -172,7 +172,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
         this.shortcutItems.splice(i, 1);
 
         // Save to the cookies
-        this._cookieService.set(
+        this.cookieService.set(
           'FUSE2.shortcuts',
           JSON.stringify(this.shortcutItems),
         );
@@ -184,7 +184,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
     this.shortcutItems.push(itemToToggle);
 
     // Save to the cookies
-    this._cookieService.set(
+    this.cookieService.set(
       'FUSE2.shortcuts',
       JSON.stringify(this.shortcutItems),
     );
@@ -216,10 +216,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
    */
   showMobileShortcutsPanel(): void {
     this.mobileShortcutsPanelActive = true;
-    this._renderer.addClass(
-      this.shortcutsEl.nativeElement,
-      'show-mobile-panel',
-    );
+    this.renderer.addClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
   }
 
   /**
@@ -227,7 +224,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy {
    */
   hideMobileShortcutsPanel(): void {
     this.mobileShortcutsPanelActive = false;
-    this._renderer.removeClass(
+    this.renderer.removeClass(
       this.shortcutsEl.nativeElement,
       'show-mobile-panel',
     );

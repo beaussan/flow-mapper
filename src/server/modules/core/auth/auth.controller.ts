@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   MethodNotAllowedException,
@@ -20,9 +21,11 @@ import {
   ApiUseTags,
   ApiImplicitBody,
   ApiBearerAuth,
+  ApiImplicitQuery,
 } from '@nestjs/swagger';
 import { LocalAuthInterface } from './interfaces/local-auth.interface';
 import { ROLES } from '../../user/role.constants';
+import { FacebookLogin } from './interfaces/facebook-config.interface';
 
 // @UseGuards(RolesGuard)
 @ApiUseTags('Auth')
@@ -49,92 +52,8 @@ export class AuthController {
   async requestJsonWebTokenAfterLocalSignIn(
     @CurrentUser() user: User,
   ): Promise<Token> {
-    return await this.authService.createToken(user);
-  }
-
-  @Get('facebook/uri')
-  @ApiResponse({ status: 200, description: 'the facebook redirect uri' })
-  async requestFacebookRedirectUrl(): Promise<{ redirect_uri: string }> {
-    if (process.env.FB_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
-    }
-    return await this.authService.requestFacebookRedirectUri();
-  }
-
-  @Post('facebook/signin')
-  async facebookSignIn(@Req() req: Request): Promise<Token> {
-    if (process.env.FB_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
-    }
-    return await this.authService.facebookSignIn(req.body.code);
-  }
-
-  @Post('facebook/token')
-  @ApiResponse({ status: 200, description: 'the jwt auth token' })
-  async requestJsonWebTokenAfterFacebookSignIn(
-    @CurrentUser() user: User,
-  ): Promise<Token> {
-    if (process.env.FB_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('FB LOGIN NOT ENABLED');
-    }
-    return await this.authService.createToken(user);
-  }
-
-  @Get('twitter/uri')
-  @ApiResponse({ status: 200, description: 'the twitter redirect uri' })
-  async requestTwitterRedirectUri(): Promise<any> {
-    if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
-    }
-    return await this.authService.requestTwitterRedirectUri();
-  }
-
-  @Post('twitter/signin')
-  async twitterSignIn(@Req() req: Request): Promise<any> {
-    if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
-    }
-    return await this.authService.twitterSignIn(
-      req.body.oauth_token,
-      req.body.oauth_verifier,
-    );
-  }
-
-  @Post('twitter/token')
-  @ApiResponse({ status: 200, description: 'the jwt auth token' })
-  async requestJsonWebTokenAfterTwitterSignIn(
-    @CurrentUser() user: User,
-  ): Promise<Token> {
-    if (process.env.TWITTER_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('TWITTER LOGIN NOT ENABLED');
-    }
-    return await this.authService.createToken(user);
-  }
-
-  @Get('google/uri')
-  @ApiResponse({ status: 200, description: 'the google redirect uri' })
-  async requestGoogleRedirectUri(): Promise<any> {
-    if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
-    }
-    return await this.authService.requestGoogleRedirectUri();
-  }
-
-  @Post('google/signin')
-  async googleSignIn(@Req() req: Request): Promise<any> {
-    if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
-    }
-    return await this.authService.googleSignIn(req.body.code);
-  }
-
-  @Post('google/token')
-  @ApiResponse({ status: 200, description: 'the jwt auth token' })
-  async requestJsonWebTokenAfterGoogleSignIn(
-    @CurrentUser() user: User,
-  ): Promise<Token> {
-    if (process.env.GOOGLE_AUTH_ENABLED !== 'true') {
-      throw new MethodNotAllowedException('GOOGLE LOGIN NOT ENABLED');
+    if (process.env.LOCAL_REGISTER_ENABLED !== 'true') {
+      throw new MethodNotAllowedException('LOCAL REGISTER NOT ENABLED');
     }
     return await this.authService.createToken(user);
   }

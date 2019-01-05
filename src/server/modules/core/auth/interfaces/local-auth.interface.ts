@@ -11,4 +11,8 @@ export class LocalAuthInterface {
   @IsNotEmpty()
   @MinLength(3)
   password: string;
+
+  @ApiModelProperty({ example: 'Charles Xavier' })
+  @IsNotEmpty()
+  name: string;
 }

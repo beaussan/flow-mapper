@@ -17,18 +17,18 @@ export class FuseProgressBarComponent implements OnInit, OnDestroy {
   visible: boolean;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {FuseProgressBarService} _fuseProgressBarService
+   * @param {FuseProgressBarService} fuseProgressBarService
    */
-  constructor(private _fuseProgressBarService: FuseProgressBarService) {
+  constructor(private fuseProgressBarService: FuseProgressBarService) {
     // Set the defaults
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -42,29 +42,29 @@ export class FuseProgressBarComponent implements OnInit, OnDestroy {
     // Subscribe to the progress bar service properties
 
     // Buffer value
-    this._fuseProgressBarService.bufferValue
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseProgressBarService.bufferValue
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(bufferValue => {
         this.bufferValue = bufferValue;
       });
 
     // Mode
-    this._fuseProgressBarService.mode
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseProgressBarService.mode
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(mode => {
         this.mode = mode;
       });
 
     // Value
-    this._fuseProgressBarService.value
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseProgressBarService.value
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(value => {
         this.value = value;
       });
 
     // Visible
-    this._fuseProgressBarService.visible
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseProgressBarService.visible
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(visible => {
         this.visible = visible;
       });
@@ -75,8 +75,8 @@ export class FuseProgressBarComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------

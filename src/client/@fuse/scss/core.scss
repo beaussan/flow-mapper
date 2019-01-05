@@ -1,6 +1,9 @@
 // This file meant to be imported only once! Use fuse.scss to access
 // to the core Fuse and Angular Material mixins
 
+// toasts
+@import '~ngx-toastr/toastr.css';
+
 // ngx-datatable
 @import '~@swimlane/ngx-datatable/release/themes/material';
 

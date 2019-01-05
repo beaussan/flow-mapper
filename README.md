@@ -82,3 +82,13 @@ $ yarn server:test
 # e2e tests
 $ yarn server:e2e
 ```
+
+## Todos
+
+- [ ] auth   
+  - [ ] facebook  
+  - [ ] google  
+  - [ ] twitter  
+  - [x] local
+- [ ] flow
+- [ ] apps

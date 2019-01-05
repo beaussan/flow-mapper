@@ -19,10 +19,10 @@ export class NavbarComponent {
   /**
    * Constructor
    *
-   * @param {ElementRef} _elementRef
-   * @param {Renderer2} _renderer
+   * @param {ElementRef} elementRef
+   * @param {Renderer2} renderer
    */
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
     // Set the private defaults
     this._variant = 'vertical-style-1';
   }
@@ -41,12 +41,12 @@ export class NavbarComponent {
   @Input()
   set variant(value: string) {
     // Remove the old class name
-    this._renderer.removeClass(this._elementRef.nativeElement, this.variant);
+    this.renderer.removeClass(this.elementRef.nativeElement, this.variant);
 
     // Store the variant value
     this._variant = value;
 
     // Add the new class name
-    this._renderer.addClass(this._elementRef.nativeElement, value);
+    this.renderer.addClass(this.elementRef.nativeElement, value);
   }
 }

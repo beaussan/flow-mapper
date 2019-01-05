@@ -35,7 +35,11 @@ export class AuthService implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     if ((await this.userService.getNumberUserRegistredWithLocalAuth()) === 0) {
-      const user = await this.registerUser('admin@localhost.fr', 'ADMIN');
+      const user = await this.registerUser(
+        'admin@localhost.fr',
+        'ADMIN',
+        'Mr admin',
+      );
       await this.userService.setUserAsAdmin(user);
       this.logger.info('Creating default admin user');
     }
@@ -74,21 +78,25 @@ export class AuthService implements OnModuleInit {
 
   facebookSignIn(code: any): Promise<Token> {
     const queryParams: string[] = [
-      `client_id=${this.fbConfig.client_id}`,
-      `redirect_uri=${this.fbConfig.oauth_redirect_uri}`,
-      `client_secret=${this.fbConfig.client_secret}`,
-      `code=${code}`,
+      `client_id={${this.fbConfig.client_id}}`,
+      `redirect_uri={${this.fbConfig.oauth_redirect_uri}}`,
+      `client_secret={${this.fbConfig.client_secret}}`,
+      `code={${code}}`,
     ];
     const uri = `${this.fbConfig.access_token_uri}?${queryParams.join('&')}`;
+
+    console.log('Calling ', uri);
 
     return new Promise(
       (resolve: (data: any) => void, reject: (data: any) => void) => {
         get(uri, (error: Error, response: Response, body: any) => {
           if (error) {
+            this.logger.error('Error get : ', error);
             return reject(error);
           }
 
           if (body.error) {
+            this.logger.error('Error body : ', body);
             return reject(body.error);
           }
 
@@ -340,11 +348,16 @@ export class AuthService implements OnModuleInit {
     return this.userService.registerOne(user);
   }
 
-  async registerUser(email: string, password: string): Promise<User> {
+  async registerUser(
+    email: string,
+    password: string,
+    name: string,
+  ): Promise<User> {
     const user = new User();
     user.authType = AuthType.LOCAL;
     user.localPassword = await this.crypto.hash(password);
     user.localEmail = email;
+    user.name = name;
     return this.userService.registerOne(user);
   }
 

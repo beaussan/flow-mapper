@@ -28,6 +28,9 @@ export class User extends DbAuditModel {
   localEmail: string;
 
   @Column({ nullable: true })
+  name: string;
+
+  @Column({ nullable: true })
   @Exclude()
   localPassword: string;
 

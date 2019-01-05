@@ -1,0 +1,9 @@
+IS_AUTH_ENABLED=false
+API_PORT=3030
+API_HOST=localhost
+APP_URL=
+LOG_LEVEL=info
+DATABASE_URL=postgres://flow:mappingpasswd@flow-postgresql:5432/flow
+JWT_SECRET=bananana
+SEARCH_APP_ID=
+SEARCH_APP_ADMIN_KEY=

@@ -28,27 +28,27 @@ export class FuseMatSidenavHelperDirective implements OnInit, OnDestroy {
   matIsLockedOpen: string;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {FuseMatchMediaService} _fuseMatchMediaService
-   * @param {FuseMatSidenavHelperService} _fuseMatSidenavHelperService
-   * @param {MatSidenav} _matSidenav
-   * @param {ObservableMedia} _observableMedia
+   * @param {FuseMatchMediaService} fuseMatchMediaService
+   * @param {FuseMatSidenavHelperService} fuseMatSidenavHelperService
+   * @param {MatSidenav} matSidenav
+   * @param {ObservableMedia} observableMedia
    */
   constructor(
-    private _fuseMatchMediaService: FuseMatchMediaService,
-    private _fuseMatSidenavHelperService: FuseMatSidenavHelperService,
-    private _matSidenav: MatSidenav,
-    private _observableMedia: ObservableMedia,
+    private fuseMatchMediaService: FuseMatchMediaService,
+    private fuseMatSidenavHelperService: FuseMatSidenavHelperService,
+    private matSidenav: MatSidenav,
+    private observableMedia: ObservableMedia,
   ) {
     // Set the defaults
     this.isLockedOpen = true;
 
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -60,32 +60,32 @@ export class FuseMatSidenavHelperDirective implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Register the sidenav to the service
-    this._fuseMatSidenavHelperService.setSidenav(
+    this.fuseMatSidenavHelperService.setSidenav(
       this.fuseMatSidenavHelper,
-      this._matSidenav,
+      this.matSidenav,
     );
 
-    if (this._observableMedia.isActive(this.matIsLockedOpen)) {
+    if (this.observableMedia.isActive(this.matIsLockedOpen)) {
       this.isLockedOpen = true;
-      this._matSidenav.mode = 'side';
-      this._matSidenav.toggle(true);
+      this.matSidenav.mode = 'side';
+      this.matSidenav.toggle(true);
     } else {
       this.isLockedOpen = false;
-      this._matSidenav.mode = 'over';
-      this._matSidenav.toggle(false);
+      this.matSidenav.mode = 'over';
+      this.matSidenav.toggle(false);
     }
 
-    this._fuseMatchMediaService.onMediaChange
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseMatchMediaService.onMediaChange
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(() => {
-        if (this._observableMedia.isActive(this.matIsLockedOpen)) {
+        if (this.observableMedia.isActive(this.matIsLockedOpen)) {
           this.isLockedOpen = true;
-          this._matSidenav.mode = 'side';
-          this._matSidenav.toggle(true);
+          this.matSidenav.mode = 'side';
+          this.matSidenav.toggle(true);
         } else {
           this.isLockedOpen = false;
-          this._matSidenav.mode = 'over';
-          this._matSidenav.toggle(false);
+          this.matSidenav.mode = 'over';
+          this.matSidenav.toggle(false);
         }
       });
   }
@@ -95,8 +95,8 @@ export class FuseMatSidenavHelperDirective implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 }
 
@@ -110,10 +110,10 @@ export class FuseMatSidenavTogglerDirective {
   /**
    * Constructor
    *
-   * @param {FuseMatSidenavHelperService} _fuseMatSidenavHelperService
+   * @param {FuseMatSidenavHelperService} fuseMatSidenavHelperService
    */
   constructor(
-    private _fuseMatSidenavHelperService: FuseMatSidenavHelperService,
+    private fuseMatSidenavHelperService: FuseMatSidenavHelperService,
   ) {}
 
   // -----------------------------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ export class FuseMatSidenavTogglerDirective {
    */
   @HostListener('click')
   onClick(): void {
-    this._fuseMatSidenavHelperService
+    this.fuseMatSidenavHelperService
       .getSidenav(this.fuseMatSidenavToggler)
       .toggle();
   }

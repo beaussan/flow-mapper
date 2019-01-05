@@ -26,19 +26,19 @@ export class FuseNavigationComponent implements OnInit {
   navigation: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    *
-   * @param {ChangeDetectorRef} _changeDetectorRef
-   * @param {FuseNavigationService} _fuseNavigationService
+   * @param {ChangeDetectorRef} changeDetectorRef
+   * @param {FuseNavigationService} fuseNavigationService
    */
   constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _fuseNavigationService: FuseNavigationService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private fuseNavigationService: FuseNavigationService,
   ) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -51,29 +51,29 @@ export class FuseNavigationComponent implements OnInit {
   ngOnInit(): void {
     // Load the navigation either from the input or from the service
     this.navigation =
-      this.navigation || this._fuseNavigationService.getCurrentNavigation();
+      this.navigation || this.fuseNavigationService.getCurrentNavigation();
 
     // Subscribe to the current navigation changes
-    this._fuseNavigationService.onNavigationChanged
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseNavigationService.onNavigationChanged
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(() => {
         // Load the navigation
-        this.navigation = this._fuseNavigationService.getCurrentNavigation();
+        this.navigation = this.fuseNavigationService.getCurrentNavigation();
 
         // Mark for check
-        this._changeDetectorRef.markForCheck();
+        this.changeDetectorRef.markForCheck();
       });
 
     // Subscribe to navigation item
     merge(
-      this._fuseNavigationService.onNavigationItemAdded,
-      this._fuseNavigationService.onNavigationItemUpdated,
-      this._fuseNavigationService.onNavigationItemRemoved,
+      this.fuseNavigationService.onNavigationItemAdded,
+      this.fuseNavigationService.onNavigationItemUpdated,
+      this.fuseNavigationService.onNavigationItemRemoved,
     )
-      .pipe(takeUntil(this._unsubscribeAll))
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(() => {
         // Mark for check
-        this._changeDetectorRef.markForCheck();
+        this.changeDetectorRef.markForCheck();
       });
   }
 }

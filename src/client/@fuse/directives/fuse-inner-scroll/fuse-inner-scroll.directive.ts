@@ -17,24 +17,24 @@ import { FuseMatchMediaService } from '@fuse/services/match-media.service';
 /*tslint:enable:directive-selector  */
 export class FuseInnerScrollDirective implements OnInit, OnDestroy {
   // Private
-  private _parent: any;
-  private _grandParent: any;
-  private _unsubscribeAll: Subject<any>;
+  private parent: any;
+  private grandParent: any;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    *
-   * @param {ElementRef} _elementRef
-   * @param {FuseMatchMediaService} _fuseMediaMatchService
-   * @param {Renderer2} _renderer
+   * @param {ElementRef} elementRef
+   * @param {FuseMatchMediaService} fuseMediaMatchService
+   * @param {Renderer2} renderer
    */
   constructor(
-    private _elementRef: ElementRef,
-    private _fuseMediaMatchService: FuseMatchMediaService,
-    private _renderer: Renderer2,
+    private elementRef: ElementRef,
+    private fuseMediaMatchService: FuseMatchMediaService,
+    private renderer: Renderer2,
   ) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -46,24 +46,24 @@ export class FuseInnerScrollDirective implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Get the parent
-    this._parent = this._renderer.parentNode(this._elementRef.nativeElement);
+    this.parent = this.renderer.parentNode(this.elementRef.nativeElement);
 
     // Return, if there is no parent
-    if (!this._parent) {
+    if (!this.parent) {
       return;
     }
 
     // Get the grand parent
-    this._grandParent = this._renderer.parentNode(this._parent);
+    this.grandParent = this.renderer.parentNode(this.parent);
 
     // Register to the media query changes
-    this._fuseMediaMatchService.onMediaChange
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseMediaMatchService.onMediaChange
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(alias => {
         if (alias === 'xs') {
-          this._removeClass();
+          this.removeClass();
         } else {
-          this._addClass();
+          this.addClass();
         }
       });
   }
@@ -73,16 +73,16 @@ export class FuseInnerScrollDirective implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Return, if there is no parent
-    if (!this._parent) {
+    if (!this.parent) {
       return;
     }
 
     // Remove the class
-    this._removeClass();
+    this.removeClass();
 
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -94,17 +94,17 @@ export class FuseInnerScrollDirective implements OnInit, OnDestroy {
    *
    * @private
    */
-  private _addClass(): void {
+  private addClass(): void {
     // Add the inner-scroll class
-    this._renderer.addClass(this._grandParent, 'inner-scroll');
+    this.renderer.addClass(this.grandParent, 'inner-scroll');
   }
 
   /**
    * Remove the class name
    * @private
    */
-  private _removeClass(): void {
+  private removeClass(): void {
     // Remove the inner-scroll class
-    this._renderer.removeClass(this._grandParent, 'inner-scroll');
+    this.renderer.removeClass(this.grandParent, 'inner-scroll');
   }
 }

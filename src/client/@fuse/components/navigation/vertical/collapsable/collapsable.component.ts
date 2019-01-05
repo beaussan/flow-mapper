@@ -31,18 +31,18 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
   public isOpen = false;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
    */
   constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _fuseNavigationService: FuseNavigationService,
-    private _router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    private fuseNavigationService: FuseNavigationService,
+    private router: Router,
   ) {
     // Set the private defaults
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -54,10 +54,10 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Listen for router events
-    this._router.events
+    this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
-        takeUntil(this._unsubscribeAll),
+        takeUntil(this.unsubscribeAll),
       )
       .subscribe((event: NavigationEnd) => {
         // Check if the url can be found in
@@ -70,8 +70,8 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
       });
 
     // Listen for collapsing of any navigation item
-    this._fuseNavigationService.onItemCollapsed
-      .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseNavigationService.onItemCollapsed
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(clickedItem => {
         if (clickedItem && clickedItem.children) {
           // Check if the clicked item is one
@@ -82,7 +82,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
 
           // Check if the url can be found in
           // one of the children of this item
-          if (this.isUrlInChildren(this.item, this._router.url)) {
+          if (this.isUrlInChildren(this.item, this.router.url)) {
             return;
           }
 
@@ -95,7 +95,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
 
     // Check if the url can be found in
     // one of the children of this item
-    if (this.isUrlInChildren(this.item, this._router.url)) {
+    if (this.isUrlInChildren(this.item, this.router.url)) {
       this.expand();
     } else {
       this.collapse();
@@ -103,14 +103,14 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
 
     // Subscribe to navigation item
     merge(
-      this._fuseNavigationService.onNavigationItemAdded,
-      this._fuseNavigationService.onNavigationItemUpdated,
-      this._fuseNavigationService.onNavigationItemRemoved,
+      this.fuseNavigationService.onNavigationItemAdded,
+      this.fuseNavigationService.onNavigationItemUpdated,
+      this.fuseNavigationService.onNavigationItemRemoved,
     )
-      .pipe(takeUntil(this._unsubscribeAll))
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(() => {
         // Mark for check
-        this._changeDetectorRef.markForCheck();
+        this.changeDetectorRef.markForCheck();
       });
   }
 
@@ -119,8 +119,8 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -138,8 +138,8 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
     this.isOpen = !this.isOpen;
 
     // Navigation collapse toggled...
-    this._fuseNavigationService.onItemCollapsed.next(this.item);
-    this._fuseNavigationService.onItemCollapseToggled.next();
+    this.fuseNavigationService.onItemCollapsed.next(this.item);
+    this.fuseNavigationService.onItemCollapseToggled.next();
   }
 
   /**
@@ -153,9 +153,9 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
     this.isOpen = true;
 
     // Mark for check
-    this._changeDetectorRef.markForCheck();
+    this.changeDetectorRef.markForCheck();
 
-    this._fuseNavigationService.onItemCollapseToggled.next();
+    this.fuseNavigationService.onItemCollapseToggled.next();
   }
 
   /**
@@ -169,9 +169,9 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
     this.isOpen = false;
 
     // Mark for check
-    this._changeDetectorRef.markForCheck();
+    this.changeDetectorRef.markForCheck();
 
-    this._fuseNavigationService.onItemCollapseToggled.next();
+    this.fuseNavigationService.onItemCollapseToggled.next();
   }
 
   /**

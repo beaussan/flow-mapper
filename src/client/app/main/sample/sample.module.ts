@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { SampleComponent } from './sample.component';
 import { HelloComponent } from './hello/hello.component';
+import { ConnectedGuard } from '../../common/connected.guard';
 
-const routes = [
+const routes: Route[] = [
   {
     path: 'sample',
     component: SampleComponent,
+    canActivate: [ConnectedGuard],
   },
 ];
 

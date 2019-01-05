@@ -23,7 +23,7 @@ export class FuseCopierService {
     this.createTextareaAndSelect(text);
 
     const copySuccessful = document.execCommand('copy');
-    this._removeFake();
+    this.removeFake();
 
     return copySuccessful;
   }
@@ -62,7 +62,7 @@ export class FuseCopierService {
    *
    * @private
    */
-  private _removeFake(): void {
+  private removeFake(): void {
     if (this.textarea) {
       document.body.removeChild(this.textarea);
       this.textarea = null;

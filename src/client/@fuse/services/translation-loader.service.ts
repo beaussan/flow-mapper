@@ -13,9 +13,9 @@ export class FuseTranslationLoaderService {
   /**
    * Constructor
    *
-   * @param {TranslateService} _translateService
+   * @param {TranslateService} translateService
    */
-  constructor(private _translateService: TranslateService) {}
+  constructor(private translateService: TranslateService) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
@@ -32,7 +32,7 @@ export class FuseTranslationLoaderService {
     locales.forEach(locale => {
       // use setTranslation() with the third argument set to true
       // to append translations instead of replacing them
-      this._translateService.setTranslation(locale.lang, locale.data, true);
+      this.translateService.setTranslation(locale.lang, locale.data, true);
     });
   }
 }

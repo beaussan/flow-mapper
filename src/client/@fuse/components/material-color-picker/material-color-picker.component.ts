@@ -39,8 +39,8 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
 
   // Private
   private _color: string;
-  private _modelChange: (value: any) => void;
-  private _modelTouched: (value: any) => void;
+  private modelChange: (value: any) => void;
+  private modelTouched: (value: any) => void;
 
   /**
    * Constructor
@@ -70,8 +70,8 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
 
     // Set the private defaults
     this._color = '';
-    this._modelChange = () => {};
-    this._modelTouched = () => {};
+    this.modelChange = () => {};
+    this.modelTouched = () => {};
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
    * @param fn
    */
   registerOnChange(fn: any): void {
-    this._modelChange = fn;
+    this.modelChange = fn;
   }
 
   /**
@@ -128,7 +128,7 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
    * @param fn
    */
   registerOnTouched(fn: any): void {
-    this._modelTouched = fn;
+    this.modelTouched = fn;
   }
 
   /**
@@ -241,10 +241,10 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
     this.colorChanged.emit(this.selectedColor);
 
     // Mark the model as touched
-    this._modelTouched(this.selectedColor.class);
+    this.modelTouched(this.selectedColor.class);
 
     // Update the model
-    this._modelChange(this.selectedColor.class);
+    this.modelChange(this.selectedColor.class);
   }
 
   /**

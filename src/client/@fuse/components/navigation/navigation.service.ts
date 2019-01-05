@@ -19,8 +19,8 @@ export class FuseNavigationService {
   private _onNavigationItemUpdated: BehaviorSubject<any>;
   private _onNavigationItemRemoved: BehaviorSubject<any>;
 
-  private _currentNavigationKey: string;
-  private _registry: { [key: string]: any } = {};
+  private currentNavigationKey: string;
+  private registry: { [key: string]: any } = {};
 
   /**
    * Constructor
@@ -31,7 +31,7 @@ export class FuseNavigationService {
     this.onItemCollapseToggled = new Subject();
 
     // Set the private defaults
-    this._currentNavigationKey = null;
+    this.currentNavigationKey = null;
     this._onNavigationChanged = new BehaviorSubject(null);
     this._onNavigationRegistered = new BehaviorSubject(null);
     this._onNavigationUnregistered = new BehaviorSubject(null);
@@ -111,7 +111,7 @@ export class FuseNavigationService {
    */
   register(key, navigation): void {
     // Check if the key already being used
-    if (this._registry[key]) {
+    if (this.registry[key]) {
       console.error(
         `The navigation with the key '${key}' already exists. Either unregister it first or use a unique key.`,
       );
@@ -120,7 +120,7 @@ export class FuseNavigationService {
     }
 
     // Add to the registry
-    this._registry[key] = navigation;
+    this.registry[key] = navigation;
 
     // Notify the subject
     this._onNavigationRegistered.next([key, navigation]);
@@ -132,14 +132,14 @@ export class FuseNavigationService {
    */
   unregister(key): void {
     // Check if the navigation exists
-    if (!this._registry[key]) {
+    if (!this.registry[key]) {
       console.warn(
         `The navigation with the key '${key}' doesn't exist in the registry.`,
       );
     }
 
     // Unregister the sidebar
-    delete this._registry[key];
+    delete this.registry[key];
 
     // Notify the subject
     this._onNavigationUnregistered.next(key);
@@ -153,7 +153,7 @@ export class FuseNavigationService {
    */
   getNavigation(key): any {
     // Check if the navigation exists
-    if (!this._registry[key]) {
+    if (!this.registry[key]) {
       console.warn(
         `The navigation with the key '${key}' doesn't exist in the registry.`,
       );
@@ -162,7 +162,7 @@ export class FuseNavigationService {
     }
 
     // Return the sidebar
-    return this._registry[key];
+    return this.registry[key];
   }
 
   /**
@@ -199,13 +199,13 @@ export class FuseNavigationService {
    * @returns {any}
    */
   getCurrentNavigation(): any {
-    if (!this._currentNavigationKey) {
+    if (!this.currentNavigationKey) {
       console.warn(`The current navigation is not set.`);
 
       return;
     }
 
-    return this.getNavigation(this._currentNavigationKey);
+    return this.getNavigation(this.currentNavigationKey);
   }
 
   /**
@@ -216,7 +216,7 @@ export class FuseNavigationService {
    */
   setCurrentNavigation(key): void {
     // Check if the sidebar exists
-    if (!this._registry[key]) {
+    if (!this.registry[key]) {
       console.warn(
         `The navigation with the key '${key}' doesn't exist in the registry.`,
       );
@@ -225,7 +225,7 @@ export class FuseNavigationService {
     }
 
     // Set the current navigation key
-    this._currentNavigationKey = key;
+    this.currentNavigationKey = key;
 
     // Notify the subject
     this._onNavigationChanged.next(key);

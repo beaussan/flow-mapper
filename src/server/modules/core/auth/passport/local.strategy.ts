@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  Inject,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { use } from 'passport';
 import { Strategy } from 'passport-local';
 import { AuthService } from '../auth.service';
@@ -16,8 +21,14 @@ export class LocalStrategy {
         {
           usernameField: 'email',
           passwordField: 'password',
+          passReqToCallback: true,
         },
-        async (email: string, password: string, done: (a, b) => void) => {
+        async (
+          req: any,
+          email: string,
+          password: string,
+          done: (a, b) => void,
+        ) => {
           try {
             if ((await this.authService.findOneWithEmail(email)).isPresent) {
               return done(
@@ -26,7 +37,12 @@ export class LocalStrategy {
               );
             }
 
-            const user = await this.authService.registerUser(email, password);
+            const name = req.body.name;
+            const user = await this.authService.registerUser(
+              email,
+              password,
+              name,
+            );
 
             done(null, user);
           } catch (error) {
