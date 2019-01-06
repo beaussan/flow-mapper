@@ -21,6 +21,22 @@ export const navigation: FuseNavigation[] = [
           fg: '#FFFFFF',
         },
       },
+      {
+        id: 'apps',
+        title: 'Apps',
+        translate: 'NAV.APPS.TITLE',
+        type: 'item',
+        icon: 'apps',
+        url: '/apps',
+      },
+      {
+        id: 'flows',
+        title: 'Flows',
+        translate: 'NAV.FLOWS.TITLE',
+        type: 'item',
+        icon: 'import_export',
+        url: '/flows',
+      },
     ],
   },
 ];

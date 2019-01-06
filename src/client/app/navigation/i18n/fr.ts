@@ -7,6 +7,12 @@ export const locale = {
         TITLE: 'Exemple',
         BADGE: '25',
       },
+      FLOWS: {
+        TITLE: 'Flux',
+      },
+      APPS: {
+        TITLE: 'Apps',
+      },
     },
   },
 };
