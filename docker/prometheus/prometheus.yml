@@ -44,6 +44,14 @@ scrape_configs:
     static_configs:
       - targets: ['proxy-traefik:8080']
 
+  - job_name: 'flow-server'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['flow-nestjs-server:3030']
+
   - job_name: 'cadvisor'
 
     # Override the global default and scrape targets from this job every 5 seconds.

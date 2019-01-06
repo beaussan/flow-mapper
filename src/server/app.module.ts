@@ -24,6 +24,7 @@ import * as passport from 'passport';
 import { FlowAppController } from './modules/flow-app/flow-app.controller';
 import { AppTechnoController } from './modules/app-techno/app-techno.controller';
 import { FlowTechnoController } from './modules/flow-techno/flow-techno.controller';
+import { PromModule } from './modules/core/metrics/metrics.module';
 
 @Module({
   imports: [
@@ -39,6 +40,13 @@ import { FlowTechnoController } from './modules/flow-techno/flow-techno.controll
       logging: 'all',
       // logging: 'all',
     }),
+
+    PromModule.forRoot({
+      defaultLabels: {
+        app: 'v1.0.0',
+      },
+    }),
+
     RouterModule.forRoutes(appRoutes),
 
     AuthModule,
@@ -65,9 +73,17 @@ export class AppModule implements NestModule {
 
     consumer
       .apply(passport.authenticate(['jwt', 'anonymous'], { session: false }))
-      .forRoutes(AppTechnoController, FlowAppController, FlowTechnoController, {
-        path: 'auth/authorized',
-        method: RequestMethod.GET,
-      });
+      .forRoutes(
+        AppTechnoController,
+        FlowAppController,
+        FlowTechnoController,
+        {
+          path: 'auth/authorized',
+          method: RequestMethod.GET,
+        },
+        'apps',
+        'flow-technos',
+        'app-technos',
+      );
   }
 }
