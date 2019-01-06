@@ -1,40 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "Prometheus",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.3.1"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "5.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -51,7 +15,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
   "links": [],
   "panels": [
     {
@@ -346,8 +309,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(\n  sum(rate(http_request_duration_seconds_bucket{le=\"0.3\"}[1m])) by (path, method)\n+\n  ( sum(rate(http_request_duration_seconds_bucket{le=\"1.5\"}[1m])) by (path, method) / 2)\n) / sum(rate(http_request_duration_seconds_bucket[1m])) by (path, method)",
+          "expr": "(\n  sum(rate(http_request_duration_seconds_bucket{le=\"0.3\"}[1m])) by (job)\n+\n  sum(rate(http_request_duration_seconds_bucket{le=\"1.5\"}[1m])) by (job)\n) / 2 / sum(rate(http_request_duration_seconds_count[1m])) by (job)",
           "format": "time_series",
+          "hide": false,
           "instant": false,
           "intervalFactor": 1,
           "legendFormat": "",
@@ -376,7 +340,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "1",
           "min": "0",
           "show": true
         },
@@ -567,7 +531,11 @@
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
-      "colors": ["#299c46", "rgba(237, 129, 40, 0.89)", "#d44a3a"],
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
       "datasource": "Prometheus",
       "format": "none",
       "gauge": {
@@ -644,13 +612,16 @@
   "refresh": false,
   "schemaVersion": 16,
   "style": "dark",
-  "tags": ["nestjs", "flow-mapper"],
+  "tags": [
+    "nestjs",
+    "flow-mapper"
+  ],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-6h",
-    "to": "now"
+    "from": "2019-01-06T21:41:37.809Z",
+    "to": "2019-01-06T22:02:27.809Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -665,10 +636,20 @@
       "2h",
       "1d"
     ],
-    "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
   },
   "timezone": "",
   "title": "Dashboard flow",
   "uid": "Ucn74Y8mk",
-  "version": 7
+  "version": 11
 }
