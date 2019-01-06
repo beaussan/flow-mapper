@@ -32,6 +32,8 @@ import { PrefixerInterceptor } from './http/prefixer.interceptor';
 import { AuthService } from './services/auth.service';
 import { AuthState } from './state/auth.state';
 import { ToastrModule } from 'ngx-toastr';
+import { AppsModule } from './main/apps/apps.module';
+import { FlowsModule } from './main/flows/flows.module';
 
 const appRoutes: Routes = [
   {
@@ -83,6 +85,8 @@ const appRoutes: Routes = [
     // App modules
     LayoutModule,
     SampleModule,
+    AppsModule,
+    FlowsModule,
   ],
   providers: [
     {
