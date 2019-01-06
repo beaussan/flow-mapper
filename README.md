@@ -59,7 +59,7 @@ $ yarn client:start
 To run the server, you have to start the database first :
 
 ```bash
-$ docker-compose -f docker/postresql.yml up -d
+$ docker-compose -f docker/postgresql.yml up -d
 ```
 
 Then, start the server :
