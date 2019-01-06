@@ -1,6 +1,6 @@
 import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Counter, Histogram } from 'prom-client';
 import { InjectHistogramMetric } from '../common/prom.decorators';
 import * as UrlValueParser from 'url-value-parser';
@@ -36,6 +36,18 @@ export class MetricsInterceptor implements NestInterceptor<any, any> {
         labels.status_code = this.getStatusCode(res);
         labels.path = this.getPath(req);
         timer();
+      }),
+      catchError(err => {
+        const res = context.switchToHttp().getResponse();
+        labels.method = req.method;
+        if (err.status) {
+          labels.status_code = err.status;
+        } else {
+          labels.status_code = '500';
+        }
+        labels.path = this.getPath(req);
+        timer();
+        return throwError(err);
       }),
     );
   }
