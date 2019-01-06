@@ -63,7 +63,7 @@ export class AppTechnosState {
   @Action(FetchOneAppTechnoSuccess)
   fetchOneAppTechnoSuccess(
     ctx: StateContext<AppTechnoStateModel>,
-    { currentAppTechno }: FetchAllAppTechnoSuccess,
+    { currentAppTechno }: FetchOneAppTechnoSuccess,
   ) {
     ctx.patchState({ currentAppTechno });
   }
