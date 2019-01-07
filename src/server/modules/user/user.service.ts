@@ -63,7 +63,14 @@ export class UserService implements OnModuleInit {
     const userRole = await this.roleRepository.findOne({
       where: { key: ROLES.ROLE_USER },
     });
-    user.roles = [userRole];
+    const roleEditFlow = await this.roleRepository.findOne({
+      where: { key: ROLES.ROLE_EDIT_FLOW },
+    });
+    const roleEditApps = await this.roleRepository.findOne({
+      where: { key: ROLES.ROLE_EDIT_APPS },
+    });
+
+    user.roles = [userRole, roleEditApps, roleEditFlow];
     return this.userRepository.save(user);
   }
 

@@ -104,6 +104,7 @@
     "perfect-scrollbar": "1.4.0",
     "pg": "^7.4.3",
     "prismjs": "1.15.0",
+    "prom-client": "^11.2.1",
     "reflect-metadata": "^0.1.12",
     "request": "^2.88.0",
     "rxjs": "6.3.3",
@@ -111,6 +112,7 @@
     "typeorm": "^0.2.9",
     "typescript": "3.1.6",
     "typescript-optional": "^1.8.0",
+    "url-value-parser": "^2.0.0",
     "web-animations-js": "2.3.1",
     "winston": "^3.1.0",
     "zone.js": "0.8.26"
