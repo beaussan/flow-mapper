@@ -18,14 +18,23 @@ export class FlowTechnosStateModel {
 }
 
 @State<FlowTechnosStateModel>({
-  name: 'flowTechno',
+  name: 'FlowTechno',
   defaults: {
     flowTechnos: [],
     currentFlowTechno: undefined,
     isFetching: false,
   },
 })
-export class ApiConfigState {
+export class FlowTechnosState {
+  @Selector()
+  static flowTechnos(state: FlowTechnosStateModel): FlowTechno[] {
+    return state.flowTechnos;
+  }
+
+  @Selector()
+  static currentFlowTechno(state: FlowTechnosStateModel): FlowTechno {
+    return state.currentFlowTechno;
+  }
   constructor(private readonly flowTechnoService: FlowTechnosService) {}
 
   @Action(FetchAllFlowTechnosRequest)

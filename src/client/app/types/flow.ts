@@ -7,5 +7,5 @@ export interface Flow {
   description: string;
   sourceApp: App;
   destinationApp: App;
-  flowTechnos: FlowTechno;
+  flowTechnos: FlowTechno[];
 }

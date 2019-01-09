@@ -13,11 +13,11 @@ export class FlowsService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getAll(): Observable<Flow[]> {
-    return this.httpClient.get<Flow[]>('/flows');
+    return this.httpClient.get<Flow[]>('/flow');
   }
 
   getOne(id: number): Observable<Flow> {
-    return this.httpClient.get<Flow>(`/flows/${id}`);
+    return this.httpClient.get<Flow>(`/flow/${id}`);
   }
 
   addFlow(
@@ -27,7 +27,7 @@ export class FlowsService {
     destinationAppId: number,
     flowTechnos: string[],
   ): Observable<Flow> {
-    return this.httpClient.post<Flow>('/flows', {
+    return this.httpClient.post<Flow>('/flow', {
       name,
       description,
       sourceAppId,

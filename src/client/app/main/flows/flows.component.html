@@ -1,6 +1,8 @@
 <div class="page-layout simple tabbed">
   <!-- HEADER -->
-  <div class="header accent p-24"><h2>HEADDER bITch</h2></div>
+  <div class="header accent p-24">
+    <h2>{{ 'FLOWS.TITLE' | translate }}</h2>
+  </div>
   <!-- / HEADER -->
 
   <!-- CONTENT -->
@@ -11,17 +13,17 @@
           <div style="width: 700px">
             <ngx-graph
               class="chart-container"
-              [view]="[700, 100]"
+              [view]="[1000, 1000]"
               [legend]="showLegend"
-              [links]="links"
+              [links]="(formattedFlowsForGrah$ | async).links"
               (legendLabelClick)="clickOnNode($event)"
-              [nodes]="nodes"
+              [nodes]="(formattedFlowsForGrah$ | async).nodes"
               [scheme]="colorScheme"
               [curve]="curve"
               (select)="clickOnNode($event)"
               [autoZoom]="true"
               [autoCenter]="true"
-              [enableZoom]="false"
+              [enableZoom]="true"
             >
               <ng-template #defsTemplate>
                 <svg:marker
@@ -48,7 +50,7 @@
                   <svg:rect
                     [attr.width]="node.width"
                     [attr.height]="node.height"
-                    [attr.fill]="node.options.color"
+                    [attr.fill]="node.color || '#F2F2F2'"
                   />
                   <svg:text
                     alignment-baseline="central"

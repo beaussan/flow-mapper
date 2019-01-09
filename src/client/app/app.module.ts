@@ -34,6 +34,10 @@ import { AuthState } from './state/auth.state';
 import { ToastrModule } from 'ngx-toastr';
 import { AppsModule } from './main/apps/apps.module';
 import { FlowsModule } from './main/flows/flows.module';
+import { FlowTechnosState } from './state/flow-technos.state';
+import { FlowState } from './state/flow.state';
+import { AppTechnosState } from './state/app-technos.state';
+import { AppState } from './state/app.state';
 
 const appRoutes: Routes = [
   {
@@ -71,7 +75,14 @@ const appRoutes: Routes = [
     FuseThemeOptionsModule,
 
     // NGXS modules
-    NgxsModule.forRoot([ApiConfigState, AuthState]),
+    NgxsModule.forRoot([
+      ApiConfigState,
+      AuthState,
+      FlowTechnosState,
+      AppState,
+      AppTechnosState,
+      FlowState,
+    ]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsStoragePluginModule.forRoot({ key: ['auth.authToken'] }),
