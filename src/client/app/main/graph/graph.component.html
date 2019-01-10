@@ -1,0 +1,62 @@
+<ngx-graph
+  class="chart-container"
+  [view]="[1000, 1000]"
+  [legend]="showLegend"
+  [links]="(formattedFlowsForGrah$ | async).links"
+  (legendLabelClick)="clickOnNode($event)"
+  [nodes]="(formattedFlowsForGrah$ | async).nodes"
+  [scheme]="colorScheme"
+  [curve]="curve"
+  (select)="clickOnNode($event)"
+  [autoZoom]="true"
+  [autoCenter]="true"
+  [enableZoom]="true"
+>
+  <ng-template #defsTemplate>
+    <svg:marker
+      id="arrow"
+      viewBox="0 -5 10 10"
+      refX="8"
+      refY="0"
+      markerWidth="4"
+      markerHeight="4"
+      orient="auto"
+    >
+      <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+    </svg:marker>
+  </ng-template>
+
+  <ng-template #nodeTemplate let-node>
+    <svg:g
+      class="node"
+      ngx-tooltip
+      [tooltipPlacement]="'top'"
+      [tooltipType]="'tooltip'"
+      [tooltipTitle]="node.label"
+    >
+      <svg:rect
+        [attr.width]="node.width"
+        [attr.height]="node.height"
+        [attr.fill]="node.color || '#F2F2F2'"
+      />
+      <svg:text
+        alignment-baseline="central"
+        [attr.x]="10"
+        [attr.y]="node.height / 2"
+      >
+        {{ node.label }}
+      </svg:text>
+    </svg:g>
+  </ng-template>
+
+  <ng-template #linkTemplate let-link>
+    <svg:g class="edge">
+      <svg:path
+        class="line"
+        stroke-width="2"
+        marker-end="url(#arrow)"
+        marker-start="url(#marker_arrow)"
+      ></svg:path>
+    </svg:g>
+  </ng-template>
+</ngx-graph>

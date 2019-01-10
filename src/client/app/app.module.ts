@@ -38,6 +38,7 @@ import { FlowTechnosState } from './state/flow-technos.state';
 import { FlowState } from './state/flow.state';
 import { AppTechnosState } from './state/app-technos.state';
 import { AppState } from './state/app.state';
+import { GraphModule } from './main/graph/graph.module';
 
 const appRoutes: Routes = [
   {
@@ -98,6 +99,7 @@ const appRoutes: Routes = [
     SampleModule,
     AppsModule,
     FlowsModule,
+    GraphModule,
   ],
   providers: [
     {

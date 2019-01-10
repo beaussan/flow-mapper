@@ -37,6 +37,14 @@ export const navigation: FuseNavigation[] = [
         icon: 'import_export',
         url: '/flows',
       },
+      {
+        id: 'graph',
+        title: 'Graph',
+        translate: 'NAV.GRAPH.TITLE',
+        type: 'item',
+        icon: 'scatter_plot',
+        url: '/graph',
+      },
     ],
   },
 ];

@@ -9,11 +9,12 @@ export const locale = {
       },
       FLOWS: {
         TITLE: 'Flows',
-        BADGE: '25',
       },
       APPS: {
         TITLE: 'Apps',
-        BADGE: '25',
+      },
+      GRAPH: {
+        TITLE: 'Graph',
       },
     },
   },

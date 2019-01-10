@@ -13,6 +13,9 @@ export const locale = {
       APPS: {
         TITLE: 'Apps',
       },
+      GRAPH: {
+        TITLE: 'Graph',
+      },
     },
   },
 };
