@@ -30,4 +30,8 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  clickOnNode(event) {
+    console.log('GRAPH : ', event);
+  }
 }
