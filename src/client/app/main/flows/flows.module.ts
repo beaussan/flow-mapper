@@ -8,9 +8,10 @@ import {
   MatIconModule,
   MatTabsModule,
 } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { FlowTechnoTabComponent } from './flow-techno-tab/flow-techno-tab.component';
+import { FlowsListTabComponent } from './flows-list-tab/flows-list-tab.component';
 
 const routes = [
   {
@@ -20,7 +21,7 @@ const routes = [
 ];
 
 @NgModule({
-  declarations: [FlowsComponent],
+  declarations: [FlowsComponent, FlowTechnoTabComponent, FlowsListTabComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -29,10 +30,7 @@ const routes = [
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
-
-    // Ngx Graph
-    NgxChartsModule,
-    NgxGraphModule,
+    MatTableModule,
   ],
   exports: [FlowsComponent],
 })
