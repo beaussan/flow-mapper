@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { Token, User } from '../types/auth';
 import { FlowTechno } from '../types/flow-technos';
 
 @Injectable({
