@@ -149,7 +149,7 @@ export class AppTechnosState {
     { id }: DeleteAppTechnoSuccess,
   ) {
     ctx.patchState({
-      flowTechnos: ctx.getState().appTechnos.filter(f => f.id !== id),
+      appTechnos: ctx.getState().appTechnos.filter(f => f.id !== id),
     });
   }
 }
