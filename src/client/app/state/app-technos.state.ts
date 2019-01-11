@@ -26,6 +26,11 @@ export class AppTechnoStateModel {
   },
 })
 export class AppTechnosState {
+  @Selector()
+  static appTechnos(state: AppTechnoStateModel): AppTechno[] {
+    return state.appTechnos;
+  }
+
   constructor(private readonly appTechnoService: AppTechnosService) {}
 
   // ***** Fetch All *****

@@ -9,6 +9,12 @@ import {
   FetchOneFlowTechnoSuccess,
   FetchOneFlowTechnoRequest,
   FetchOneFlowTechnoError,
+  UpdateFlowTechnoRequest,
+  UpdateFlowTechnoSuccess,
+  UpdateFlowTechnoError,
+  DeleteFlowTechnoRequest,
+  DeleteFlowTechnoSuccess,
+  DeleteFlowTechnoError,
 } from './flow-technos.actions';
 
 export class FlowTechnosStateModel {
@@ -73,5 +79,52 @@ export class FlowTechnosState {
     { currentFlowTechno }: FetchOneFlowTechnoSuccess,
   ) {
     ctx.patchState({ currentFlowTechno });
+  }
+
+  @Action(UpdateFlowTechnoRequest)
+  updateFlowTechnoRequest(
+    ctx: StateContext<FlowTechnosStateModel>,
+    { id, name }: UpdateFlowTechnoRequest,
+  ) {
+    return this.flowTechnoService.updateFlowTechno(id, name).pipe(
+      flatMap(data => ctx.dispatch(new UpdateFlowTechnoSuccess(data))),
+      catchError(err => ctx.dispatch(new UpdateFlowTechnoError(err))),
+    );
+  }
+
+  @Action(UpdateFlowTechnoSuccess)
+  updateFlowTechnoSuccess(
+    ctx: StateContext<FlowTechnosStateModel>,
+    { flowTechno }: UpdateFlowTechnoSuccess,
+  ) {
+    ctx.patchState({
+      flowTechnos: ctx.getState().flowTechnos.map(f => {
+        if (f.id === flowTechno.id) {
+          f.name = flowTechno.name;
+        }
+        return f;
+      }),
+    });
+  }
+
+  @Action(DeleteFlowTechnoRequest)
+  deleteFlowTechnoRequest(
+    ctx: StateContext<FlowTechnosStateModel>,
+    { id }: DeleteFlowTechnoRequest,
+  ) {
+    return this.flowTechnoService.deleteFlowTechno(id).pipe(
+      flatMap(() => ctx.dispatch(new DeleteFlowTechnoSuccess(id))),
+      catchError(err => ctx.dispatch(new DeleteFlowTechnoError(err))),
+    );
+  }
+
+  @Action(DeleteFlowTechnoSuccess)
+  deleteFlowTechnoSuccess(
+    ctx: StateContext<FlowTechnosStateModel>,
+    { id }: DeleteFlowTechnoSuccess,
+  ) {
+    ctx.patchState({
+      flowTechnos: ctx.getState().flowTechnos.filter(f => f.id !== id),
+    });
   }
 }

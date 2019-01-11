@@ -36,3 +36,39 @@ export class FetchOneFlowTechnoError {
 
   constructor(public error: Error) {}
 }
+
+export class UpdateFlowTechnoRequest {
+  static readonly type = `${tag} update request`;
+
+  constructor(public id: number, public name: string) {}
+}
+
+export class UpdateFlowTechnoSuccess {
+  static readonly type = `${tag} update success`;
+
+  constructor(public flowTechno: FlowTechno) {}
+}
+
+export class UpdateFlowTechnoError {
+  static readonly type = `${tag} update error`;
+
+  constructor(public error: Error) {}
+}
+
+export class DeleteFlowTechnoRequest {
+  static readonly type = `${tag} delete request`;
+
+  constructor(public id: number) {}
+}
+
+export class DeleteFlowTechnoSuccess {
+  static readonly type = `${tag} delete success`;
+
+  constructor(public id: number) {}
+}
+
+export class DeleteFlowTechnoError {
+  static readonly type = `${tag} delete error`;
+
+  constructor(public error: Error) {}
+}

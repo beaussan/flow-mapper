@@ -26,6 +26,10 @@ export class AppStateModel {
   },
 })
 export class AppState {
+  @Selector()
+  static apps(state: AppStateModel): App[] {
+    return state.apps;
+  }
   constructor(private readonly appService: AppService) {}
 
   // ***** Fetch All *****

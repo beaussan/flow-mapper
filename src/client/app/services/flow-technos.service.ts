@@ -25,8 +25,8 @@ export class FlowTechnosService {
     });
   }
 
-  updateFlowTechno(name: string): Observable<FlowTechno> {
-    return this.httpClient.put<FlowTechno>('/flow-technos', {
+  updateFlowTechno(id: number, name: string): Observable<FlowTechno> {
+    return this.httpClient.put<FlowTechno>(`/flow-technos/${id}`, {
       name,
     });
   }
