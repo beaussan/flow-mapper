@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { Token, User } from '../types/auth';
-import { FlowTechno } from '../types/flow-technos';
 import { Flow } from '../types/flow';
 
 @Injectable({
@@ -20,7 +17,28 @@ export class FlowsService {
     return this.httpClient.get<Flow>(`/flow/${id}`);
   }
 
-  addFlow(
+  delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`/flow/${id}`);
+  }
+
+  update(
+    id: number,
+    name: string,
+    description: string,
+    sourceAppId: number,
+    destinationAppId: number,
+    flowTechnos: string[],
+  ): Observable<Flow> {
+    return this.httpClient.put<Flow>(`/flow/${id}`, {
+      name,
+      description,
+      sourceAppId,
+      destinationAppId,
+      flowTechnos,
+    });
+  }
+
+  add(
     name: string,
     description: string,
     sourceAppId: number,

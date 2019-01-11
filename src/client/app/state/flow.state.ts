@@ -9,6 +9,15 @@ import {
   FetchOneFlowRequest,
   FetchOneFlowSuccess,
   FetchOneFlowError,
+  DeleteFlowRequest,
+  DeleteFlowSuccess,
+  DeleteFlowError,
+  UpdateFlowRequest,
+  UpdateFlowSuccess,
+  UpdateFlowError,
+  CreateFlowRequest,
+  CreateFlowSuccess,
+  CreateFlowError,
 } from './flows.actions';
 
 export class FlowsStateModel {
@@ -100,22 +109,13 @@ export class FlowState {
       },
       { nodes: [], links: [] },
     );
-    const uniqued = {
+
+    return {
       links: reduced.links,
       nodes: reduced.nodes.filter(
         (val, id, arr) => id === arr.findIndex(value => value.id === val.id),
       ),
     };
-
-    /*
-    things.thing = things.thing.filter((thing, index, self) =>
-  index === self.findIndex((t) => (
-    t.place === thing.place && t.name === thing.name
-  ))
-)
-     */
-
-    return uniqued;
   }
 
   constructor(private readonly flowsService: FlowsService) {}
@@ -156,5 +156,94 @@ export class FlowState {
     { currentFlow }: FetchOneFlowSuccess,
   ) {
     ctx.patchState({ currentFlow });
+  }
+
+  @Action(DeleteFlowRequest)
+  deleteFlowRequest(
+    ctx: StateContext<FlowsStateModel>,
+    { id }: DeleteFlowRequest,
+  ) {
+    return this.flowsService.delete(id).pipe(
+      flatMap(() => ctx.dispatch(new DeleteFlowSuccess(id))),
+      catchError(err => ctx.dispatch(new DeleteFlowError(err))),
+    );
+  }
+
+  @Action(DeleteFlowSuccess)
+  deleteFlowSuccess(
+    ctx: StateContext<FlowsStateModel>,
+    { id }: DeleteFlowRequest,
+  ) {
+    ctx.patchState({
+      flows: ctx.getState().flows.filter(f => f.id !== id),
+    });
+  }
+
+  @Action(UpdateFlowRequest)
+  updateFlowRequest(
+    ctx: StateContext<FlowsStateModel>,
+    {
+      id,
+      name,
+      description,
+      destinationAppId,
+      sourceAppId,
+      flowTechnos,
+    }: UpdateFlowRequest,
+  ) {
+    return this.flowsService
+      .update(id, name, description, sourceAppId, destinationAppId, flowTechnos)
+      .pipe(
+        flatMap(flow => ctx.dispatch(new UpdateFlowSuccess(flow))),
+        catchError(err => ctx.dispatch(new UpdateFlowError(err))),
+      );
+  }
+
+  @Action(UpdateFlowSuccess)
+  updateFlowSuccess(
+    ctx: StateContext<FlowsStateModel>,
+    { flow }: UpdateFlowSuccess,
+  ) {
+    ctx.patchState({
+      flows: ctx.getState().flows.map(f => {
+        if (f.id === flow.id) {
+          f.name = flow.name;
+          f.description = flow.description;
+          f.destinationApp = flow.destinationApp;
+          f.sourceApp = flow.sourceApp;
+          f.flowTechnos = flow.flowTechnos;
+        }
+        return f;
+      }),
+    });
+  }
+
+  @Action(CreateFlowRequest)
+  createFlowRequest(
+    ctx: StateContext<FlowsStateModel>,
+    {
+      name,
+      description,
+      sourceAppId,
+      destinationAppId,
+      flowTechnos,
+    }: CreateFlowRequest,
+  ) {
+    return this.flowsService
+      .add(name, description, sourceAppId, destinationAppId, flowTechnos)
+      .pipe(
+        flatMap(flow => ctx.dispatch(new CreateFlowSuccess(flow))),
+        catchError(err => ctx.dispatch(new CreateFlowError(err))),
+      );
+  }
+
+  @Action(CreateFlowSuccess)
+  createFlowSuccess(
+    ctx: StateContext<FlowsStateModel>,
+    { flow }: CreateFlowSuccess,
+  ) {
+    ctx.patchState({
+      flows: [...ctx.getState().flows, flow],
+    });
   }
 }
