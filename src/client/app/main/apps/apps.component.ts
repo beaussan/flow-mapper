@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { FetchAllAppTechnoRequest } from '../../state/app-technos.actions';
+import { FetchAllAppRequest } from '../../state/app.actions';
 
 @Component({
   selector: 'fl-apps',
@@ -6,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./apps.component.scss'],
 })
 export class AppsComponent implements OnInit {
-  constructor() {}
+  constructor(private store: Store) {
+    this.store.dispatch(FetchAllAppTechnoRequest);
+    this.store.dispatch(FetchAllAppRequest);
+  }
 
   ngOnInit() {}
 }

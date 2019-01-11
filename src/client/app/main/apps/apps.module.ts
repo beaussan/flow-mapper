@@ -9,6 +9,9 @@ import {
   MatIconModule,
   MatTabsModule,
 } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
+import { AppTechnoTabComponent } from './app-techno-tab/app-techno-tab.component';
+import { AppsListTabComponent } from './apps-list-tab/apps-list-tab.component';
 
 const routes = [
   {
@@ -18,7 +21,7 @@ const routes = [
 ];
 
 @NgModule({
-  declarations: [AppsComponent],
+  declarations: [AppsComponent, AppTechnoTabComponent, AppsListTabComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -27,6 +30,7 @@ const routes = [
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
+    MatTableModule,
   ],
   exports: [AppsComponent],
 })
