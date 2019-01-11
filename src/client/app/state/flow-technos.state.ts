@@ -15,6 +15,9 @@ import {
   DeleteFlowTechnoRequest,
   DeleteFlowTechnoSuccess,
   DeleteFlowTechnoError,
+  CreateFlowTechnoRequest,
+  CreateFlowTechnoSuccess,
+  CreateFlowTechnoError,
 } from './flow-technos.actions';
 
 export class FlowTechnosStateModel {
@@ -125,6 +128,29 @@ export class FlowTechnosState {
   ) {
     ctx.patchState({
       flowTechnos: ctx.getState().flowTechnos.filter(f => f.id !== id),
+    });
+  }
+
+  @Action(CreateFlowTechnoRequest)
+  createFlowTechnoRequest(
+    ctx: StateContext<FlowTechnosStateModel>,
+    { name }: CreateFlowTechnoRequest,
+  ) {
+    return this.flowTechnoService.addFlowTechno(name).pipe(
+      flatMap(flowTechno =>
+        ctx.dispatch(new CreateFlowTechnoSuccess(flowTechno)),
+      ),
+      catchError(err => ctx.dispatch(new CreateFlowTechnoError(err))),
+    );
+  }
+
+  @Action(CreateFlowTechnoSuccess)
+  createFlowTechnoSuccess(
+    ctx: StateContext<FlowTechnosStateModel>,
+    { flowTechno }: CreateFlowTechnoSuccess,
+  ) {
+    ctx.patchState({
+      flowTechnos: [...ctx.getState().flowTechnos, flowTechno],
     });
   }
 }

@@ -72,3 +72,21 @@ export class DeleteFlowTechnoError {
 
   constructor(public error: Error) {}
 }
+
+export class CreateFlowTechnoRequest {
+  static readonly type = `${tag} create request`;
+
+  constructor(public name: string) {}
+}
+
+export class CreateFlowTechnoSuccess {
+  static readonly type = `${tag} create success`;
+
+  constructor(public flowTechno: FlowTechno) {}
+}
+
+export class CreateFlowTechnoError {
+  static readonly type = `${tag} create error`;
+
+  constructor(public error: Error) {}
+}
