@@ -104,7 +104,7 @@ export class AppTechnosState {
     });
   }
 
-  // ***** Create ******
+  // ***** Update ******
   @Action(UpdateAppTechnoRequest)
   updateAppTechnoRequest(
     ctx: StateContext<AppTechnoStateModel>,
