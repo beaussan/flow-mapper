@@ -17,7 +17,7 @@ export class AppService {
     return this.httpClient.get<App>(`/apps/${id}`);
   }
 
-  addAppTechno(
+  addApp(
     name: string,
     description: string,
     technos: string[],
@@ -29,7 +29,7 @@ export class AppService {
     });
   }
 
-  updateAppTechno(
+  updateApp(
     id: number,
     name: string,
     description: string,
@@ -42,7 +42,7 @@ export class AppService {
     });
   }
 
-  deleteAppTechno(id: number): Observable<App> {
+  deleteApp(id: number): Observable<App> {
     return this.httpClient.delete<App>(`/apps/${id}`);
   }
 }
