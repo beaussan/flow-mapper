@@ -4,7 +4,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatDialogModule,
+} from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
@@ -39,6 +43,7 @@ import { FlowState } from './state/flow.state';
 import { AppTechnosState } from './state/app-technos.state';
 import { AppState } from './state/app.state';
 import { GraphModule } from './main/graph/graph.module';
+import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -52,7 +57,8 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DeleteDialogComponent],
+  entryComponents: [DeleteDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -67,6 +73,7 @@ const appRoutes: Routes = [
     // Material
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
 
     // Fuse modules
     FuseModule.forRoot(fuseConfig),
