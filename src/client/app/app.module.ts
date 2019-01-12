@@ -8,7 +8,9 @@ import {
   MatButtonModule,
   MatIconModule,
   MatDialogModule,
+  MatInputModule,
 } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
@@ -44,6 +46,7 @@ import { AppTechnosState } from './state/app-technos.state';
 import { AppState } from './state/app.state';
 import { GraphModule } from './main/graph/graph.module';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { CreateTechnoDialogComponent } from './dialogs/create-techno-dialog/create-techno-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -57,8 +60,12 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, DeleteDialogComponent],
-  entryComponents: [DeleteDialogComponent],
+  declarations: [
+    AppComponent,
+    DeleteDialogComponent,
+    CreateTechnoDialogComponent,
+  ],
+  entryComponents: [DeleteDialogComponent, CreateTechnoDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -74,6 +81,8 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
 
     // Fuse modules
     FuseModule.forRoot(fuseConfig),
