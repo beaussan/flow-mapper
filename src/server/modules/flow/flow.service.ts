@@ -74,6 +74,7 @@ export class FlowService {
   transformFlowInFlowDTO(flow: Flow): FLowDtoOutput {
     const output = new FLowDtoOutput();
 
+    output.id = flow.id;
     output.description = flow.description;
     output.name = flow.name;
     output.destinationApp = flow.destApp;

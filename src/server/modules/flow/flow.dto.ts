@@ -39,6 +39,10 @@ export class FlowDtoInput {
 
 export class FLowDtoOutput {
   @ApiModelProperty({ required: true })
+  @IsNumber()
+  id: number;
+
+  @ApiModelProperty({ required: true })
   @IsString()
   @MinLength(1)
   name: string;
