@@ -1,4 +1,9 @@
-<button mat-raised-button color="primary" (click)="openCreateDialog()">
+<button
+  mat-raised-button
+  color="primary"
+  (click)="openCreateDialog()"
+  *flCanEditFlows
+>
   Create flow techno
 </button>
 
@@ -18,12 +23,16 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
       <button mat-icon-button>
-        <mat-icon aria-label="Example icon-button with a heart icon"
+        <mat-icon
+          aria-label="Example icon-button with a heart icon"
+          *flCanEditFlows
           >edit</mat-icon
         >
       </button>
       <button mat-icon-button (click)="openDeleteDialog(element)">
-        <mat-icon aria-label="Example icon-button with a heart icon"
+        <mat-icon
+          aria-label="Example icon-button with a heart icon"
+          *flCanEditFlows
           >delete</mat-icon
         >
       </button>
