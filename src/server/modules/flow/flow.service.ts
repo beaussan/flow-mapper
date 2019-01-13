@@ -37,7 +37,7 @@ export class FlowService {
     );
   }
 
-  async saveNewFlow(flowDto: FlowDtoInput): Promise<Flow> {
+  async saveNewFlow(flowDto: FlowDtoInput): Promise<FLowDtoOutput> {
     const flow = new Flow();
 
     const technos = await Promise.all(
@@ -68,7 +68,9 @@ export class FlowService {
       return flowTechnoOrder;
     });
 
-    return this.flowRepository.save(flowSaved);
+    const newFlow = await this.flowRepository.save(flowSaved);
+
+    return this.transformFlowInFlowDTO(newFlow);
   }
 
   transformFlowInFlowDTO(flow: Flow): FLowDtoOutput {
