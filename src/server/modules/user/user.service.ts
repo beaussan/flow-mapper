@@ -97,9 +97,19 @@ export class UserService implements OnModuleInit {
 
   async registerOne(user: User): Promise<User> {
     user.isSuperUser = false;
-    const userRole = await this.findRoleWithKey(ROLES.ROLE_USER);
+    let roles = [];
 
-    user.roles = [userRole];
+    if (process.env.IS_NEW_USER_HAVE_WRITE_ACCESS === 'true') {
+      roles = await Promise.all(
+        [ROLES.ROLE_EDIT_FLOW, ROLES.ROLE_EDIT_APPS, ROLES.ROLE_USER].map(key =>
+          this.findRoleWithKey(key),
+        ),
+      );
+    } else {
+      roles = [await this.findRoleWithKey(ROLES.ROLE_USER)];
+    }
+
+    user.roles = roles;
     return this.userRepository.save(user);
   }
 
