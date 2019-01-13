@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>Create an App</h1>
+<div mat-dialog-content>
+  <form class="create-app-form" [formGroup]="createForm">
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Description"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList formControlName="appTechnos">
+        <mat-chip
+          *ngFor="let techno of selectedTechnos"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(techno)"
+        >
+          {{ techno }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Technos"
+          #technoInput
+          [formControl]="technoCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-list>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selected($event)"
+      >
+        <mat-option
+          *ngFor="let techno of (filteredTechnos | async)"
+          [value]="techno"
+        >
+          {{ techno }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button
+    mat-button
+    [mat-dialog-close]="{
+      name: createForm.get('name').value,
+      description: createForm.get('description').value,
+      appTechnos: selectedTechnos
+    }"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>
