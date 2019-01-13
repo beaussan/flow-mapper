@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { App } from '../../../types/app';
 import { MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from '../../../dialogs/delete-dialog/delete-dialog.component';
-import { DeleteAppRequest } from '../../../state/app.actions';
+import { CreateAppRequest, DeleteAppRequest } from '../../../state/app.actions';
+import { CreateAppDialogComponent } from '../../../dialogs/create-app-dialog/create-app-dialog.component';
 
 @Component({
   selector: 'fl-apps-list-tab',
@@ -17,12 +18,12 @@ export class AppsListTabComponent implements OnInit {
   apps$: Observable<App[]>;
 
   displayedColumns: string[] = ['name', 'description', 'actions'];
-  constructor(public deleteDialog: MatDialog, public store: Store) {}
+  constructor(public dialog: MatDialog, public store: Store) {}
 
   ngOnInit() {}
 
   openDialog(app: App): void {
-    const dialogRef = this.deleteDialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
       data: {
         id: app.id,
@@ -31,11 +32,18 @@ export class AppsListTabComponent implements OnInit {
         deleteFunction: this.deleteApp.bind(this),
       },
     });
+  }
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   this.animal = result;
-    // });
+  openCreateDialog(): void {
+    const dialogRef = this.dialog.open(CreateAppDialogComponent, {
+      width: '400px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const { name, description, appTechnos } = result;
+      this.store.dispatch(new CreateAppRequest(name, description, appTechnos));
+    });
   }
 
   deleteApp(id: number) {

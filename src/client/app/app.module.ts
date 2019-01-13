@@ -52,6 +52,7 @@ import { GraphModule } from './main/graph/graph.module';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { CreateTechnoDialogComponent } from './dialogs/create-techno-dialog/create-techno-dialog.component';
 import { CreateFlowDialogComponent } from './dialogs/create-flow-dialog/create-flow-dialog.component';
+import { CreateAppDialogComponent } from './dialogs/create-app-dialog/create-app-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -70,11 +71,13 @@ const appRoutes: Routes = [
     DeleteDialogComponent,
     CreateTechnoDialogComponent,
     CreateFlowDialogComponent,
+    CreateAppDialogComponent,
   ],
   entryComponents: [
     DeleteDialogComponent,
     CreateTechnoDialogComponent,
     CreateFlowDialogComponent,
+    CreateAppDialogComponent,
   ],
   imports: [
     BrowserModule,

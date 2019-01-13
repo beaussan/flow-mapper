@@ -53,7 +53,6 @@ export class CreateFlowDialogComponent implements OnInit {
   technoCtrl = new FormControl();
   filteredTechnos: Observable<string[]>;
   selectedTechnos: string[] = [];
-  // allTechnos: string[] = ['test', 'test'];
 
   @ViewChild('technoInput') technoInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;

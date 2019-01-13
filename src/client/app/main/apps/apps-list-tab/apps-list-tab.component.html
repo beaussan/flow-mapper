@@ -1,3 +1,7 @@
+<button mat-raised-button color="primary" (click)="openCreateDialog()">
+  Create flow
+</button>
+
 <table mat-table [dataSource]="apps$ | async" class="mat-elevation-z8">
   <!--
     - Note that these columns can be defined in any order.
