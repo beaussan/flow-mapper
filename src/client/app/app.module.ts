@@ -9,6 +9,10 @@ import {
   MatIconModule,
   MatDialogModule,
   MatInputModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatChipsModule,
+  MatAutocompleteModule,
 } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
@@ -47,6 +51,7 @@ import { AppState } from './state/app.state';
 import { GraphModule } from './main/graph/graph.module';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { CreateTechnoDialogComponent } from './dialogs/create-techno-dialog/create-techno-dialog.component';
+import { CreateFlowDialogComponent } from './dialogs/create-flow-dialog/create-flow-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -64,8 +69,13 @@ const appRoutes: Routes = [
     AppComponent,
     DeleteDialogComponent,
     CreateTechnoDialogComponent,
+    CreateFlowDialogComponent,
   ],
-  entryComponents: [DeleteDialogComponent, CreateTechnoDialogComponent],
+  entryComponents: [
+    DeleteDialogComponent,
+    CreateTechnoDialogComponent,
+    CreateFlowDialogComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -83,6 +93,10 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatChipsModule,
+    MatAutocompleteModule,
 
     // Fuse modules
     FuseModule.forRoot(fuseConfig),
