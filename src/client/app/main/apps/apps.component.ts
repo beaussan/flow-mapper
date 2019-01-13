@@ -10,8 +10,8 @@ import { FetchAllAppRequest } from '../../state/app.actions';
 })
 export class AppsComponent implements OnInit {
   constructor(private store: Store) {
-    this.store.dispatch(FetchAllAppTechnoRequest);
-    this.store.dispatch(FetchAllAppRequest);
+    this.store.dispatch(new FetchAllAppTechnoRequest());
+    this.store.dispatch(new FetchAllAppRequest());
   }
 
   ngOnInit() {}

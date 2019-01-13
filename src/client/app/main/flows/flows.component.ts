@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 
 import { locale as english } from './i18n/en';
 import { locale as french } from './i18n/fr';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 import { FetchAllFlowTechnosRequest } from '../../state/flow-technos.actions';
-import { Observable } from 'rxjs';
 import { FetchAllFlowsRequest } from '../../state/flows.actions';
-import { FlowState } from '../../state/flow.state';
+import { FetchAllAppRequest } from '../../state/app.actions';
 
 @Component({
   selector: 'fl-flows',
@@ -23,6 +22,7 @@ export class FlowsComponent implements OnInit {
     this.fuseTranslationLoaderService.loadTranslations(english, french);
     this.store.dispatch(new FetchAllFlowTechnosRequest());
     this.store.dispatch(new FetchAllFlowsRequest());
+    this.store.dispatch(new FetchAllAppRequest());
   }
 
   ngOnInit() {}

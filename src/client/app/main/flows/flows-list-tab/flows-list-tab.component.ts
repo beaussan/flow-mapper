@@ -5,7 +5,13 @@ import { Observable } from 'rxjs';
 import { Flow } from '../../../types/flow';
 import { DeleteDialogComponent } from '../../../dialogs/delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material';
-import { DeleteFlowRequest } from '../../../state/flows.actions';
+import {
+  CreateFlowRequest,
+  DeleteFlowRequest,
+} from '../../../state/flows.actions';
+import { CreateTechnoDialogComponent } from '../../../dialogs/create-techno-dialog/create-techno-dialog.component';
+import { CreateFlowTechnoRequest } from '../../../state/flow-technos.actions';
+import { CreateFlowDialogComponent } from '../../../dialogs/create-flow-dialog/create-flow-dialog.component';
 
 @Component({
   selector: 'fl-flows-list-tab',
@@ -13,6 +19,12 @@ import { DeleteFlowRequest } from '../../../state/flows.actions';
   styleUrls: ['./flows-list-tab.component.scss'],
 })
 export class FlowsListTabComponent implements OnInit {
+  newFlowName: string;
+  newFlowDescription: string;
+  newFlowSourceAppId: number;
+  newFlowDestinationAppId: number;
+  newFlowTechnos: string[];
+
   @Select(FlowState.flows)
   flows$: Observable<Flow[]>;
 
@@ -24,12 +36,12 @@ export class FlowsListTabComponent implements OnInit {
     'actions',
   ];
 
-  constructor(public deleteDialog: MatDialog, public store: Store) {}
+  constructor(public dialog: MatDialog, public store: Store) {}
 
   ngOnInit() {}
 
   openDialog(flow: Flow): void {
-    const dialogRef = this.deleteDialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
       data: {
         id: flow.id,
@@ -43,6 +55,38 @@ export class FlowsListTabComponent implements OnInit {
     //   console.log('The dialog was closed');
     //   this.animal = result;
     // });
+  }
+
+  openCreateDialog(): void {
+    const dialogRef = this.dialog.open(CreateFlowDialogComponent, {
+      width: '400px',
+      data: {
+        name: this.newFlowName,
+        description: this.newFlowDescription,
+        sourceAppId: this.newFlowSourceAppId,
+        destinationAppId: this.newFlowDestinationAppId,
+        flowTechnos: this.newFlowTechnos,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const {
+        name,
+        description,
+        sourceAppId,
+        destinationAppId,
+        flowTechnos,
+      } = result;
+      this.store.dispatch(
+        new CreateFlowRequest(
+          name,
+          description,
+          sourceAppId,
+          destinationAppId,
+          flowTechnos,
+        ),
+      );
+    });
   }
 
   deleteFlow(id: number) {
