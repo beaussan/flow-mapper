@@ -23,4 +23,21 @@ export const navigation: FuseNavigation[] = [
       },
     ],
   },
+  {
+    id: 'admin',
+    title: 'Administration',
+    translate: 'NAV.ADMINISTRATION',
+    type: 'group',
+    hidden: true,
+    children: [
+      {
+        id: 'users',
+        title: 'Users',
+        translate: 'NAV.USER.TITLE',
+        type: 'item',
+        icon: 'supervised_user_circle',
+        url: '/admin/users',
+      },
+    ],
+  },
 ];

@@ -12,6 +12,7 @@ import {
 import { AuthService } from '../services/auth.service';
 import { catchError, flatMap, tap } from 'rxjs/operators';
 import { Navigate } from '@ngxs/router-plugin';
+import { FuseNavigationService } from '../../@fuse/components/navigation/navigation.service';
 
 export interface AuthStateModel {
   authToken: string;
@@ -63,7 +64,18 @@ export class AuthState {
     return `https://api.adorable.io/avatars/250/${state.user.id * 3}`;
   }
 
-  constructor(private readonly authService: AuthService) {}
+  @Selector()
+  static isSuperUser(state: AuthStateModel): boolean {
+    if (!state.user) {
+      return false;
+    }
+    return state.user.isSuperUser;
+  }
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly navService: FuseNavigationService,
+  ) {}
 
   @Action(AuthLoginRequest)
   loginRequest(
@@ -114,6 +126,9 @@ export class AuthState {
   logoutUser(ctx: StateContext<AuthStateModel>) {
     ctx.patchState({ authToken: '', user: undefined });
     ctx.dispatch(new Navigate(['/auth/login']));
+    this.navService.updateNavigationItem('admin', {
+      hidden: true,
+    });
   }
 
   @Action(SaveToken)
@@ -124,10 +139,22 @@ export class AuthState {
   @Action(AuthLoginSuccess)
   loginSuccess(ctx: StateContext<AuthStateModel>, { user }: AuthLoginSuccess) {
     ctx.patchState({ user });
+    if (user.isSuperUser) {
+      this.navService.updateNavigationItem('admin', {
+        hidden: false,
+      });
+    } else {
+      this.navService.updateNavigationItem('admin', {
+        hidden: true,
+      });
+    }
   }
 
   @Action(AuthLoginFailure)
   loginFailure(ctx: StateContext<AuthStateModel>) {
     ctx.patchState({ authToken: '', user: undefined });
+    this.navService.updateNavigationItem('admin', {
+      hidden: true,
+    });
   }
 }
