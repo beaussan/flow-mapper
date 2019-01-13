@@ -52,6 +52,11 @@ export class AuthState {
   }
 
   @Selector()
+  static user(state: AuthStateModel): User {
+    return state.user;
+  }
+
+  @Selector()
   static userId(state: AuthStateModel): number {
     if (!state.user) {
       return 0;
