@@ -46,4 +46,8 @@ export class UserRepository extends Repository<User> {
       await this.findOne(id, { relations: ['roles'] }),
     );
   }
+
+  async getNumberOfSuperUser(): Promise<number> {
+    return this.count({ where: { isSuperUser: true } });
+  }
 }

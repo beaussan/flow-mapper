@@ -84,6 +84,7 @@ export class AppModule implements NestModule {
         'apps',
         'flow-technos',
         'app-technos',
+        'users',
       );
   }
 }
