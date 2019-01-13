@@ -12,11 +12,13 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { AppTechnoTabComponent } from './app-techno-tab/app-techno-tab.component';
 import { AppsListTabComponent } from './apps-list-tab/apps-list-tab.component';
+import { ConnectedGuard } from '../../common/connected.guard';
 
 const routes = [
   {
     path: 'apps',
     component: AppsComponent,
+    canActivate: [ConnectedGuard],
   },
 ];
 

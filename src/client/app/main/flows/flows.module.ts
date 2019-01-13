@@ -12,11 +12,13 @@ import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlowTechnoTabComponent } from './flow-techno-tab/flow-techno-tab.component';
 import { FlowsListTabComponent } from './flows-list-tab/flows-list-tab.component';
+import { ConnectedGuard } from '../../common/connected.guard';
 
 const routes = [
   {
     path: 'flows',
     component: FlowsComponent,
+    canActivate: [ConnectedGuard],
   },
 ];
 
