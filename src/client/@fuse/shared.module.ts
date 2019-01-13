@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
+import { HasUserRolesModule } from '../app/common/directives/has-user-roles/has-user-roles.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { FusePipesModule } from '@fuse/pipes/pipes.module';
 
     FuseDirectivesModule,
     FusePipesModule,
+    HasUserRolesModule,
   ],
   exports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { FusePipesModule } from '@fuse/pipes/pipes.module';
 
     FuseDirectivesModule,
     FusePipesModule,
+    HasUserRolesModule,
   ],
 })
 export class FuseSharedModule {}

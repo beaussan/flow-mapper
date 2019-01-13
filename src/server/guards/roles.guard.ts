@@ -1,6 +1,5 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { User } from '../modules/user/user.entity';
 import { Role } from '../modules/user/role.entity';
 
 /**
@@ -18,7 +17,9 @@ export class RolesGuard implements CanActivate {
 
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
-    if (!roles) {
+    const isSupserUser =
+      this.reflector.get<boolean>('isSuperUser', context.getHandler()) || false;
+    if (!roles && !isSupserUser) {
       console.log('ROLES NOT FOUND');
       return true;
     }
@@ -27,11 +28,16 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
 
     console.log('[role guard] USER : ', user);
+
+    if (isSupserUser) {
+      const hasPermission = () => user.isSuperUser;
+      return user && hasPermission();
+    }
+
     const hasRole = () =>
       user.roles.some((role: Role) => roles.includes(role.key)) ||
       user.isSuperUser;
 
-    const tmp = user && user.roles && hasRole();
-    return tmp;
+    return user && user.roles && hasRole();
   }
 }

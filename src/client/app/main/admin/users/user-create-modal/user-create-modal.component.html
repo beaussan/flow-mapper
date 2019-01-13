@@ -1,0 +1,65 @@
+<form name="newUserForm" [formGroup]="createUserForm" novalidate>
+  <h1 mat-dialog-title>Create a new user</h1>
+  <div
+    mat-dialog-content
+    fxLayout="column"
+    fxLayoutAlign="space-between stretch"
+    class="main-content"
+  >
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" autocomplete="email" />
+      <mat-error *ngIf="createUserForm.get('email').hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error
+        *ngIf="
+          !createUserForm.get('email').hasError('required') &&
+          createUserForm.get('email').hasError('email')
+        "
+      >
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        autocomplete="password"
+      />
+      <mat-error> Password is required </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" autocomplete="name" />
+      <mat-error> Name is required </mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isActive">Is account active</mat-checkbox>
+
+    <mat-checkbox formControlName="canEditApps"
+      >Can the user edit apps</mat-checkbox
+    >
+
+    <mat-checkbox formControlName="canEditFlows"
+      >Can the user edit flows</mat-checkbox
+    >
+
+    <mat-checkbox formControlName="isSuperUser">Is the user admin</mat-checkbox>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button
+      mat-button
+      (click)="submitClick()"
+      cdkFocusInitial
+      [disabled]="createUserForm.invalid"
+    >
+      Submit
+    </button>
+  </div>
+</form>

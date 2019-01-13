@@ -1,0 +1,106 @@
+<div class="page-layout simple fullwidth">
+  <!-- HEADER -->
+  <div class="header accent p-24" fxLayout="row" fxLayoutAlign="start center">
+    <h2>Users</h2>
+    <div fxFlex></div>
+    <div>
+      <button mat-raised-button color="warn" (click)="openNewUserDialog()">
+        <mat-icon aria-label="Add user icon">add</mat-icon>
+        Add user
+      </button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <ng-container *ngIf="(users$ | async); else: loading">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around center"
+        *ngIf="(currentUserId$ | async) as currentUserId"
+      >
+        <table
+          mat-table
+          [dataSource]="users$ | async"
+          class="mat-elevation-z8"
+          fxFill
+        >
+          <!--
+            - Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition"
+          -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element">{{ element.localEmail }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="roleUser">
+            <th mat-header-cell *matHeaderCellDef>Is enabled</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox
+                [checked]="isUserRoleUser(element)"
+                (change)="toggleUserRole('ROLE_USER', element, $event)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="roleEditFlow">
+            <th mat-header-cell *matHeaderCellDef>Can edit flows</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox
+                [checked]="isUserRoleEditFlow(element)"
+                (change)="toggleUserRole('ROLE_EDIT_FLOW', element, $event)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="roleEditApps">
+            <th mat-header-cell *matHeaderCellDef>Can edit apps</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox
+                [checked]="isUserRoleEditApps(element)"
+                (change)="toggleUserRole('ROLE_EDIT_APPS', element, $event)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="isAdmin">
+            <th mat-header-cell *matHeaderCellDef>Is admin</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox
+                [checked]="element.isSuperUser"
+                [disabled]="currentUserId === element.id"
+                (change)="toggleSuperUser(element.id, $event)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div fxLayout="row" fxLayoutAlign="space-around center">
+        <mat-spinner [strokeWidth]="3"></mat-spinner>
+      </div>
+    </ng-template>
+  </div>
+  <!-- / CONTENT -->
+</div>

@@ -17,7 +17,7 @@ export interface User {
   roles: [
     {
       id: number;
-      key: number;
+      key: string;
     }
   ];
 }

@@ -42,6 +42,8 @@ import { PrefixerInterceptor } from './http/prefixer.interceptor';
 import { AuthService } from './services/auth.service';
 import { AuthState } from './state/auth.state';
 import { ToastrModule } from 'ngx-toastr';
+import { ConnectedGuard } from './common/connected.guard';
+import { SuperuserGuard } from './common/superuser.guard';
 import { AppsModule } from './main/apps/apps.module';
 import { FlowsModule } from './main/flows/flows.module';
 import { FlowTechnosState } from './state/flow-technos.state';
@@ -58,6 +60,12 @@ const appRoutes: Routes = [
   {
     path: 'auth',
     loadChildren: './main/auth/auth.module#AuthModule',
+  },
+  {
+    path: 'admin',
+    loadChildren: './main/admin/admin.module#AdminModule',
+    canActivate: [ConnectedGuard, SuperuserGuard],
+    canActivateChild: [ConnectedGuard, SuperuserGuard],
   },
   {
     path: '**',

@@ -66,6 +66,14 @@ export class FuseConfigService {
     return this._defaultConfig;
   }
 
+  set defaultConfig(value) {
+    let defaultVal = this._defaultConfig;
+
+    defaultVal = _.merge({}, defaultVal, value);
+
+    this.config = value;
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Private methods
   // -----------------------------------------------------------------------------------------------------
