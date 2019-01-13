@@ -42,13 +42,6 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
-      <button mat-icon-button>
-        <mat-icon
-          aria-label="Example icon-button with a heart icon"
-          *flCanEditFlows
-          >edit</mat-icon
-        >
-      </button>
       <button mat-icon-button (click)="openDialog(element)">
         <mat-icon
           aria-label="Example icon-button with a heart icon"

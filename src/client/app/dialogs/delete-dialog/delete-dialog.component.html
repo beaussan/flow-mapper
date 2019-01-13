@@ -1,10 +1,12 @@
-<h1 mat-dialog-title>Delete {{ data.name }}</h1>
+<h1 mat-dialog-title>{{ 'DELETE.TITLE' | translate: param }}</h1>
 <div mat-dialog-content>
-  <p>Are you sure you want to delete {{ data.name }} ?</p>
+  <p>{{ 'DELETE.CONTENT' | translate: param }} ?</p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onNoClick()">
+    {{ 'DELETE.CANCEL' | translate }}
+  </button>
   <button mat-button (click)="data.deleteFunction(data.id)" cdkFocusInitial>
-    Delete
+    {{ 'DELETE.DELETE' | translate }}
   </button>
 </div>

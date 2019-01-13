@@ -21,6 +21,10 @@ import { Select } from '@ngxs/store';
 import { AppTechnosState } from '../../state/app-technos.state';
 import { AppTechno } from '../../types/app-technos';
 
+import { locale as english } from './i18n/en';
+import { locale as french } from './i18n/fr';
+import { FuseTranslationLoaderService } from '../../../@fuse/services/translation-loader.service';
+
 @Component({
   selector: 'fl-create-app-dialog',
   templateUrl: './create-app-dialog.component.html',
@@ -47,6 +51,7 @@ export class CreateAppDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CreateAppDialogComponent>,
+    private fuseTranslationLoaderService: FuseTranslationLoaderService,
     @Inject(MAT_DIALOG_DATA) public data: CreateFlowDialogData,
   ) {
     this.filteredTechnos = this.technoCtrl.valueChanges.pipe(
@@ -57,6 +62,7 @@ export class CreateAppDialogComponent implements OnInit {
           : this.appTechnos$.pipe(map(val => val.map(item => item.name))),
       ),
     );
+    this.fuseTranslationLoaderService.loadTranslations(english, french);
   }
 
   ngOnInit() {

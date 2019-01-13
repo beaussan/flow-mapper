@@ -4,7 +4,7 @@
   (click)="openCreateDialog()"
   *flCanEditApps
 >
-  Create flow
+  Create App
 </button>
 
 <table mat-table [dataSource]="apps$ | async" class="mat-elevation-z8">
@@ -28,13 +28,6 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
-      <button mat-icon-button>
-        <mat-icon
-          aria-label="Example icon-button with a heart icon"
-          *flCanEditApps
-          >edit</mat-icon
-        >
-      </button>
       <button mat-icon-button (click)="openDialog(element)">
         <mat-icon
           aria-label="Example icon-button with a heart icon"

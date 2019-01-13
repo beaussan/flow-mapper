@@ -22,6 +22,9 @@ import { FlowTechnosState } from '../../state/flow-technos.state';
 import { FlowTechno } from '../../types/flow-technos';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { locale as english } from './i18n/en';
+import { locale as french } from './i18n/fr';
+import { FuseTranslationLoaderService } from '../../../@fuse/services/translation-loader.service';
 
 export interface CreateFlowDialogData {
   name: string;
@@ -60,6 +63,7 @@ export class CreateFlowDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CreateFlowDialogComponent>,
+    private fuseTranslationLoaderService: FuseTranslationLoaderService,
     @Inject(MAT_DIALOG_DATA) public data: CreateFlowDialogData,
   ) {
     this.filteredTechnos = this.technoCtrl.valueChanges.pipe(
@@ -70,6 +74,7 @@ export class CreateFlowDialogComponent implements OnInit {
           : this.flowTechnos$.pipe(map(val => val.map(item => item.name))),
       ),
     );
+    this.fuseTranslationLoaderService.loadTranslations(english, french);
   }
 
   ngOnInit() {

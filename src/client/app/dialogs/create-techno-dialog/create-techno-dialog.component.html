@@ -1,9 +1,13 @@
-<h1 mat-dialog-title>Hi</h1>
+<h1 mat-dialog-title>{{ 'CREATE_TECHNO.TITLE' | translate }}</h1>
 <div mat-dialog-content>
-  <p>What's your favorite animal?</p>
+  <p>{{ 'CREATE_TECHNO.CONTENT' | translate }}?</p>
   <mat-form-field> <input matInput [(ngModel)]="data.name" /> </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()">
+    {{ 'CREATE_TECHNO.CANCEL' | translate }}
+  </button>
+  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>
+    {{ 'CREATE_TECHNO.CREATE' | translate }}
+  </button>
 </div>
