@@ -36,8 +36,8 @@ export class AuthService implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     if ((await this.userService.getNumberUserRegistredWithLocalAuth()) === 0) {
       const user = await this.registerUser(
-        'admin@localhost.fr',
-        'ADMIN',
+        process.env.DEFAULT_ADMIN_LOGIN,
+        process.env.DEFAULT_ADMIN_PASSWPRD,
         'Mr admin',
       );
       await this.userService.setUserAsAdmin(user);
