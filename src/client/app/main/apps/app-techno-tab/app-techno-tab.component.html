@@ -1,3 +1,7 @@
+<button mat-raised-button color="primary" (click)="openCreateDialog()">
+  Create app techno
+</button>
+
 <table mat-table [dataSource]="appTechnos$ | async" class="mat-elevation-z8">
   <!--
     - Note that these columns can be defined in any order.
@@ -18,7 +22,7 @@
           >edit</mat-icon
         >
       </button>
-      <button mat-icon-button (click)="openDialog(element)">
+      <button mat-icon-button (click)="openDeleteDialog(element)">
         <mat-icon aria-label="Example icon-button with a heart icon"
           >delete</mat-icon
         >

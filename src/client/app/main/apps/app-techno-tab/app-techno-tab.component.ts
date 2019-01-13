@@ -5,7 +5,12 @@ import { AppTechno } from '../../../types/app-technos';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from '../../../dialogs/delete-dialog/delete-dialog.component';
-import { DeleteAppTechnoRequest } from '../../../state/app-technos.actions';
+import {
+  CreateAppTechnoRequest,
+  DeleteAppTechnoRequest,
+} from '../../../state/app-technos.actions';
+import { CreateTechnoDialogComponent } from '../../../dialogs/create-techno-dialog/create-techno-dialog.component';
+import { CreateFlowTechnoRequest } from '../../../state/flow-technos.actions';
 
 @Component({
   selector: 'fl-app-techno-tab',
@@ -18,12 +23,14 @@ export class AppTechnoTabComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'actions'];
 
-  constructor(public deleteDialog: MatDialog, public store: Store) {}
+  newTechno: string;
+
+  constructor(public dialog: MatDialog, public store: Store) {}
 
   ngOnInit() {}
 
-  openDialog(appTechno: AppTechno): void {
-    const dialogRef = this.deleteDialog.open(DeleteDialogComponent, {
+  openDeleteDialog(appTechno: AppTechno): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
       data: {
         id: appTechno.id,
@@ -37,6 +44,21 @@ export class AppTechnoTabComponent implements OnInit {
     //   console.log('The dialog was closed');
     //   this.animal = result;
     // });
+  }
+
+  openCreateDialog(): void {
+    const dialogRef = this.dialog.open(CreateTechnoDialogComponent, {
+      width: '250px',
+      data: {
+        name: this.newTechno,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe(result =>
+        this.store.dispatch(new CreateAppTechnoRequest(result)),
+      );
   }
 
   deleteAppTechno(id: number) {
