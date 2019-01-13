@@ -75,7 +75,7 @@ export class ApiConfigState {
     ctx.patchState({ config });
 
     if (config.isAuthEnabled) {
-      this.fuseConfigService.config = {
+      this.fuseConfigService.defaultConfig = {
         layout: {
           navbar: {
             variant: 'vertical-style-1',
@@ -84,7 +84,7 @@ export class ApiConfigState {
       };
       ctx.dispatch(new TryLoginWithToken());
     } else {
-      this.fuseConfigService.config = {
+      this.fuseConfigService.defaultConfig = {
         layout: {
           navbar: {
             variant: 'vertical-style-2',
