@@ -13,7 +13,9 @@ import { CryptoModule } from '../core/crypto/crypto.module';
     CryptoModule,
   ],
   providers: [UserService],
-  controllers: [UserController],
+  controllers: [
+    process.env.IS_AUTH_ENABLED === 'true' ? UserController : undefined,
+  ].filter(val => val !== undefined),
   exports: [UserService],
 })
 export class UserModule {}
