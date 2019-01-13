@@ -11,8 +11,4 @@ export const ROLES = {
    * Give the ability to create, update and delete apps and app techno
    */
   ROLE_EDIT_APPS: 'ROLE_EDIT_APPS',
-  /**
-   * Give the ability to add or remove roles to a user
-   */
-  ROLE_EDIT_USERS_ROLES: 'ROLE_EDIT_USERS_ROLES',
 };
