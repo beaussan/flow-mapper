@@ -1,4 +1,11 @@
-import { IsArray, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { FlowTechnoOrder } from './flow-techno-order.entity';
@@ -18,9 +25,11 @@ export class FlowDtoInput {
   description: string;
 
   @ApiModelProperty({ required: true })
+  @IsNumber()
   sourceAppId: number;
 
   @ApiModelProperty({ required: true })
+  @IsNumber()
   destinationAppId: number;
 
   @ApiModelProperty({ required: true })
@@ -29,6 +38,10 @@ export class FlowDtoInput {
 }
 
 export class FLowDtoOutput {
+  @ApiModelProperty({ required: true })
+  @IsNumber()
+  id: number;
+
   @ApiModelProperty({ required: true })
   @IsString()
   @MinLength(1)

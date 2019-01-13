@@ -26,7 +26,7 @@ export class FlowController {
     description: 'Creation of a flow',
     type: Flow,
   })
-  saveNew(@Body() flow: FlowDtoInput): Promise<Flow> {
+  saveNew(@Body() flow: FlowDtoInput): Promise<FLowDtoOutput> {
     return this.flowService.saveNewFlow(flow);
   }
 }

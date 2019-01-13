@@ -18,6 +18,8 @@ export class FlowService {
   constructor(
     @InjectRepository(FlowRepository)
     private readonly flowRepository: FlowRepository,
+    @InjectRepository(FlowTechnoOrder)
+    private readonly flowTechnoOrderRepository: Repository<FlowTechnoOrder>,
     @Inject(SEARCH_CLIENT_PROVIDER) private readonly searchClient: Client,
     private readonly flowAppService: FlowAppService,
     private readonly flowTechnoService: FlowTechnoService,
@@ -35,7 +37,7 @@ export class FlowService {
     );
   }
 
-  async saveNewFlow(flowDto: FlowDtoInput): Promise<Flow> {
+  async saveNewFlow(flowDto: FlowDtoInput): Promise<FLowDtoOutput> {
     const flow = new Flow();
 
     const technos = await Promise.all(
@@ -43,14 +45,6 @@ export class FlowService {
         this.flowTechnoService.saveNewTechno(techno),
       ),
     );
-    const technosOrder = technos.map((techno, i) => {
-      const flowTechnoOrder = new FlowTechnoOrder();
-      flowTechnoOrder.flow = flow;
-      flowTechnoOrder.position = i;
-      flowTechnoOrder.techno = techno;
-
-      return flowTechnoOrder;
-    });
 
     flow.name = flowDto.name;
     flow.description = flowDto.description;
@@ -60,14 +54,29 @@ export class FlowService {
     flow.destApp = (await this.flowAppService.getOneById(
       flowDto.destinationAppId,
     )).orElseThrow(() => new BadRequestException());
-    flow.flowTechnos = technosOrder;
 
-    return this.flowRepository.save(flow);
+    const flowSaved = await this.flowRepository.save(flow);
+
+    flowSaved.flowTechnos = technos.map((techno, i) => {
+      const flowTechnoOrder = new FlowTechnoOrder();
+      flowTechnoOrder.flow = flowSaved;
+      flowTechnoOrder.position = i;
+      flowTechnoOrder.techno = techno;
+
+      this.flowTechnoOrderRepository.save(flowTechnoOrder);
+
+      return flowTechnoOrder;
+    });
+
+    const newFlow = await this.flowRepository.save(flowSaved);
+
+    return this.transformFlowInFlowDTO(newFlow);
   }
 
   transformFlowInFlowDTO(flow: Flow): FLowDtoOutput {
     const output = new FLowDtoOutput();
 
+    output.id = flow.id;
     output.description = flow.description;
     output.name = flow.name;
     output.destinationApp = flow.destApp;

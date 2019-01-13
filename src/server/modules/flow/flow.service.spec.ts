@@ -5,6 +5,7 @@ import { SEARCH_CLIENT_PROVIDER } from '../core/search/search.constants';
 import { FlowAppService } from '../flow-app/flow-app.service';
 import { FlowTechnoService } from '../flow-techno/flow-techno.service';
 import { FlowRepository } from './flow.repository';
+import { FlowTechnoOrder } from './flow-techno-order.entity';
 
 class FakeSearchRepo {
   public current: FakeSearchIndex;
@@ -32,6 +33,14 @@ class FakeFlowRepository {
   remove = jest.fn();
 }
 
+class FakeFlowTechnoOrderRepository {
+  findOneWithNameIgnoringCase = jest.fn();
+  save = jest.fn();
+  findOneById = jest.fn();
+  find = jest.fn();
+  remove = jest.fn();
+}
+
 describe('FlowService', () => {
   let service: FlowService;
   beforeAll(async () => {
@@ -41,6 +50,10 @@ describe('FlowService', () => {
         {
           provide: getRepositoryToken(FlowRepository),
           useClass: FakeFlowRepository,
+        },
+        {
+          provide: getRepositoryToken(FlowTechnoOrder),
+          useClass: FakeFlowTechnoOrderRepository,
         },
         {
           provide: SEARCH_CLIENT_PROVIDER,

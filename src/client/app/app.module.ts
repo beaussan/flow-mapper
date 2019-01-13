@@ -4,7 +4,17 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatDialogModule,
+  MatInputModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatChipsModule,
+  MatAutocompleteModule,
+} from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
@@ -34,6 +44,17 @@ import { AuthState } from './state/auth.state';
 import { ToastrModule } from 'ngx-toastr';
 import { ConnectedGuard } from './common/connected.guard';
 import { SuperuserGuard } from './common/superuser.guard';
+import { AppsModule } from './main/apps/apps.module';
+import { FlowsModule } from './main/flows/flows.module';
+import { FlowTechnosState } from './state/flow-technos.state';
+import { FlowState } from './state/flow.state';
+import { AppTechnosState } from './state/app-technos.state';
+import { AppState } from './state/app.state';
+import { GraphModule } from './main/graph/graph.module';
+import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { CreateTechnoDialogComponent } from './dialogs/create-techno-dialog/create-techno-dialog.component';
+import { CreateFlowDialogComponent } from './dialogs/create-flow-dialog/create-flow-dialog.component';
+import { CreateAppDialogComponent } from './dialogs/create-app-dialog/create-app-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -53,7 +74,19 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    DeleteDialogComponent,
+    CreateTechnoDialogComponent,
+    CreateFlowDialogComponent,
+    CreateAppDialogComponent,
+  ],
+  entryComponents: [
+    DeleteDialogComponent,
+    CreateTechnoDialogComponent,
+    CreateFlowDialogComponent,
+    CreateAppDialogComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -68,6 +101,13 @@ const appRoutes: Routes = [
     // Material
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatChipsModule,
+    MatAutocompleteModule,
 
     // Fuse modules
     FuseModule.forRoot(fuseConfig),
@@ -77,7 +117,14 @@ const appRoutes: Routes = [
     FuseThemeOptionsModule,
 
     // NGXS modules
-    NgxsModule.forRoot([ApiConfigState, AuthState]),
+    NgxsModule.forRoot([
+      ApiConfigState,
+      AuthState,
+      FlowTechnosState,
+      AppState,
+      AppTechnosState,
+      FlowState,
+    ]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsStoragePluginModule.forRoot({ key: ['auth.authToken'] }),
@@ -91,6 +138,9 @@ const appRoutes: Routes = [
     // App modules
     LayoutModule,
     SampleModule,
+    AppsModule,
+    FlowsModule,
+    GraphModule,
   ],
   providers: [
     {

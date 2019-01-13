@@ -1,0 +1,86 @@
+<h1 mat-dialog-title>Create Flow</h1>
+<div mat-dialog-content>
+  <form class="create-flow-form" [formGroup]="createForm">
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Description"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Source App" formControlName="sourceAppId">
+        <mat-option *ngFor="let app of (apps$ | async)" [value]="app.id">
+          {{ app.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select
+        placeholder="Destination App"
+        formControlName="destinationAppId"
+      >
+        <mat-option *ngFor="let app of (apps$ | async)" [value]="app.id">
+          {{ app.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList formControlName="flowTechnos">
+        <mat-chip
+          *ngFor="let techno of selectedTechnos"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(techno)"
+        >
+          {{ techno }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Technos"
+          #technoInput
+          [formControl]="technoCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-list>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selected($event)"
+      >
+        <mat-option
+          *ngFor="let techno of (filteredTechnos | async)"
+          [value]="techno"
+        >
+          {{ techno }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="{
+      name: createForm.get('name').value,
+      description: createForm.get('description').value,
+      sourceAppId: createForm.get('sourceAppId').value,
+      destinationAppId: createForm.get('destinationAppId').value,
+      flowTechnos: selectedTechnos
+    }"
+    cdkFocusInitial
+  >
+    Create
+  </button>
+</div>

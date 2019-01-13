@@ -14,7 +14,7 @@ export const FUSE_CONFIG = new InjectionToken('fuseCustomConfig');
 export class FuseConfigService {
   // Private
   private configSubject: BehaviorSubject<any>;
-  private readonly _defaultConfig: any;
+  private _defaultConfig: any;
 
   /**
    * Constructor
@@ -70,6 +70,7 @@ export class FuseConfigService {
     let defaultVal = this._defaultConfig;
 
     defaultVal = _.merge({}, defaultVal, value);
+    this._defaultConfig = defaultVal;
 
     this.config = value;
   }

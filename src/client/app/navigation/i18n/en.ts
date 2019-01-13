@@ -11,6 +11,15 @@ export const locale = {
       USER: {
         TITLE: 'Users',
       },
+      FLOWS: {
+        TITLE: 'Flows',
+      },
+      APPS: {
+        TITLE: 'Apps',
+      },
+      GRAPH: {
+        TITLE: 'Graph',
+      },
     },
   },
 };

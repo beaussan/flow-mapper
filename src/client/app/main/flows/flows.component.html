@@ -1,0 +1,21 @@
+<div class="page-layout simple tabbed">
+  <!-- HEADER -->
+  <div class="header accent p-24">
+    <h2>{{ 'FLOWS.TITLE' | translate }}</h2>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <mat-tab-group dynamicHeight="true">
+      <mat-tab label="{{ 'FLOWS.TITLE' | translate }}">
+        <div class="p-24"><fl-flows-list-tab></fl-flows-list-tab></div>
+      </mat-tab>
+
+      <mat-tab label="Technos">
+        <div class="p-24"><fl-flow-techno-tab></fl-flow-techno-tab></div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <!-- / CONTENT -->
+</div>
