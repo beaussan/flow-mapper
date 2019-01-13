@@ -25,15 +25,19 @@ export class RegisterFromAdminUserDto {
   })
   roles: string[];
 
+  @ApiModelProperty({ required: true, example: 'toto.tata@toto.fr' })
   @IsEmail()
   email: string;
 
+  @ApiModelProperty({ required: true, example: 'Mr Toto' })
   @MinLength(1)
   name: string;
 
+  @ApiModelProperty({ required: true, example: 'some password' })
   @MinLength(1)
   password: string;
 
+  @ApiModelProperty({ required: true, example: false })
   @IsBoolean()
   isSuperUser: boolean;
 }

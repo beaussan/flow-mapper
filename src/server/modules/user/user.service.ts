@@ -38,7 +38,10 @@ export class UserService implements OnModuleInit {
   }
 
   async getAll(): Promise<User[]> {
-    return this.userRepository.find({ relations: ['roles'] });
+    return this.userRepository.find({
+      relations: ['roles'],
+      order: { id: 'ASC' },
+    });
   }
 
   async getNumberUserRegistredWithLocalAuth(): Promise<number> {
@@ -132,6 +135,7 @@ export class UserService implements OnModuleInit {
       register.roles.map(role => this.findRoleWithKey(role)),
     );
     user.localPassword = await this.cryptoService.hash(register.password);
+    user.authType = AuthType.LOCAL;
 
     return this.userRepository.save(user);
   }

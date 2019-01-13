@@ -52,6 +52,14 @@ export class AuthState {
   }
 
   @Selector()
+  static userId(state: AuthStateModel): number {
+    if (!state.user) {
+      return 0;
+    }
+    return state.user.id;
+  }
+
+  @Selector()
   static userEmail(state: AuthStateModel): string {
     if (!state.user) {
       return '';

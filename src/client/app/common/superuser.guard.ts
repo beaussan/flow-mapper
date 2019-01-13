@@ -10,7 +10,11 @@ import { ApiConfigState } from '../state/api-config.state';
 import { filter, flatMap, tap } from 'rxjs/operators';
 import { AuthState } from '../state/auth.state';
 import { Navigate } from '@ngxs/router-plugin';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class SuperuserGuard implements CanActivate, CanActivateChild {
   constructor(private readonly store: Store) {}
 
